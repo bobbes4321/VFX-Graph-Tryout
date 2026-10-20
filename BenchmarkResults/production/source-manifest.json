@@ -1,0 +1,502 @@
+[
+  {
+    "path": "Assets\\LineLab\\Editor\\BackendValidation.cs",
+    "sha256": "c70949d0a88fdcd339723b9ae62b0ff361fe0ae519b00bd15d2d15abcaaf77ac"
+  },
+  {
+    "path": "Assets\\LineLab\\Editor\\LineCommandValidation.cs",
+    "sha256": "2517515b6fc131adb78c1d4160460ff8945b3d30979cecbe50608f3f9ce913ba"
+  },
+  {
+    "path": "Assets\\LineLab\\Editor\\LineLabAssets.cs",
+    "sha256": "e4cad2cbecca166fb05cbc491633866f5ab5180e6844282ef17d56bf52bd9f4c"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Editor\\ProductionAssets.cs",
+    "sha256": "7f6039ffb5c9136f05a0d622ea15c6ea3a6125f0299d49890dc87f866d81dfba"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Editor\\ProductionValidation.cs",
+    "sha256": "f4cb1562041ba474b090952e90c173a0a08b91e2985d1d26e3e4b1179c671b41"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\AbilityBackend.cs",
+    "sha256": "a76fccfbf953619955c35dfeb96622d6be3a74d376acacc9ddfe4a48c04259d6"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\AbilityGeometry.cs",
+    "sha256": "7ac8cc5aa4475e161d064706d173deb56866cde843766809f4bc82f7f1637877"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\AbilityWorld.cs",
+    "sha256": "d407f823408dd546697069040f89d5bb856f5a88def26908e505f540185b3c09"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\CoreBackend.cs",
+    "sha256": "2956f66eb5ac24f12578f8491745aa54dfcaec357876d6493d947d69a98e4d33"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\CoreParticleBridge.cs",
+    "sha256": "c94e71acbad421f8a243d65130cd9224284386d326850bf5ca078e66fdfbba5f"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\DecorParticleBridge.cs",
+    "sha256": "9ff0b8e09d4a702fd61e0986fb8e5ee2e49a2f688a4e66622dbb917f85734203"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\ProductionArt.cs",
+    "sha256": "943d63fb5495c2461e884ddcf3ba247f650e290633943743ad4f14746297c612"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\ProductionBenchmark.cs",
+    "sha256": "4c2a86c028ad39ecfbc86d8838d91d19ced5011f715c1362165b4c3296c1a1b0"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Runtime\\ProductionController.cs",
+    "sha256": "32cf1f7d707e1bd295ca157da0d070f2a7bc67fee418715c2c5ff8679c1b9aef"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Shaders\\AbilityCommon.hlsl",
+    "sha256": "d703a9912baccd126b839c86095096ee44a126b9321a31cffa0699c8e7b69a10"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Shaders\\ProductionAdornment.shader",
+    "sha256": "88e4af4e63056b08a895568f5cdadc5586b0bc51b2158cb85709534b92a6da25"
+  },
+  {
+    "path": "Assets\\LineLab\\Production\\Shaders\\ProductionCore.shader",
+    "sha256": "fdb5afa55ba0ae9d4136c0787de283d67b22964c717af99000e64544faa3e5e6"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\01_VFX_ShowcaseVolume.asset",
+    "sha256": "c6225281a2db387d6ec40b4aa48fa2abbf70810e1e467c0ded46677e8fe2801c"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\02_Technique_LabVolume.asset",
+    "sha256": "731dab2786c76d6b9fafa60772f43762007e88c69db6d70bbd044266c3bea674"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\ArenaBaseMaterial.asset",
+    "sha256": "3aed73014e94377b7f5104f7ca9357ef81997c9c4982026283f21b53a8b6e89e"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\BeamProfile.asset",
+    "sha256": "a2e2aa9905bc19c889b6850350c5a6717fbc298f48f1e6eeaccd68865fdf2c4e"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer.vfx",
+    "sha256": "914e33bb55504c67c696cbc190f7a84b197cf463927a007180876162c409f354"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_1024.vfx",
+    "sha256": "4276e2d678b8a24e99d35bcae5175c1187eeb5c99c48f2af728903100b5ed8c9"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_128.vfx",
+    "sha256": "8d9aa124fd18ae5da91a7642584a7e6526d7307bc3dc3b6cd3754147bedf27e1"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_131072.vfx",
+    "sha256": "fe0d2e8985a887c73ed180554a296c965150f9e5dea1d32d562a7d88cac1fcf5"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_16.vfx",
+    "sha256": "0ba7e25e373de5ff2f07fcb9142595fa4b27a4576458a251480668b45051b119"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_16384.vfx",
+    "sha256": "b9a42d58aa0bda9b7fa5cf718fb5b8bcc10ba3282eb82db03c35e5a735dedd03"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_2048.vfx",
+    "sha256": "937a7e5ede7f25b34f832cb0f85f95bd380e60a0c21569d0101852e3acffc624"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_256.vfx",
+    "sha256": "3633c7e091dfda8ffe20aedb1021d3bffaf72f196d195cce7bad682de0261e6c"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_262144.vfx",
+    "sha256": "914e33bb55504c67c696cbc190f7a84b197cf463927a007180876162c409f354"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_32.vfx",
+    "sha256": "8758ee1f1e192354a7c57c446c73fc4f8c3dce9c9c62152dc01a7230ab4216f6"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_32768.vfx",
+    "sha256": "4781bdaed8972dbefd41dd90bd0d93038dbf72c3a2fb1d358ca67f52290e1235"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_4096.vfx",
+    "sha256": "76a9c09eae2b7927625a89b34aff7d8b2dbee8af3ec1736fe63ef794df0653dc"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_512.vfx",
+    "sha256": "21e273d03ff58aaa3b1014e1c7bc0f036322e636f23584fd234f1c0a2e4cd995"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_64.vfx",
+    "sha256": "79ff55c897d166b06beb321f38d6269376ceee3bd2292a1754683963d6be81e9"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_65536.vfx",
+    "sha256": "c4d4c05bda5a8eec01689d102af4a4e0ffa185f4aff24a89ac9174a0397b836e"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LinesBuffer_8192.vfx",
+    "sha256": "953694365ea575e458328a07940f06e8d59300b4aa2494e18e0979ac2833ec4f"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingle.vfx",
+    "sha256": "89c258de609b02695fe954f2db90e5623ed946e97313d5ea0c5941d4a09ce4e3"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingle_16.vfx",
+    "sha256": "076878fe16c0c90b1f043c786e4129f37511e7cfbf3be7ed5f3f0b0a4ec85c0a"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingle_32.vfx",
+    "sha256": "7fe5428225745e59d8961765cac355d198b671f7a89cb7aac4091028cdcdabc3"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingle_8.vfx",
+    "sha256": "ed5836e10e42c947533ee8099c2063bdd3e02e33eb4d85ac756b5d20fb7e3d67"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingleBatched_16.vfx",
+    "sha256": "a2f4a6f0e0a34a7f473a905499727a342326c3e1878704de121e139dc824d5cd"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingleBatched_32.vfx",
+    "sha256": "a22cbaa2b069d27db9544611e6155aefa2062cb1e946b94bb3bbe1f28558e015"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\LineSingleBatched_8.vfx",
+    "sha256": "ef4435a24942feb47385c5ae05c652946f368abdb144799f80b705d1820856a7"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\MoteProfile.asset",
+    "sha256": "c7d24692c111b87c5ec44efb0b24dfb4f72a4664facf468482d1d65bbca92d59"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\ParticleInstancedMaterial.asset",
+    "sha256": "b7201241548d1a894a28b84084ee78385b93e8b60406620fc1f53f2d6f6f3131"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\ProceduralMaterial.asset",
+    "sha256": "c805ed88198a5c6316acfbe73ef2f71c5ad4309fcd3365231f3113a0ee444f41"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilityBatchedBeam_1.vfx",
+    "sha256": "be995aa00876602c560413fa9696d4e6cb78b11423fef4539499b6dee377deb2"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilityBatchedFull_1.vfx",
+    "sha256": "ebc7546d6e032bd7d9ba3740452e770fec764a7a3b7a2e7bdc55577b3ced423a"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_1.vfx",
+    "sha256": "c7cd32c3c85427835b1048ee3f8cd9b867283f38b6385b0a4e0e63c122f7c2b4"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_128.vfx",
+    "sha256": "add8f5fd246907d22ff3d73c72e8e2f85246375704f069a3f8719166fc27eee3"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_16.vfx",
+    "sha256": "6c67667bdb5384e74e57ea6893e6d79d93b282f0f4b9132c307f1bc2f0cdb12d"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_2.vfx",
+    "sha256": "43201721760ae07b050456a486cd400c18d708c99782601c0127915a7ff13a3b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_256.vfx",
+    "sha256": "63468fd78b9ff24fd8908ac79fa624dec6ce175e924fb4bd6997320e2bc77316"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_32.vfx",
+    "sha256": "a10562a0db4f118d31602afcae9d326651e89c6c28d289b27b45746b51b9ae6f"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_4.vfx",
+    "sha256": "fff063c78ed1b01bf7e28fd851b3ac98e559d8794b25e157299576c1eac842c8"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_512.vfx",
+    "sha256": "3d5431ede1fb7d031c50afe3361b0048aac0a36bba5edd276d3a3afd90a8bd05"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_64.vfx",
+    "sha256": "fdc7497e7a84e4b8f6a4166caccfc2c0d7bd62ec024b664c7e39be8b35469610"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedBeam_8.vfx",
+    "sha256": "18e2642abf4c1d6f510f31081bc5906ead90f661897c10db4f0fde3e1d19fe3a"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_1.vfx",
+    "sha256": "7eea65d5986670a30806ac79204bee0d713ab4b419028805ac79379c4e7c0354"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_128.vfx",
+    "sha256": "49d491c6ed3d42619d989eaf67d6330ed4be3029df5afce265af962792e9049b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_16.vfx",
+    "sha256": "01fab4c841c15e993453a510f43f80b9092b40d9b4c4a322871a795ac7c33bbc"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_2.vfx",
+    "sha256": "a4cb084c071206c0b4c3157cac2e4e7f28666cad7e2522a2231d73053e1eab86"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_256.vfx",
+    "sha256": "52bcb914832bb0e49680baf5db7336f861c005133f391b6de93e125d8b8da9b2"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_32.vfx",
+    "sha256": "66c787a5c578d32559a289ff540517dee1860a4a5b859a2348f7e959547ec127"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_4.vfx",
+    "sha256": "7b54de93983d57c596764ade1521ea04c99b4b9eb278b2e39a55819c8ab0cbbf"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_512.vfx",
+    "sha256": "bfd474781caed6faf242f869bd058d5c860ba8af69d55520761be0ce2ee1a6f0"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_64.vfx",
+    "sha256": "5e273543e58e2d11beeafa143a6da3f1973b1654307b0d9a43efd232f4cb7b8e"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySharedFull_8.vfx",
+    "sha256": "39f382c8bd1497cdd3800b63257538bc11eb36b1cf2991dce60f23dd03f8f8cf"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySingleBeam_1.vfx",
+    "sha256": "b77bdacef913a39d583af8749621882145398de624e6533972c485509d7609da"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\AbilitySingleFull_1.vfx",
+    "sha256": "7ebbb447a6d9644260e398b331c5de889aff928480c8873adbdda39b429dbb1e"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Armor.asset",
+    "sha256": "04168dc2f0f70038d65c0319d49ce2b8eb9080cdaa78ebcd75bb1fd2ad4331b2"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\ArmorDark.asset",
+    "sha256": "1ebefaa348497cad1b0f631eb64edcffd1f863bbc91e10cf0fb6586d45873274"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Atmosphere.asset",
+    "sha256": "633f086dd43ae81fdb9fbf08b443ebe2dd1d2ffdf9be7daf516654968742a97d"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\BevelBox.asset",
+    "sha256": "df2d4b3d134fb0e3c5f14be50fee25e6b1e34cd40febbcbb877b8c875edfb63c"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\BlueGlow.asset",
+    "sha256": "c795e5f73b24aa516b6576c1446a13274c72959298f338eeb41f2554fd772a45"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Brass.asset",
+    "sha256": "dcd2848a710e587faed831de6cc32c2daf60ef2fc7969eb85f7e0592bc0eb072"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\CoreProfile.asset",
+    "sha256": "9e844f9f4c33ddb5da8798cc58d91c49763f4d99833577fdfe0bf66e8c109f94"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Dark.asset",
+    "sha256": "73734f659d48835b9d19a907b4677ebf2a670a37bf54c332fbad0fe5181f8bbb"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Deck.asset",
+    "sha256": "3a32b19bab8aaf6aa42181af3c05711e7a610f526fece70ca6b968217894c4fb"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Decor0.asset",
+    "sha256": "978f176a22c7991c41425704dd9743f181fb72805709ea73f0cf75f92ffb662b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Decor1.asset",
+    "sha256": "feec62bc86dc605ba7261154767c2e75c6fcc34fe54a08e38397c40b7b00fa55"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Decor2.asset",
+    "sha256": "b6d1932d56b918568cd19fed1200831947f4e716e1d6e3fd91692abbbb2c1dea"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Decor3.asset",
+    "sha256": "2e2ccc1d4c833ec5a14576b5e22437a1d291bb5c6c44643d860ea281f0a60c46"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorInstanced0.asset",
+    "sha256": "4ba7c68d3564d86f28138ca312a22bee8ff78b126105f564ce96e07accd8dafd"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorInstanced1.asset",
+    "sha256": "6a13388e9d400c0dda1ce02f33039e9611389eb867611af969a58eb677319c3b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorInstanced2.asset",
+    "sha256": "6f8bd5853e7985966a60a709e8ad6ce4a8928506b36076fbe33879c5c51bf54b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorInstanced3.asset",
+    "sha256": "d9eff5fd24e3eaa0f26d0cadc258c7cfa586e632fd9604e810c763ed9339abfa"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorProcedural0.asset",
+    "sha256": "13075383f4b2c581a0fa94da510dc9000d80293f27c14067ece59261f47cafd2"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorProcedural1.asset",
+    "sha256": "19dccf99d4f85f582f67ffa4dda35008f4219a137e267d3b3687490932ce4f0b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorProcedural2.asset",
+    "sha256": "57c6376fbe23e739eacb5f84ca1ebb9008933847cc9b08ad4a3380d22040effe"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\DecorProcedural3.asset",
+    "sha256": "6ef30da5bd4a479aaf07db6772531fccc51f53ba72c32a99d2a5388a322f9768"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\GoldGlow.asset",
+    "sha256": "75668b1c371964ebe5416adeb18173dc8abaf8c8a412b70ef1bab8b1c7f9882f"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Mineral.asset",
+    "sha256": "379ed44620da4a4c15fc8602dc388f298c8ad98197a957df72441e9bc9cebb50"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\MintGlow.asset",
+    "sha256": "24706a279a6da1856fc010bd839514fb18b8f23eee13001e0db5a2f94a3bfe09"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\ParticleInstancedMaterial.asset",
+    "sha256": "aa18002012aea5ea9ce7995a77c048c8c3f750bcc1ef57c6809d3f9be3f05fa3"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Platform.asset",
+    "sha256": "f5bedf3e4d3a87cee23beb5c23661b687c0ebb1610557980d4c83eeff2cce234"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\ProceduralMaterial.asset",
+    "sha256": "cfa8c709e39e587c77d6227691a4acc887a3c74af1aeb5802419546d9c07570f"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Profile0.asset",
+    "sha256": "2a7972199405c6470705bc2c68fed2ceefdc1528b470b600f379f595c6582317"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Profile1.asset",
+    "sha256": "8ce5666007ba205235ef5c726854018ef72aef5b5bc31b243bfe8cf073d518ea"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Profile2.asset",
+    "sha256": "d78fccaffce95b8fc70ac6862f5e2634ac885e4957c70dc5c64df84f63a86cdd"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Profile3.asset",
+    "sha256": "c332c70e322bf946e8ff007fe817b8cb3a4e0511522a754aef136bfe0d266417"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\RibbonMaterial.asset",
+    "sha256": "92a377906dd85bb3b0897fa2a0701e036012f04a153c99026f1dbd4fb2585e03"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Rock.asset",
+    "sha256": "887450e29105cc1d3e27bd5117b4107d8f87c6ad5fb497be50789d0515fb593a"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Stone.asset",
+    "sha256": "156f1e23e9b9690f89dc848005f4c2e7379309f7d0c063f2799278b20d251895"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\StoneGrain.asset",
+    "sha256": "cb4feaab72aee117fdef7cafce352b70830c72cf343146041bc20dfd907cacbd"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\StoneLight.asset",
+    "sha256": "9462c262301d232fa9198ef253d06e549682d342de2ed4842f5d788c552838c9"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\Terrain.asset",
+    "sha256": "7733946c7967f86c13459b976a5c83d13517a16278b52bddc375b3877e26e02b"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\Production\\TerrainMaterial.asset",
+    "sha256": "9f8f2e0f6e184541c35746628cd53b74a278568fe50625a21342f05ea3a61451"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\RibbonMaterial.asset",
+    "sha256": "575e77c9888b8127d48859cbbdce6256c6b083a07f4d9c05cf9ed1ce60476ab8"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\SegmentQuad.asset",
+    "sha256": "a3b27d1ced9f3e580f70efc9ecad57376aa7e20acf7a3503cbd4f4d215a06c6f"
+  },
+  {
+    "path": "Assets\\LineLab\\Resources\\ShowcaseMotes.vfx",
+    "sha256": "79adf000e2cea64c0b8f9a01f2b049873e58bd6e385c2d28d9da5eec21d1046f"
+  },
+  {
+    "path": "Assets\\LineLab\\Runtime\\HealerExample.cs",
+    "sha256": "68421b37d5875daa45672edd7ca4634a4839042144c2c26adfa517455fa53668"
+  },
+  {
+    "path": "Assets\\LineLab\\Runtime\\LineBackends.cs",
+    "sha256": "362b4bcc8534166496fdb8a70dbc318f79110b70d9baed155ccf87cebede3d2a"
+  },
+  {
+    "path": "Assets\\LineLab\\Runtime\\LineBenchmark.cs",
+    "sha256": "a9eea0ee7f537f9996b2773a1c77156a105b67eca4f339cd75ec1047ab9988d8"
+  },
+  {
+    "path": "Assets\\LineLab\\Runtime\\LineCommands.cs",
+    "sha256": "e602bf0a91a7de4cb3c5c5bc5f2160b13a73f1a107d4046278950675d5481171"
+  },
+  {
+    "path": "Assets\\LineLab\\Runtime\\LineLabController.cs",
+    "sha256": "bfe6036fc796b5ddaa18d4ee1a207b0f06cf7508bd5164da0ec597b0441d2536"
+  },
+  {
+    "path": "Assets\\LineLab\\Runtime\\ParticleJobBridge.cs",
+    "sha256": "3a7d99bde575ebc0acce7306e26cc45d6bf38df560b69ef9d6f7722819a6025e"
+  },
+  {
+    "path": "Assets\\LineLab\\Scenes\\01_VFX_Showcase.unity",
+    "sha256": "ec950664496cc5352dda659d581256e25994ca73248c5d194db9502d75846165"
+  },
+  {
+    "path": "Assets\\LineLab\\Scenes\\02_Technique_Lab.unity",
+    "sha256": "3dc81bcf0e97a984372c13ba3a40b7e78b2e2be7a5ae007a19cc321af35bcb84"
+  },
+  {
+    "path": "Assets\\LineLab\\Scenes\\03_Complete_Abilities.unity",
+    "sha256": "ce82426e351d4443d118e40aebe6c2e099fd4b255fef0ffb3152dfed63726815"
+  },
+  {
+    "path": "Assets\\LineLab\\Shaders\\LineCommon.hlsl",
+    "sha256": "b8a2f356982edbc8784f9069a4216e4d0a9b88c14befc45edb091a4aa5a5d7bd"
+  },
+  {
+    "path": "Assets\\LineLab\\Shaders\\ParticleInstanced.shader",
+    "sha256": "990dab01eaabd32efef80c375be3650651cd1030800b3d11f85faff65278bdaf"
+  },
+  {
+    "path": "Assets\\LineLab\\Shaders\\ProceduralRibbon.shader",
+    "sha256": "21d65b02fbf50caa8743aa80a05c3f04bffca3a9a4deec9334abdcf545bb097e"
+  },
+  {
+    "path": "Assets\\LineLab\\Shaders\\Ribbon.shader",
+    "sha256": "df8eec79435a7f7fb42c4b3d7c91c0ecd5206cd78d6b7f8ffd828d97a1dfa799"
+  }
+]

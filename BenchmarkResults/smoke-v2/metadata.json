@@ -1,0 +1,20 @@
+{
+    "startedUtc": "2026-10-19T16:13:33.7408699Z",
+    "unity": "6000.3.10f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "cpu": "11th Gen Intel(R) Core(TM) i9-11900F @ 2.50GHz",
+    "api": "Direct3D12",
+    "os": "Windows 11  (10.0.26200)",
+    "suite": "smoke",
+    "commandLine": "C:\\Unity Projects\\VFX Graph Tryout\\Builds\\LineLab\\LineLab.exe --benchmark --suite smoke --results BenchmarkResults/smoke-v2 -logFile BenchmarkResults/smoke-v2-player.log -force-d3d12 -screen-fullscreen 0",
+    "notes": "Standalone windowed; VSync off; no FPS cap; fixed 60 Hz simulation clock; same arena and native command producer in baseline; randomized technique order within each repetition. GPU/CPU frame timing is delayed: fresh timestamped samples only, no synthetic replacement. Bridge timer includes job waits and API submission but not later engine rendering. Setup is pool creation, excluded from steady-state. Upload bytes are application API inputs, not a PCIe measurement. Churn toggles half the lines every 15 frames; shared systems retain invisible slots. LineRenderer uses connected joins and an 8-key color gradient; other methods use independent overlapping quads. Particle colors quantize to Color32. Particle jobs use mesh particles without GPU instancing.",
+    "gpuMemoryMB": 8017,
+    "systemMemoryMB": 32485,
+    "processorCount": 16,
+    "warmupFrames": 90,
+    "measurementFrames": 120,
+    "seed": 190626,
+    "burstEnabled": true,
+    "developmentBuild": false,
+    "frameTimingEnabled": true
+}

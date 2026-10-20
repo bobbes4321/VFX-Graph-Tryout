@@ -1,0 +1,2 @@
+name, driver_version, temperature.gpu, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W]
+NVIDIA GeForce RTX 3070, 610.60, 36, 585 MHz, 810 MHz, 26.03 W

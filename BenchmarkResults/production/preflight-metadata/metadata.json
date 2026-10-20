@@ -1,0 +1,22 @@
+{
+    "startedUtc": "2026-10-19T21:02:46.3651449Z",
+    "unity": "6000.3.10f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "cpu": "11th Gen Intel(R) Core(TM) i9-11900F @ 2.50GHz",
+    "api": "Direct3D12",
+    "os": "Windows 11  (10.0.26200)",
+    "suite": "production-full",
+    "commandLine": "\"C:\\Unity Projects\\VFX Graph Tryout\\Builds\\ProductionLab\\ProductionLab.exe\" --production-benchmark --suite full --results BenchmarkResults/production/reference -logFile BenchmarkResults/production/reference-player.log -force-d3d12 -screen-fullscreen 0",
+    "notes": "Complete ability stack. Three 32-segment strands, 48 travelling motes, 24 ballistic sparks, eight corona cards and four ground runes. VFX: one five-system graph. Shuriken: native layers. Line/mesh paths: explicit procedural particle companion. Same environment and native command/strand jobs in baseline. Fixed 60 Hz simulation, randomized seed 32194, pooled lifecycle with 1.4s release tails. Fresh whole-frame timing only; bridge includes last completed PS callbacks, excludes deferred engine work. Alpha-zero fixed slots are not compacted.",
+    "buildGuid": "3b882952951e46faa35343ef955a17fb",
+    "driver": "Direct3D 12 [level 12.2]",
+    "gpuMemoryMB": 8017,
+    "systemMemoryMB": 32485,
+    "processorCount": 16,
+    "warmupFrames": 120,
+    "measurementFrames": 240,
+    "seed": 32194,
+    "burstEnabled": true,
+    "developmentBuild": false,
+    "frameTimingEnabled": true
+}

@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "cells": 360,
+  "rawSamples": 86400,
+  "validGpuSamples": 75612,
+  "buildGuid": "16f57280f9d2445bbd462a711d2e7c76",
+  "checks": [
+    "Completion and cell matrix",
+    "Release / Burst / frame timing flags",
+    "Unique cells and 3 repetitions",
+    "Complete technique/baseline groups",
+    "Actual output dimensions",
+    "Allocated recipe and live particle counts",
+    "Explicit instancing configuration",
+    "Raw sample counts and unique fresh GPU timestamps",
+    "GPU medians match raw frames"
+  ],
+  "errors": []
+}

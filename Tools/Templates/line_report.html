@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>RTS Line Laboratory · Measured Results</title>
+        <style>
+            :root {
+                color-scheme: dark;
+                --bg: #07121c;
+                --panel: #102231;
+                --ink: #dbeaf4;
+                --muted: #8ca5b8;
+                --accent: #45e1b5;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--ink);
+                font:
+                    15px/1.55 system-ui,
+                    sans-serif;
+            }
+            main {
+                max-width: 1500px;
+                margin: auto;
+                padding: 42px;
+            }
+            h1 {
+                font-size: 44px;
+                letter-spacing: -2px;
+                margin: 5px 0 12px;
+            }
+            h2 {
+                font-size: 22px;
+                margin-top: 35px;
+            }
+            small,
+            .muted {
+                color: var(--muted);
+            }
+            .eyebrow {
+                font-size: 12px;
+                letter-spacing: 3px;
+                color: var(--accent);
+            }
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+                margin: 25px 0;
+            }
+            .card {
+                padding: 20px;
+                background: var(--panel);
+                border: 1px solid #244052;
+                border-radius: 10px;
+            }
+            .card b {
+                font-size: 22px;
+                display: block;
+                color: var(--accent);
+            }
+            .controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                background: var(--panel);
+                padding: 20px;
+                border-radius: 10px;
+                position: sticky;
+                top: 0;
+                z-index: 4;
+            }
+            select,
+            button {
+                background: #102c3d;
+                color: var(--ink);
+                border: 1px solid #3a5e71;
+                border-radius: 5px;
+                padding: 8px;
+                font: inherit;
+            }
+            label {
+                font-size: 12px;
+                color: var(--muted);
+            }
+            label select {
+                display: block;
+            }
+            .scroll {
+                overflow: auto;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+            th,
+            td {
+                text-align: right;
+                border-bottom: 1px solid #254052;
+                padding: 12px 9px;
+            }
+            th:first-child,
+            td:first-child {
+                text-align: left;
+            }
+            th {
+                color: var(--accent);
+                background: #0c1d29;
+            }
+            tr:hover {
+                background: #153042;
+            }
+            .warn {
+                color: #ffc781;
+            }
+            .note {
+                border-left: 3px solid var(--accent);
+                padding: 12px 20px;
+                background: var(--panel);
+                margin: 20px 0;
+            }
+            svg {
+                width: 100%;
+                height: auto;
+                background: #0c1d29;
+                border-radius: 10px;
+            }
+            .legend {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                font-size: 11px;
+                margin: 10px 0 20px;
+            }
+            .legend span {
+                cursor: pointer;
+            }
+            details {
+                background: var(--panel);
+                padding: 16px;
+                margin: 12px 0;
+                border-radius: 8px;
+            }
+            summary {
+                cursor: pointer;
+                font-weight: 600;
+            }
+            code {
+                color: #80d9f3;
+            }
+            a {
+                color: var(--accent);
+            }
+            .bars {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            @media (max-width: 900px) {
+                main {
+                    padding: 20px;
+                }
+                .cards,
+                .bars {
+                    grid-template-columns: 1fr 1fr;
+                }
+                h1 {
+                    font-size: 32px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="eyebrow">FIELD STUDY / CPU · GPU · ECS</div>
+            <h1>RTS Line Laboratory</h1>
+            <p class="muted" id="hardware"></p>
+            <div class="cards" id="cards"></div>
+            <div class="note">
+                <b>Measured on this PC, with this workload.</b> Costs are medians of independently
+                measured run medians. The range columns show repetition-to-repetition variation; p95
+                is the median of per-run frame p95s. A baseline delta is a paired subtraction, not
+                an isolated GPU timestamp for the effect. Small or negative deltas can be noise.
+                These results do not predict every RTS scene.
+            </div>
+            <div class="controls">
+                <label>Workload<select id="workload"></select></label
+                ><label>Resolution<select id="resolution"></select></label
+                ><label>Segments / line<select id="segments"></select></label
+                ><label>Line slots<select id="count"></select></label
+                ><label
+                    >Scale chart<select id="metric">
+                        <option value="gpuMedianMsDelta">GPU delta vs baseline / ms</option>
+                        <option value="gpuMedianMs">Total GPU frame / ms</option>
+                        <option value="mainMedianMsDelta">CPU main delta / ms</option>
+                        <option value="bridgeMedianMs">Presentation bridge / ms</option>
+                        <option value="bridgeP95Ms">Presentation bridge p95 / ms</option>
+                        <option value="commandMedianMs">Native command jobs / ms</option>
+                        <option value="frameMedianMs">Total frame interval / ms</option>
+                        <option value="setupMs">Pool setup / ms</option>
+                    </select></label
+                ><button id="download">Export selection CSV</button>
+            </div>
+            <div class="note">
+                <b>Recommended default:</b> shared-buffer VFX Graph for a rich graph workflow, or
+                procedural GPU ribbons for a focused line shader. At 256 moving links, their
+                measured GPU deltas were about 0.032 / 0.030 ms and their bridge times about 0.005 /
+                0.008 ms. Per-line VFX with automatic batching remains viable at a few hundred
+                links, with a measurable CPU premium. Shuriken did not win GPU cost in the
+                representative moving tests. Read the workload/range tables before generalizing.
+            </div>
+            <h2 id="selected"></h2>
+            <div id="absence" class="warn"></div>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technique</th>
+                            <th>GPU ms</th>
+                            <th>GPU Δ ms</th>
+                            <th>GPU run range</th>
+                            <th>GPU p95</th>
+                            <th>Main CPU ms</th>
+                            <th>Render CPU ms</th>
+                            <th>Commands median / p95</th>
+                            <th>Bridge ms</th>
+                            <th>Bridge p95 / max</th>
+                            <th>Bridge Δ ms</th>
+                            <th>Frame p95</th>
+                            <th>GC median / max B</th>
+                            <th>Batches</th>
+                            <th>Bulk inputs KiB</th>
+                            <th>Pool setup ms</th>
+                            <th>Objects</th>
+                            <th>GPU samples</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table"></tbody>
+                </table>
+            </div>
+            <h2>Scaling under the selected workload</h2>
+            <div class="legend" id="legend"></div>
+            <svg
+                id="chart"
+                viewBox="0 0 1300 450"
+                role="img"
+                aria-label="Technique scaling chart"
+            ></svg>
+            <h2>Pooled start / stop trace</h2>
+            <p class="muted">
+                512 slots, 1080p, 16 segments, churn workload, repetition 1. Starts and stops occur
+                every half-cycle. These are CPU bridge/command timers; the particle-job path
+                includes its last completed callback. Delayed GPU timing fields are not used to
+                label spikes.
+            </p>
+            <select id="traceTechnique"></select>
+            <p id="traceInfo" class="muted"></p>
+            <svg
+                id="traceChart"
+                viewBox="0 0 1300 350"
+                role="img"
+                aria-label="Per-frame lifecycle CPU trace"
+            ></svg>
+            <h2>How to read the costs</h2>
+            <div class="bars">
+                <div class="card">
+                    <b>When the GPU is the constraint</b>Compare GPU deltas and their repeat ranges
+                    at the required visual density. Check Overdraw and 1440p. A CPU-cheaper
+                    technique can still have a higher GPU cost. Compare 1-segment straight ribbons
+                    with 16- or 32-segment curved ribbons only when that visual tradeoff is
+                    acceptable.
+                </div>
+                <div class="card">
+                    <b>When gameplay CPU is the constraint</b>Compare main and render thread times
+                    as well as the presentation bridge. The bridge includes the completion wait for
+                    renderer-specific Burst jobs and API submissions. For particle jobs it includes
+                    the last completed particle callback duration. It excludes later engine
+                    simulation, culling and render-thread work. Command production and consumption
+                    are common to every technique, including the baseline.
+                </div>
+            </div>
+            <details open>
+                <summary>VFX instance count and graph authoring</summary>
+                <p>
+                    Shared VFX uploads 64 bytes per line and reads them in a Custom HLSL graph
+                    block. Per-line VFX exposes Start, End, Tint and Shape; each pooled object
+                    receives those values. The same graph is tested with instance batching disabled
+                    and automatic batching enabled. Shared graph capacity is the next power of two
+                    at or above the particle count (minimum 16). Per-line capacity is the next power
+                    of two at or above segment count (minimum 8). This avoids benchmarking a giant
+                    fixed-capacity shared graph at tiny workloads.
+                </p>
+            </details>
+            <details>
+                <summary>Shuriken configurations and visual differences</summary>
+                <p>
+                    Shared billboards and per-line billboards receive CPU/Burst-generated particles
+                    through SetParticles. Shared mesh particles use the same segment quad, with GPU
+                    instancing either off or on. The particle-job path writes directly into
+                    Shuriken's native particle arrays via IJobParticleSystemParallelFor, without
+                    copying a full particle array every frame. SetParticles paths pause simulation
+                    for explicitly positioned, persistent particles. The particle-job path remains
+                    playing to receive OnParticleUpdateJobScheduled, and explicitly
+                    schedules/completes its Burst job in that callback. Automatic movement and
+                    emission are disabled. GPU instancing accelerates rendering, not CPU particle
+                    simulation. Color32 introduces color quantization; the common HDR beam texture
+                    supplies brightness.
+                </p>
+                <p>
+                    Styles cycle through healing, electrical arc, plasma and dashed order. All
+                    methods use the same endpoints, curve formula, segment budget, additive profile
+                    texture, camera, arena and post-processing. LineRenderer uses joined strips and
+                    an eight-key color gradient; the other paths use overlapping independent quads.
+                    Billboard orientation is engine-generated. These are practical quality-matched
+                    comparisons, not pixel-identical implementations. The 1-segment tests
+                    intentionally reduce curvature quality.
+                </p>
+            </details>
+            <details>
+                <summary>Reproducibility and limitations</summary>
+                <p id="protocol"></p>
+                <p>
+                    VSync and frame caps are disabled. Each repetition randomizes technique order
+                    within a configuration. Each configuration has its own no-lines baseline with
+                    identical native command work and scene. Static paths avoid redundant uploads
+                    and pause VFX simulation after initialization. Moving updates all endpoints.
+                    Churn stops half the slots for 15 of every 30 frames and reuses pooled objects
+                    with new generations. Shared systems keep inactive slots allocated and
+                    invisible. Overdraw concentrates long, wide lines in the same screen region.
+                </p>
+                <p>
+                    FrameTimingManager reports delayed whole-frame GPU/CPU timings. Only fresh
+                    timing stamps are used. Unsupported counters remain missing, never zero-filled.
+                    GC and batch recorders can be unavailable in release players. Bulk input bytes
+                    count explicit arrays and LineRenderer positions; they exclude uniforms,
+                    gradients and internal engine traffic. Zero is not zero transfer, and these
+                    values are not measured bus traffic. Total used memory is process-wide and
+                    allocator-dependent. Setup/teardown, shader first-use compilation, asset loading
+                    and pool creation are excluded from steady samples; setup is recorded
+                    separately. Teardown in the raw run refers to the previously configured pool.
+                    Background applications, drivers, presentation and clocks can introduce noise.
+                    Three runs indicate repeatability, not a universal confidence interval.
+                </p>
+                <p>
+                    Raw run folder: <code>__RAWPATH__</code>. Inspect <code>metadata.json</code>,
+                    <code>summary.jsonl</code>, and <code>raw-frames.csv</code>. The native
+                    lifecycle validation and integration guide are in the project.
+                </p>
+            </details>
+            __ALLOCATIONS__
+            <details>
+                <summary>Visual atlas / captured from the standalone player</summary>
+                <p>
+                    Eight links at 32 segments each. The dedicated showcase adds traveling motes and
+                    endpoint coronas; timed comparisons exclude that decorative layer.
+                </p>
+                <select id="visualTechnique"></select>
+                <p>
+                    <img
+                        id="visualImage"
+                        style="width: 100%; border-radius: 8px"
+                        alt="Standalone technique visual comparison"
+                    />
+                </p>
+            </details>
+            <details>
+                <summary>Primary references</summary>
+                <p>
+                    <a
+                        href="https://docs.unity3d.com/6000.0/Documentation/Manual/frame-timing-manager.html"
+                        >Unity Frame Timing Manager</a
+                    >
+                    ·
+                    <a
+                        href="https://docs.unity3d.com/6000.0/Documentation/Manual/PartSysInstancing.html"
+                        >Shuriken GPU instancing</a
+                    >
+                    ·
+                    <a
+                        href="https://docs.unity3d.com/6000.0/Documentation/Manual/particle-system-job-system-integration.html"
+                        >Particle jobs</a
+                    >
+                    ·
+                    <a
+                        href="https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@17.3/manual/Block-CustomHLSL.html"
+                        >VFX Custom HLSL</a
+                    >
+                </p>
+            </details>
+        </main>
+        <script>
+            const data = __DATA__,
+                meta = __META__,
+                traces = __TRACES__,
+                $ = (id) => document.getElementById(id),
+                colors = [
+                    "#7b8d9c",
+                    "#45e1b5",
+                    "#ffa56b",
+                    "#c98bff",
+                    "#6ebfff",
+                    "#f6d46b",
+                    "#f7749c",
+                    "#7ed4e2",
+                    "#c2ea78",
+                    "#dfab65",
+                    "#8c9bff",
+                    "#f4eeae",
+                ];
+            const techniques = [...new Set(data.map((d) => d.technique))],
+                hidden = new Set();
+            const fmt = (v, n = 3) => (Number.isFinite(v) ? v.toFixed(n) : "N/A");
+            const med = (a) => {
+                a = a.filter(Number.isFinite).sort((a, b) => a - b);
+                return a.length ? a[Math.floor(a.length / 2)] : null;
+            };
+            $("hardware").textContent =
+                `${meta.gpu} · ${meta.cpu} · ${meta.api} · Unity ${meta.unity} · ${meta.startedUtc}`;
+            $("cards").innerHTML =
+                `<div class="card"><b>${data.reduce((a, d) => a + d.runs, 0)}</b>measured cells</div><div class="card"><b>${techniques.length - 1}</b>rendering configurations</div><div class="card"><b>${meta.measurementFrames}</b>samples / cell</div><div class="card"><b>${meta.developmentBuild ? "Development" : "Release"} / Burst ${meta.burstEnabled ? "ON" : "OFF"}</b>standalone player</div>`;
+            $("protocol").textContent =
+                `Seed ${meta.seed}; ${meta.warmupFrames} warmup frames, ${meta.measurementFrames} measurement frames per cell. Frame timing feature ${meta.frameTimingEnabled ? "enabled" : "UNAVAILABLE"}. OS: ${meta.os}. ${meta.notes}`;
+            function options(id, values, preferred) {
+                const old = $(id).value;
+                $(id).innerHTML = values.map((v) => `<option>${v}</option>`).join("");
+                $(id).value = values.includes(old)
+                    ? old
+                    : values.includes(preferred)
+                      ? preferred
+                      : values[0];
+            }
+            options("workload", [...new Set(data.map((d) => d.workload))], "Moving");
+            options(
+                "resolution",
+                [...new Set(data.map((d) => `${d.width}×${d.height}`))],
+                "1920×1080",
+            );
+            options(
+                "segments",
+                [...new Set(data.map((d) => String(d.segments)))].sort((a, b) => a - b),
+                "16",
+            );
+            function relevant() {
+                return data.filter(
+                    (d) =>
+                        d.workload === $("workload").value &&
+                        `${d.width}×${d.height}` === $("resolution").value &&
+                        d.segments == +$("segments").value,
+                );
+            }
+            function update() {
+                const rel = relevant();
+                options(
+                    "count",
+                    [...new Set(rel.map((d) => String(d.count)))].sort((a, b) => a - b),
+                    "256",
+                );
+                const rows = rel
+                    .filter((d) => d.count == +$("count").value)
+                    .sort((a, b) => (a.gpuMedianMs ?? 1e9) - (b.gpuMedianMs ?? 1e9));
+                window.selection = rows;
+                $("selected").textContent =
+                    `${$("count").value || "No"} line slots · ${$("segments").value} segments · ${$("workload").value} · ${$("resolution").value}`;
+                $("absence").textContent = rows.length
+                    ? ""
+                    : "This combination is outside the measured matrix. Choose another setting.";
+                $("table").innerHTML = rows
+                    .map(
+                        (d) =>
+                            `<tr><td>${d.name}</td><td>${fmt(d.gpuMedianMs)}</td><td>${fmt(d.gpuMedianMsDelta)}</td><td>${fmt(d.gpuMedianMsMin)}–${fmt(d.gpuMedianMsMax)}</td><td>${fmt(d.gpuP95Ms)}</td><td>${fmt(d.mainMedianMs)}</td><td>${fmt(d.renderMedianMs)}</td><td>${fmt(d.commandMedianMs)} / ${fmt(d.commandP95Ms)}</td><td>${fmt(d.bridgeMedianMs)}</td><td>${fmt(d.bridgeP95Ms)} / ${fmt(d.bridgeMaxMsMax)}</td><td>${fmt(d.bridgeMedianMsDelta)}</td><td>${fmt(d.frameP95Ms)}</td><td>${fmt(d.gcMedianBytes, 0)} / ${fmt(d.gcMaxBytes, 0)}</td><td>${fmt(d.batchesMedian, 0)}</td><td>${fmt(d.uploadBytes / 1024, 1)}</td><td>${fmt(d.setupMs, 2)}</td><td>${fmt(d.objects, 0)}</td><td>${fmt(d.validGpuSamples, 0)} / ${fmt(d.samples, 0)} × ${d.runs}</td></tr>`,
+                    )
+                    .join("");
+                draw(rel);
+            }
+            function draw(rel) {
+                const metric = $("metric").value,
+                    ns = [...new Set(rel.map((d) => d.count))].sort((a, b) => a - b);
+                const vals = rel
+                    .filter((d) => !hidden.has(d.technique))
+                    .map((d) => d[metric])
+                    .filter(Number.isFinite);
+                let min = Math.min(0, ...vals),
+                    max = Math.max(0.01, ...vals) * 1.1;
+                const x = (n) =>
+                        80 +
+                        ((Math.log2(n + 1) - Math.log2((ns[0] || 1) + 1)) /
+                            Math.max(
+                                0.01,
+                                Math.log2((ns.at(-1) || 2) + 1) - Math.log2((ns[0] || 1) + 1),
+                            )) *
+                            1140,
+                    y = (v) => 390 - ((v - min) / (max - min)) * 340;
+                let s = "";
+                for (let i = 0; i <= 5; i++) {
+                    const v = min + ((max - min) * i) / 5;
+                    s += `<line x1="80" x2="1220" y1="${y(v)}" y2="${y(v)}" stroke="#254052"/><text x="70" y="${y(v) + 4}" fill="#8ca5b8" text-anchor="end" font-size="12">${v.toFixed(2)}</text>`;
+                }
+                for (const n of ns)
+                    s += `<text x="${x(n)}" y="420" fill="#8ca5b8" text-anchor="middle" font-size="12">${n}</text>`;
+                s +=
+                    '<text x="650" y="445" fill="#8ca5b8" text-anchor="middle" font-size="12">Line slots (log spacing)</text>';
+                techniques.forEach((t, i) => {
+                    if (hidden.has(t)) return;
+                    let rs = rel
+                        .filter((d) => d.technique === t && Number.isFinite(d[metric]))
+                        .sort((a, b) => a.count - b.count);
+                    s += `<polyline points="${rs.map((d) => `${x(d.count)},${y(d[metric])}`).join(" ")}" fill="none" stroke="${colors[i]}" stroke-width="2.5"/>`;
+                    for (const d of rs)
+                        s += `<circle cx="${x(d.count)}" cy="${y(d[metric])}" r="4" fill="${colors[i]}"><title>${d.name}: ${d.count} slots, ${fmt(d[metric])} ms</title></circle>`;
+                });
+                $("chart").innerHTML = s;
+                $("legend").innerHTML = techniques
+                    .map(
+                        (t, i) =>
+                            `<span data-t="${t}" style="color:${colors[i]};opacity:${hidden.has(t) ? 0.3 : 1}">● ${data.find((d) => d.technique === t).name}</span>`,
+                    )
+                    .join("");
+                for (const el of $("legend").children)
+                    el.onclick = () => {
+                        hidden.has(el.dataset.t)
+                            ? hidden.delete(el.dataset.t)
+                            : hidden.add(el.dataset.t);
+                        draw(rel);
+                    };
+            }
+            function trace() {
+                const a = traces[$("traceTechnique").value] || [];
+                if (!a.length) {
+                    $("traceInfo").textContent = "No matching churn trace in this run.";
+                    return;
+                }
+                const peak =
+                        Math.max(0.01, ...a.map((r) => r.bridge), ...a.map((r) => r.commands)) *
+                        1.1,
+                    x = (i) => 80 + (i / Math.max(1, a.length - 1)) * 1140,
+                    y = (v) => 280 - (v / peak) * 240;
+                let out = "";
+                for (let i = 0; i <= 4; i++) {
+                    let v = (peak * i) / 4;
+                    out += `<line x1="80" x2="1220" y1="${y(v)}" y2="${y(v)}" stroke="#254052"/><text x="70" y="${y(v) + 4}" fill="#8ca5b8" text-anchor="end" font-size="12">${v.toFixed(3)}</text>`;
+                }
+                for (let i = 0; i < a.length; i += 30)
+                    out += `<text x="${x(i)}" y="305" fill="#8ca5b8" text-anchor="middle" font-size="12">${i + 1}</text>`;
+                for (const [key, color] of [
+                    ["bridge", "#45e1b5"],
+                    ["commands", "#ffa56b"],
+                ]) {
+                    out += `<polyline points="${a.map((r, i) => `${x(i)},${y(r[key])}`).join(" ")}" fill="none" stroke="${color}" stroke-width="2"/>`;
+                    out += a
+                        .map(
+                            (r, i) =>
+                                `<circle cx="${x(i)}" cy="${y(r[key])}" r="2" fill="${color}"><title>Sample ${i + 1}: ${key} ${r[key].toFixed(4)} ms</title></circle>`,
+                        )
+                        .join("");
+                }
+                out +=
+                    '<text x="650" y="337" text-anchor="middle" fill="#8ca5b8" font-size="12">Recorded sample · green: presentation bridge · orange: native command jobs · milliseconds</text>';
+                $("traceChart").innerHTML = out;
+                $("traceInfo").textContent =
+                    `Bridge median ${fmt(med(a.map((r) => r.bridge)))} ms; largest sampled bridge spike ${fmt(Math.max(...a.map((r) => r.bridge)))} ms.`;
+            }
+            $("traceTechnique").innerHTML = Object.keys(traces)
+                .map(
+                    (t) =>
+                        `<option value="${t}">${data.find((d) => d.technique === t).name}</option>`,
+                )
+                .join("");
+            $("traceTechnique").value = "VfxBuffer";
+            $("traceTechnique").onchange = trace;
+            trace();
+            const visualMethods = ["Showcase", ...techniques.filter((t) => t !== "Baseline")];
+            $("visualTechnique").innerHTML = visualMethods
+                .map(
+                    (t) =>
+                        `<option value="${t}">${t === "Showcase" ? "Dedicated VFX showcase" : data.find((d) => d.technique === t).name}</option>`,
+                )
+                .join("");
+            const showVisual = () => {
+                $("visualImage").src = __VISUAL_PREFIX__ + $("visualTechnique").value + ".png";
+            };
+            $("visualTechnique").onchange = showVisual;
+            showVisual();
+            for (const id of ["workload", "resolution", "segments", "metric"])
+                $(id).onchange = update;
+            $("count").onchange = update;
+            $("download").onclick = () => {
+                const rows = window.selection;
+                if (!rows.length) return;
+                const keys = Object.keys(rows[0]),
+                    escapeCsv = (v) => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+                const csv = [
+                    keys.map(escapeCsv).join(","),
+                    ...rows.map((d) => keys.map((k) => escapeCsv(d[k])).join(",")),
+                ].join("\r\n");
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(
+                    new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }),
+                );
+                a.download = "line-lab-selection.csv";
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+            };
+            update();
+        </script>
+    </body>
+</html>

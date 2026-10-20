@@ -1,0 +1,12 @@
+Baseline: 0 particles; 1 objects; No effects / common environment and native jobs
+VfxBuffer: 540 particles; 2 objects; One graph / core + four GPU particle systems
+VfxPerLine: 540 particles; 4 objects; One graph / core + four GPU particle systems
+LineRenderer: 0 particles; 11 objects; Ribbon renderer + four procedural GPU particle layers
+BurstMesh: 0 particles; 2 objects; Ribbon renderer + four procedural GPU particle layers
+Procedural: 0 particles; 2 objects; Ribbon renderer + four procedural GPU particle layers
+ParticleBillboardShared: 540 particles; 7 objects; Shuriken / core + four native particle layers
+ParticleBillboardPerLine: 540 particles; 17 objects; Shuriken / core + four native particle layers
+ParticleMeshShared: 540 particles; 7 objects; Shuriken / core + four native particle layers
+ParticleMeshInstanced: 540 particles; 7 objects; Shuriken / core + four native particle layers
+ParticleJobs: 540 particles; 7 objects; Shuriken / core + four native particle layers
+VfxPerLineBatched: 540 particles; 4 objects; One graph / core + four GPU particle systems

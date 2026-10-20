@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/LineLab/Scenes/01_VFX_Showcase.unity
+    guid: ff086c9dcc0a8c64486c9f791981a0ed
+  - enabled: 1
+    path: Assets/LineLab/Scenes/02_Technique_Lab.unity
+    guid: 6d1281bd17d33bb4ca0469fca0bea677
+  - enabled: 1
+    path: Assets/LineLab/Scenes/03_Complete_Abilities.unity
+    guid: 522569a727bf60d4abfb36c1dee99d0e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

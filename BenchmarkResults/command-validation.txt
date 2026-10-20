@@ -1,0 +1,11 @@
+Burst enabled: True
+PASS: 1,024 parallel Burst producers start independent slots
+PASS: Update changes an active line
+PASS: Stop clears active flag
+PASS: Delayed update cannot resurrect a stopped line
+PASS: Slot reuse with newer generation succeeds
+PASS: Stale stop cannot stop a reused slot
+PASS: Duplicate Begin is idempotent
+PASS: Out-of-range handles are ignored safely
+PASS: CPU/GPU line layout is 64 bytes
+PASS: Degenerate endpoints stay finite in native geometry

@@ -1,0 +1,1 @@
+360/360 VfxPerLine 256 Overdraw full=True GPU=3.163136 bridge=0.1971 particles=46080

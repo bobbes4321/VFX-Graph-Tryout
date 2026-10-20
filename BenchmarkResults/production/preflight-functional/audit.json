@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "cells": 12,
+  "rawSamples": 1440,
+  "validGpuSamples": 1200,
+  "buildGuid": "3b882952951e46faa35343ef955a17fb",
+  "errors": []
+}

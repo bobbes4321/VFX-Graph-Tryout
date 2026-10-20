@@ -1,0 +1,1 @@
+900/900 Baseline 256 Moving 1920x1080 r2 GPU=0.421888ms bridge=0.0036ms particles=0

@@ -1,0 +1,1 @@
+71/360 ParticleMeshInstanced 128 Sustain full=True GPU=1.235968 bridge=1.2768 particles=23040

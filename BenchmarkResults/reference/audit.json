@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "cells": 900,
+  "rawSamples": 162000,
+  "validGpuSamples": 124567,
+  "buildGuid": "9221553fe3544e7ca1d19b16d94ac088",
+  "checks": [
+    "Run has a completion marker",
+    "No invalid-cell marker",
+    "Release player, Burst and frame timing enabled",
+    "Expected number of measured cells",
+    "Eleven rendering configurations plus baseline",
+    "Every configuration/repetition has all techniques and its own baseline",
+    "No duplicate cells",
+    "Three measured repetitions",
+    "Actual 1080p and 1440p output resolutions",
+    "Expected line-count sweep",
+    "Expected geometry-density sweep",
+    "All four workload classes",
+    "Raw sample count equals reported sample count",
+    "All cell timing, particle and instancing checks passed"
+  ],
+  "errors": []
+}

@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>AETHER · Complete Ability Study</title>
+        <style>
+            :root {
+                color-scheme: dark;
+            }
+            body {
+                margin: 0;
+                background: #07131b;
+                color: #dbe8ed;
+                font: 15px/1.6 system-ui;
+            }
+            main {
+                max-width: 1500px;
+                margin: auto;
+                padding: 44px;
+            }
+            h1 {
+                font-size: 48px;
+                line-height: 1.1;
+                margin: 15px 0;
+            }
+            h2 {
+                margin-top: 35px;
+                font-size: 23px;
+            }
+            .eyebrow {
+                letter-spacing: 3px;
+                color: #59e6b7;
+                font-size: 12px;
+            }
+            .muted {
+                color: #8ba5b1;
+            }
+            .note,
+            .card,
+            details {
+                background: #102530;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 18px 0;
+            }
+            .note {
+                border-left: 3px solid #59e6b7;
+            }
+            .cards {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            .card b {
+                display: block;
+                font-size: 25px;
+                color: #59e6b7;
+            }
+            .controls {
+                position: sticky;
+                top: 0;
+                background: #102530;
+                padding: 15px;
+                z-index: 3;
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+            select,
+            button {
+                font: inherit;
+                background: #163644;
+                border: 1px solid #416372;
+                border-radius: 4px;
+                color: #e5f1f5;
+                padding: 8px;
+            }
+            label {
+                font-size: 12px;
+            }
+            .scroll {
+                overflow: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                white-space: nowrap;
+                font-size: 12px;
+            }
+            td,
+            th {
+                padding: 12px 10px;
+                border-bottom: 1px solid #274452;
+                text-align: right;
+            }
+            td:first-child,
+            th:first-child {
+                text-align: left;
+            }
+            th {
+                color: #59e6b7;
+            }
+            svg {
+                width: 100%;
+                background: #0d202b;
+                border-radius: 8px;
+            }
+            img {
+                width: 100%;
+                border-radius: 8px;
+            }
+            a {
+                color: #59e6b7;
+            }
+            .legend {
+                font-size: 12px;
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            .legend span {
+                cursor: pointer;
+            }
+            @media (max-width: 800px) {
+                main {
+                    padding: 20px;
+                }
+                .cards {
+                    grid-template-columns: 1fr;
+                }
+                h1 {
+                    font-size: 34px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="eyebrow">FIELD STUDY / 002 / COMPLETE ABILITIES</div>
+            <h1>AETHER<br />Signals of the frontier</h1>
+            <p id="hardware" class="muted"></p>
+            <div class="cards" id="cards"></div>
+            <div class="note">
+                This experiment measures the complete effect: three 32-segment ribbons, 48
+                travelling motes, 24 ballistic sparks, eight endpoint corona cards and four animated
+                ground runes per ability. All effects support charge-up and a retained 1.4-second
+                release tail. The core-only case keeps all three ribbons and removes the four
+                secondary layers.
+            </div>
+            __OVERVIEW__
+            <div class="controls">
+                <label
+                    >Measured case
+                    <select id="case" aria-label="Measured case"></select></label
+                ><label
+                    >Scale metric
+                    <select id="metric" aria-label="Scale metric">
+                        <option value="gpuMedianMsDelta">GPU delta / ms</option>
+                        <option value="mainMedianMs">Main CPU frame / ms</option>
+                        <option value="bridgeMedianMs">Presentation bridge / ms</option>
+                    </select></label
+                ><button id="export">Export selected CSV</button>
+            </div>
+            <h2 id="selected"></h2>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technique</th>
+                            <th>GPU ms</th>
+                            <th>GPU Δ ms</th>
+                            <th>GPU repeat range</th>
+                            <th>GPU p95 ms</th>
+                            <th>Main CPU ms</th>
+                            <th>Render CPU ms</th>
+                            <th>Commands ms</th>
+                            <th>Bridge ms</th>
+                            <th>Bridge p95 / max</th>
+                            <th>Frame p95 ms</th>
+                            <th>Batches</th>
+                            <th>Objects</th>
+                            <th>Bulk input KiB</th>
+                            <th>Setup ms</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table"></tbody>
+                </table>
+            </div>
+            <h2>Complete effects / moving endpoints / 1080p</h2>
+            <p class="muted">
+                The legend toggles techniques. Hover points for values. Curves cover 32–512
+                simultaneous abilities.
+            </p>
+            <div class="legend" id="legend"></div>
+            <svg
+                id="chart"
+                viewBox="0 0 1300 440"
+                role="img"
+                aria-label="Complete effect scaling"
+            ></svg>
+            <h2>What did the extra layers cost?</h2>
+            <p class="muted">
+                256 sustained moving abilities, 1080p. Differences compare medians of the full and
+                core-only measurements; baseline-corrected GPU differences are estimates, with
+                ordinary run-to-run noise.
+            </p>
+            <div class="scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technique</th>
+                            <th>Core GPU Δ ms</th>
+                            <th>Full GPU Δ ms</th>
+                            <th>Secondary layers GPU Δ ms</th>
+                            <th>Core bridge ms</th>
+                            <th>Full bridge ms</th>
+                        </tr>
+                    </thead>
+                    <tbody id="layers"></tbody>
+                </table>
+            </div>
+            <h2>See the result</h2>
+            <label
+                >Visual capture
+                <select id="visual" aria-label="Visual capture"></select
+            ></label>
+            <p><img id="image" alt="Complete ability standalone capture" /></p>
+            <details open>
+                <summary>Capability and authoring differences</summary>
+                <p>
+                    <b>VFX Graph:</b> all five GPU systems live in one real graph asset, with shared
+                    or per-ability input. Per-ability graphs are tested with automatic instance
+                    batching both disabled and enabled. The graph exposes SpawnCore, SpawnLayer0–3,
+                    Start, End, Tint, Shape, Clock and CameraPosition. Shared graphs consume a
+                    64-byte ability record. Capacity variants avoid a huge fixed pool at low counts.
+                </p>
+                <p>
+                    <b>LineRenderer, Burst mesh and procedural ribbons:</b> the three ribbon strands
+                    use their corresponding renderer. Free motes, sparks, coronas and ground runes
+                    use a four-layer procedural GPU companion. This is an explicit hybrid
+                    implementation. These techniques do not gain particle systems merely by
+                    rendering a line.
+                </p>
+                <p>
+                    <b>Shuriken:</b> native particle layers provide the same secondary geometry.
+                    Shared/per-line systems, ordinary mesh particles, GPU-instanced mesh particles
+                    and direct Burst particle jobs are measured independently. The per-line variant
+                    packs all three strands into one core system and has four secondary systems per
+                    ability. Mesh ground runes accompany the billboard variants because a
+                    view-facing billboard cannot represent the ground orientation.
+                </p>
+                <p>
+                    Three stacked ribbons are needed for these authored cores. Consequently a
+                    LineRenderer ability uses three LineRenderers, while a complete VFX ability
+                    still uses one component/graph containing five systems. That packaging
+                    difference is part of the practical comparison.
+                </p>
+            </details>
+            <details>
+                <summary>Methodology and limits</summary>
+                <p id="protocol"></p>
+                <p>
+                    Visible release Windows player, Burst AOT, no VSync or frame cap. Each technique
+                    sees the same environment, endpoint sequence, fixed 60 Hz simulation and native
+                    Begin/Follow/Release jobs. Baseline includes that environment and
+                    command/strand-preparation work. Technique order is shuffled within each
+                    configuration/repetition. The full matrix has 360 cells and three repetitions.
+                    Warmup and shader first use are outside the timed interval; pool setup is
+                    recorded separately. Lifecycle sampling spans pooled release tails and reuse,
+                    with staggered phases.
+                </p>
+                <p>
+                    CPU bridge times include job completion and engine calls, plus the last
+                    completed Shuriken callback. They exclude later engine work. Compare main/render
+                    frame times too. GPU deltas subtract paired whole-frame baselines; they are not
+                    isolated-pass timestamps. CPU times are wall time, not summed active core
+                    cycles. CPU and GPU frame times overlap; do not add them. Alpha-zero fixed slots
+                    still execute; no active compaction is credited. Per-ability VFX disables the
+                    complete component after its tail. Per-ability Shuriken disables its core, while
+                    its four secondary pools retain invisible particles; disabling those as a group
+                    is an available further optimization. Lifecycle results apply to these exact
+                    implementations. Color32 quantization and LineRenderer gradient/connected-join
+                    differences remain. Release builds can lack GC counters. Total memory and bulk
+                    input bytes are exported in the aggregate CSV; neither is isolated effect VRAM
+                    or measured bus traffic.
+                </p>
+                <p>
+                    The arena is a visual proof of concept with a fixed six-unit environment. Stress
+                    links fill the same 36×19 m footprint at every count; this does not simulate a
+                    complete RTS with hundreds of animated units, AI, terrain streaming or contested
+                    GPU resources. No depth collision, history-based smoke, distortion, dynamic
+                    effect lights, trails following arbitrary historical paths or multiple cameras
+                    are included. Particles follow deterministic analytic trajectories so all
+                    backends can reproduce the same effect. Those capabilities require further
+                    real-game tests.
+                </p>
+                <p>
+                    All art and textures were generated in this project. The original line-only
+                    reference data and player are retained separately. See
+                    Documentation/Production.md for integration and reproduction.
+                </p>
+            </details>
+            <p id="audit" class="muted"></p>
+        </main>
+        <script>
+            const data = __DATA__,
+                meta = __META__,
+                audit = __AUDIT__,
+                $ = (id) => document.getElementById(id),
+                fmt = (v) => (Number.isFinite(v) ? v.toFixed(3) : "N/A");
+            $("hardware").textContent =
+                `${meta.gpu} · ${meta.cpu} · ${meta.api} · Unity ${meta.unity}`;
+            $("cards").innerHTML =
+                `<div class="card"><b>${audit.cells}</b>audited measured cells</div><div class="card"><b>${audit.rawSamples.toLocaleString()}</b>raw frame samples</div><div class="card"><b>11 + baseline</b>rendering configurations</div>`;
+            $("protocol").textContent =
+                `Seed ${meta.seed}; ${meta.warmupFrames} warmup / ${meta.measurementFrames} measured frames per cell. Build ${meta.buildGuid}. ${meta.startedUtc}`;
+            $("audit").textContent =
+                `Audit passed · ${audit.validGpuSamples.toLocaleString()} fresh GPU samples · raw data and manifests retained in the reference folder.`;
+            const key = (d) =>
+                `${d.count} abilities · ${d.workload} · ${d.fullStack ? "Complete" : "Core only"} · ${d.width}×${d.height}`;
+            const cases = [...new Set(data.map(key))];
+            $("case").innerHTML = cases.map((k) => `<option>${k}</option>`).join("");
+            $("case").value =
+                cases.find((k) => k.startsWith("256 abilities · Sustain · Complete · 1920")) ||
+                cases[0];
+            let selected = [];
+            const csvCell = (v) => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+            function update() {
+                selected = data
+                    .filter((d) => key(d) === $("case").value)
+                    .sort((a, b) => a.gpuMedianMs - b.gpuMedianMs);
+                $("selected").textContent = $("case").value;
+                $("table").innerHTML = selected
+                    .map(
+                        (d) =>
+                            `<tr><td>${d.name}</td><td>${fmt(d.gpuMedianMs)}</td><td>${fmt(d.gpuMedianMsDelta)}</td><td>${fmt(d.gpuMedianMsMin)}–${fmt(d.gpuMedianMsMax)}</td><td>${fmt(d.gpuP95Ms)}</td><td>${fmt(d.mainMedianMs)}</td><td>${fmt(d.renderMedianMs)}</td><td>${fmt(d.commandMedianMs)}</td><td>${fmt(d.bridgeMedianMs)}</td><td>${fmt(d.bridgeP95Ms)} / ${fmt(d.bridgeMaxMs)}</td><td>${fmt(d.frameP95Ms)}</td><td>${d.batchesMedian ?? "N/A"}</td><td>${d.objects}</td><td>${(d.uploadBytes / 1024).toFixed(1)}</td><td>${fmt(d.setupMs)}</td></tr>`,
+                    )
+                    .join("");
+            }
+            $("case").onchange = update;
+            update();
+            const methods = [...new Set(data.map((d) => d.technique))],
+                colors = [
+                    "#7b8d9c",
+                    "#45e1b5",
+                    "#ffa56b",
+                    "#c98bff",
+                    "#6ebfff",
+                    "#f6d46b",
+                    "#f7749c",
+                    "#7ed4e2",
+                    "#c2ea78",
+                    "#dfab65",
+                    "#8c9bff",
+                    "#f4eeae",
+                ],
+                hidden = new Set();
+            function chart() {
+                const rows = data.filter(
+                        (d) => d.fullStack && d.workload === "Sustain" && d.width === 1920,
+                    ),
+                    metric = $("metric").value,
+                    visible = rows.filter((d) => !hidden.has(d.technique));
+                const min = Math.min(0, ...visible.map((d) => d[metric])),
+                    max = Math.max(0.01, ...visible.map((d) => d[metric])) * 1.1,
+                    x = (n) => 80 + Math.log2(n / 32) * 280,
+                    y = (v) => 370 - ((v - min) / (max - min)) * 310;
+                let s = "";
+                for (let i = 0; i <= 5; i++) {
+                    let v = min + ((max - min) * i) / 5;
+                    s += `<line x1="80" x2="1220" y1="${y(v)}" y2="${y(v)}" stroke="#294451"/><text x="70" y="${y(v) + 4}" fill="#8ba5b1" text-anchor="end" font-size="12">${v.toFixed(2)}</text>`;
+                }
+                for (let n of [32, 128, 256, 512])
+                    s += `<text x="${x(n)}" y="405" fill="#8ba5b1" text-anchor="middle">${n}</text>`;
+                methods.forEach((t, i) => {
+                    if (hidden.has(t)) return;
+                    const r = rows
+                        .filter((d) => d.technique === t)
+                        .sort((a, b) => a.count - b.count);
+                    s += `<polyline points="${r.map((d) => `${x(d.count)},${y(d[metric])}`).join(" ")}" fill="none" stroke="${colors[i]}" stroke-width="2.5"/>`;
+                    for (const d of r)
+                        s += `<circle cx="${x(d.count)}" cy="${y(d[metric])}" r="4" fill="${colors[i]}"><title>${d.name}: ${d.count} abilities, ${fmt(d[metric])} ms</title></circle>`;
+                });
+                $("chart").innerHTML = s;
+                $("legend").innerHTML = methods
+                    .map(
+                        (t, i) =>
+                            `<span data-t="${t}" style="color:${colors[i]};opacity:${hidden.has(t) ? 0.3 : 1}">● ${data.find((d) => d.technique === t).name}</span>`,
+                    )
+                    .join("");
+                for (const el of $("legend").children)
+                    el.onclick = () => {
+                        hidden.has(el.dataset.t)
+                            ? hidden.delete(el.dataset.t)
+                            : hidden.add(el.dataset.t);
+                        chart();
+                    };
+            }
+            $("metric").onchange = chart;
+            chart();
+            $("layers").innerHTML = methods
+                .map((t) => {
+                    const f = data.find(
+                            (d) =>
+                                d.technique === t &&
+                                d.count === 256 &&
+                                d.workload === "Sustain" &&
+                                d.width === 1920 &&
+                                d.fullStack,
+                        ),
+                        b = data.find(
+                            (d) =>
+                                d.technique === t &&
+                                d.count === 256 &&
+                                d.workload === "Sustain" &&
+                                d.width === 1920 &&
+                                !d.fullStack,
+                        );
+                    return f && b
+                        ? `<tr><td>${f.name}</td><td>${fmt(b.gpuMedianMsDelta)}</td><td>${fmt(f.gpuMedianMsDelta)}</td><td>${fmt(f.gpuMedianMsDelta - b.gpuMedianMsDelta)}</td><td>${fmt(b.bridgeMedianMs)}</td><td>${fmt(f.bridgeMedianMs)}</td></tr>`
+                        : "";
+                })
+                .join("");
+            const visuals = [
+                ["Showcase", "Complete diorama"],
+                ["Hero0", "Renewal / close view"],
+                ["Hero1", "Storm lance / close view"],
+                ["Hero2", "Solar tether / close view"],
+                ...methods.map((t) => [t, data.find((d) => d.technique === t).name]),
+            ];
+            $("visual").innerHTML = visuals
+                .map(([v, n]) => `<option value="${v}">${n}</option>`)
+                .join("");
+            $("visual").onchange = () => {
+                $("image").src = __VISUAL_PREFIX__ + $("visual").value + ".png";
+            };
+            $("visual").onchange();
+            $("export").onclick = () => {
+                if (!selected.length) return;
+                let keys = Object.keys(selected[0]),
+                    text = [
+                        keys.map(csvCell).join(","),
+                        ...selected.map((d) => keys.map((k) => csvCell(d[k])).join(",")),
+                    ].join("\r\n");
+                let a = document.createElement("a");
+                a.href = URL.createObjectURL(
+                    new Blob(["\ufeff" + text], { type: "text/csv;charset=utf-8" }),
+                );
+                a.download = "aether-selection.csv";
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+            };
+        </script>
+    </body>
+</html>

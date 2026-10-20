@@ -1,0 +1,1 @@
+12/12 VfxPerLine 128 Sustain full=True GPU=1.18784 bridge=0.093 particles=23040

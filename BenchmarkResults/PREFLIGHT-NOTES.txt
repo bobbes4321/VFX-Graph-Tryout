@@ -1,0 +1,1 @@
+Hidden-window preflights are invalid and excluded from the final report. smoke-visible is an early functional preflight, before final geometry and instancing fixes. Use the full reference run for conclusions.

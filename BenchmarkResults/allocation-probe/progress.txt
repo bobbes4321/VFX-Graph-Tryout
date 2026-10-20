@@ -1,0 +1,1 @@
+12/12 VfxPerLineBatched 256 Moving 1920x1080 r0 GPU=0.4352ms bridge=0.161ms particles=4096

@@ -1,0 +1,14 @@
+[
+  {
+    "path": "Builds\\ProductionLab\\ProductionLab.exe",
+    "sha256": "a24b809c68c731996f3dd09fc18e2bc497f534a63597d4f184093ef2ea00abc3"
+  },
+  {
+    "path": "Builds\\ProductionLab\\ProductionLab_Data\\Managed\\Assembly-CSharp.dll",
+    "sha256": "1014a0b0846c0ccfa3f16c6ed9db6853d9176686c8bec70c00e580bcc2ec81b6"
+  },
+  {
+    "path": "Builds\\ProductionLab\\ProductionLab_Data\\Plugins\\x86_64\\lib_burst_generated.dll",
+    "sha256": "c17df56f9b8b0e5dc1212f76fca2c7429f5d304ce0a6a0c609e14f1992d89272"
+  }
+]

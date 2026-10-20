@@ -1,0 +1,12 @@
+Baseline: 0 live particles; 1 objects; instancing flag False
+VfxBuffer: 256 live particles; 2 objects; instancing flag False
+VfxPerLine: 256 live particles; 9 objects; instancing flag False
+LineRenderer: 0 live particles; 9 objects; instancing flag False
+BurstMesh: 0 live particles; 1 objects; instancing flag False
+Procedural: 0 live particles; 1 objects; instancing flag False
+ParticleBillboardShared: 256 live particles; 2 objects; instancing flag False
+ParticleBillboardPerLine: 256 live particles; 9 objects; instancing flag False
+ParticleMeshShared: 256 live particles; 2 objects; instancing flag False
+ParticleMeshInstanced: 256 live particles; 2 objects; instancing flag True
+ParticleJobs: 256 live particles; 2 objects; instancing flag False
+VfxPerLineBatched: 256 live particles; 9 objects; instancing flag True
