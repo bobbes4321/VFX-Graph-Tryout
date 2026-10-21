@@ -1,0 +1,3 @@
+{
+  "note": " Earlier Spread camera rows used a 180 m far clip and clipped most of the distant field. They are retained as diagnostics and excluded from the consolidated full-field comparison. Use the later frustum-validated Spread run."
+}

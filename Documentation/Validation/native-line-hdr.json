@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "var go=new UnityEngine.GameObject(\"HDR probe\"); var mesh=new UnityEngine.Mesh(); try { var line=go.AddComponent<UnityEngine.LineRenderer>(); line.positionCount=2; line.SetPositions(new[]{UnityEngine.Vector3.left*3,UnityEngine.Vector3.right*3}); line.widthMultiplier=.3f; line.applyActiveColorSpace=false; line.startColor=new UnityEngine.Color(4,2,.5f,1); line.endColor=line.startColor; line.BakeMesh(mesh,UnityEngine.Camera.main,false); float red=0; foreach(var color in mesh.colors) red=System.Math.Max(red,color.r); return new { vertices=mesh.vertexCount, maximumRed=red, format=mesh.GetVertexAttributeFormat(UnityEngine.Rendering.VertexAttribute.Color).ToString(), preserved=red>3.9f }; } finally {UnityEngine.Object.DestroyImmediate(mesh); UnityEngine.Object.DestroyImmediate(go);}"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "vertices": 4,
+        "maximumRed": 1,
+        "format": "UNorm8",
+        "preserved": false
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "C:\\Unity Projects\\VFX Graph Tryout"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,0 +1,1 @@
+INVALID 252 GPU samples 149 particles 18720 expected streams [10080,5040,2520,840,420] observed [9984,4992,2496,832,416]

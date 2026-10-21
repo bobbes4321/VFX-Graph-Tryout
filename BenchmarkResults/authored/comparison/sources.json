@@ -1,0 +1,173 @@
+[
+  {
+    "directory": "run-20261020-175024-380-d5a1d2-completed-prefix",
+    "buildGuid": "bfbad434f07f43f997d02f35a3009671",
+    "spreadFrustumValidated": false,
+    "audit": {
+      "passed": true,
+      "cells": 252,
+      "rawSamples": 60480,
+      "validGpuSamples": 53269,
+      "buildGuid": "bfbad434f07f43f997d02f35a3009671",
+      "checks": [
+        "Completion and cell matrix",
+        "Release / Burst / frame timing flags",
+        "Unique cells and 3 repetitions",
+        "Complete technique/baseline groups",
+        "Actual output dimensions",
+        "Allocated recipe and live particle counts",
+        "Explicit instancing configuration",
+        "Raw sample counts and unique fresh GPU timestamps",
+        "GPU medians match raw frames",
+        "Content and suite SHA-256 digests",
+        "Every cell matches immutable suite plan",
+        "Authored table dimensions and capacity arithmetic",
+        "Exact per-stream particle census",
+        "Active recipe populations and logical geometry"
+      ],
+      "errors": [],
+      "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79"
+    },
+    "censusProtocol": "Taken after warmup, before samples. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads count active authored modules, including transparent cards.",
+    "report": "../run-20261020-175024-380-d5a1d2-completed-prefix/report/report.html",
+    "rawFrames": "../run-20261020-175024-380-d5a1d2-completed-prefix/raw-frames.csv",
+    "summarySha256": "322335435b7586f5696850c131a5aa51853d5f892d2a844ea5f42ed47c5e5cfc"
+  },
+  {
+    "directory": "run-20261020-164230-346-484934",
+    "buildGuid": "bfbad434f07f43f997d02f35a3009671",
+    "spreadFrustumValidated": false,
+    "audit": {
+      "passed": true,
+      "cells": 288,
+      "rawSamples": 69120,
+      "validGpuSamples": 62871,
+      "buildGuid": "bfbad434f07f43f997d02f35a3009671",
+      "checks": [
+        "Completion and cell matrix",
+        "Release / Burst / frame timing flags",
+        "Unique cells and 3 repetitions",
+        "Complete technique/baseline groups",
+        "Actual output dimensions",
+        "Allocated recipe and live particle counts",
+        "Explicit instancing configuration",
+        "Raw sample counts and unique fresh GPU timestamps",
+        "GPU medians match raw frames",
+        "Content and suite SHA-256 digests",
+        "Every cell matches immutable suite plan",
+        "Authored table dimensions and capacity arithmetic",
+        "Exact per-stream particle census",
+        "Active recipe populations and logical geometry"
+      ],
+      "errors": [],
+      "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79"
+    },
+    "censusProtocol": "Taken after warmup, before samples. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads count active authored modules, including transparent cards.",
+    "report": "../run-20261020-164230-346-484934/report/report.html",
+    "rawFrames": "../run-20261020-164230-346-484934/raw-frames.csv",
+    "summarySha256": "11760a2d5939d52226e5d434b15e8895efc724a98ab5d3c8dd50ba6eb697a7b8"
+  },
+  {
+    "directory": "run-20261020-184209-382-da299f",
+    "buildGuid": "dfd65e13f62543bba4e299c83b361468",
+    "spreadFrustumValidated": false,
+    "audit": {
+      "passed": true,
+      "cells": 216,
+      "rawSamples": 51840,
+      "validGpuSamples": 46594,
+      "buildGuid": "dfd65e13f62543bba4e299c83b361468",
+      "checks": [
+        "Completion and cell matrix",
+        "Release / Burst / frame timing flags",
+        "Unique cells and 3 repetitions",
+        "Complete technique/baseline groups",
+        "Actual output dimensions",
+        "Allocated recipe and live particle counts",
+        "Explicit instancing configuration",
+        "Raw sample counts and unique fresh GPU timestamps",
+        "GPU medians match raw frames",
+        "Content and suite SHA-256 digests",
+        "Every cell matches immutable suite plan",
+        "Authored table dimensions and capacity arithmetic",
+        "Exact per-stream particle census",
+        "Active recipe populations and logical geometry"
+      ],
+      "errors": [],
+      "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79"
+    },
+    "censusProtocol": "After warmup, freeze native inputs for 16 unmeasured frames so asynchronous GPU alive counts settle; take census, then resume for 8 unmeasured recovery frames. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads include transparent cards.",
+    "report": "../run-20261020-184209-382-da299f/report/report.html",
+    "rawFrames": "../run-20261020-184209-382-da299f/raw-frames.csv",
+    "summarySha256": "54456f03d4b909589caa1a6efe4d69251e3311c335b344f9c18c1a0c38e25b0b"
+  },
+  {
+    "directory": "run-20261020-184837-229-c685cb",
+    "buildGuid": "dfd65e13f62543bba4e299c83b361468",
+    "spreadFrustumValidated": false,
+    "audit": {
+      "passed": true,
+      "cells": 102,
+      "rawSamples": 24480,
+      "validGpuSamples": 19492,
+      "buildGuid": "dfd65e13f62543bba4e299c83b361468",
+      "checks": [
+        "Completion and cell matrix",
+        "Release / Burst / frame timing flags",
+        "Unique cells and 3 repetitions",
+        "Complete technique/baseline groups",
+        "Actual output dimensions",
+        "Allocated recipe and live particle counts",
+        "Explicit instancing configuration",
+        "Raw sample counts and unique fresh GPU timestamps",
+        "GPU medians match raw frames",
+        "Content and suite SHA-256 digests",
+        "Every cell matches immutable suite plan",
+        "Authored table dimensions and capacity arithmetic",
+        "Exact per-stream particle census",
+        "Active recipe populations and logical geometry"
+      ],
+      "errors": [],
+      "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79"
+    },
+    "censusProtocol": "After warmup, freeze native inputs for 16 unmeasured frames so asynchronous GPU alive counts settle; take census, then resume for 8 unmeasured recovery frames. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads include transparent cards.",
+    "report": "../run-20261020-184837-229-c685cb/report/report.html",
+    "rawFrames": "../run-20261020-184837-229-c685cb/raw-frames.csv",
+    "summarySha256": "fc766189c1f20fc6d02da84645abe16dd03c8fa5d00c40a445f918d5a7241d34"
+  },
+  {
+    "directory": "run-20261020-190758-208-0a44c5",
+    "buildGuid": "bb6050f6ba5b410fa1541f07362d4b79",
+    "spreadFrustumValidated": true,
+    "audit": {
+      "passed": true,
+      "cells": 144,
+      "rawSamples": 34560,
+      "validGpuSamples": 31250,
+      "buildGuid": "bb6050f6ba5b410fa1541f07362d4b79",
+      "checks": [
+        "Completion and cell matrix",
+        "Release / Burst / frame timing flags",
+        "Unique cells and 3 repetitions",
+        "Complete technique/baseline groups",
+        "Actual output dimensions",
+        "Allocated recipe and live particle counts",
+        "Explicit instancing configuration",
+        "Raw sample counts and unique fresh GPU timestamps",
+        "GPU medians match raw frames",
+        "Content and suite SHA-256 digests",
+        "Every cell matches immutable suite plan",
+        "Authored table dimensions and capacity arithmetic",
+        "Exact per-stream particle census",
+        "Active recipe populations and logical geometry",
+        "Spread endpoint frustum coverage"
+      ],
+      "errors": [],
+      "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79"
+    },
+    "censusProtocol": "After warmup, freeze native inputs for 16 unmeasured frames so asynchronous GPU alive counts settle; take census, then resume for 8 unmeasured recovery frames. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads include transparent cards.",
+    "report": "../run-20261020-190758-208-0a44c5/report/report.html",
+    "rawFrames": "../run-20261020-190758-208-0a44c5/raw-frames.csv",
+    "summarySha256": "4df1fa15a172620299fc668ee688061757e61d1d866c1656e959dfe7e3e071e1"
+  }
+]

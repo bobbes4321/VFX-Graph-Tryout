@@ -1,0 +1,1 @@
+216/216 ParticleJobs 256 Overdraw full=True GPU=2.40128 bridge=2.0324 particles=46080

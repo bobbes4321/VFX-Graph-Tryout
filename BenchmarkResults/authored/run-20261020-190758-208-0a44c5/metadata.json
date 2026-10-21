@@ -1,0 +1,22 @@
+{
+    "startedUtc": "2026-10-20T17:08:02.8470437Z",
+    "unity": "6000.3.10f1",
+    "gpu": "NVIDIA GeForce RTX 3070",
+    "cpu": "11th Gen Intel(R) Core(TM) i9-11900F @ 2.50GHz",
+    "api": "Direct3D12",
+    "os": "Windows 11  (10.0.26200)",
+    "suite": "authored-spread",
+    "commandLine": "\"C:\\Unity Projects\\VFX Graph Tryout\\Builds\\AuthoredLab\\AuthoredLab.exe\" --production-benchmark --suite spread --warmup 120 --samples 240 --results \"C:\\Unity Projects\\VFX Graph Tryout\\BenchmarkResults\\authored\\run-20261020-190758-208-0a44c5\" -logFile \"C:\\Unity Projects\\VFX Graph Tryout\\BenchmarkResults\\authored\\run-20261020-190758-208-0a44c5.player.log\" -screen-fullscreen 0 -force-d3d12",
+    "notes": "Authored effect catalog; exact recipes and topology retained in content-snapshot.json. Fixed 60 Hz simulation, shuffled technique order with seed 32194, fresh pools per cell and three repetitions in one process (one for smoke). Baseline retains environment and native commands/strand jobs. GPU deltas are whole-frame baseline differences, not isolated timestamps. CPU bridge includes last completed particle callbacks and excludes deferred engine work. Setup measures backend construction only; native-world allocation and subsequent first-use work are outside it. Fixed shared slots are not compacted. GPU timings arrive asynchronously; CSV CPU/GPU rows do not imply same-frame correlation. Dense Sustain uses a fixed 36x19 m footprint; Spread uses a fixed wider 180x95 m footprint and a wider camera at every count. Spread makes lines smaller on screen, so it is a separate density workload rather than an isolated CPU comparison.",
+    "buildGuid": "bb6050f6ba5b410fa1541f07362d4b79",
+    "driver": "Direct3D 12 [level 12.2]",
+    "gpuMemoryMB": 8017,
+    "systemMemoryMB": 32485,
+    "processorCount": 16,
+    "warmupFrames": 120,
+    "measurementFrames": 240,
+    "seed": 32194,
+    "burstEnabled": true,
+    "developmentBuild": false,
+    "frameTimingEnabled": true
+}

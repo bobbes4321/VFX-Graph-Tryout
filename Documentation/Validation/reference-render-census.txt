@@ -1,0 +1,12 @@
+Baseline: 0 particles; 1 objects; Environment and native commands / no effects
+VfxBuffer: 540 particles; 2 objects; Authored VFX graph / 3 ribbon slots + 4 secondary streams
+VfxPerLine: 540 particles; 4 objects; Authored VFX graph / 3 ribbon slots + 4 secondary streams
+LineRenderer: 0 particles; 11 objects; Authored ribbons + 4 procedural secondary streams
+BurstMesh: 0 particles; 2 objects; Authored ribbons + 4 procedural secondary streams
+Procedural: 0 particles; 2 objects; Authored ribbons + 4 procedural secondary streams
+ParticleBillboardShared: 540 particles; 7 objects; Authored native Shuriken / 5 streams
+ParticleBillboardPerLine: 540 particles; 17 objects; Authored native Shuriken / 5 streams
+ParticleMeshShared: 540 particles; 7 objects; Authored native Shuriken / 5 streams
+ParticleMeshInstanced: 540 particles; 7 objects; Authored native Shuriken / 5 streams
+ParticleJobs: 540 particles; 7 objects; Authored native Shuriken / 5 streams
+VfxPerLineBatched: 540 particles; 4 objects; Authored VFX graph / 3 ribbon slots + 4 secondary streams

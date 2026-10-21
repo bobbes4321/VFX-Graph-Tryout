@@ -1,0 +1,128 @@
+{
+    "schemaVersion": 1,
+    "suite": "smoke",
+    "repetitions": 1,
+    "seed": 32194,
+    "cells": [
+        {
+            "order": 0,
+            "technique": "VfxBuffer",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 1,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 2,
+            "technique": "BurstMesh",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 3,
+            "technique": "ParticleJobs",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 4,
+            "technique": "ParticleBillboardShared",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 5,
+            "technique": "ParticleBillboardPerLine",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 6,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 7,
+            "technique": "VfxPerLineBatched",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 8,
+            "technique": "Procedural",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 9,
+            "technique": "ParticleMeshInstanced",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 10,
+            "technique": "ParticleMeshShared",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 11,
+            "technique": "VfxPerLine",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        }
+    ]
+}

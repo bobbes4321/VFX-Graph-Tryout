@@ -1,0 +1,3 @@
+{
+  "note": "The LineRenderer adapter was subsequently updated for HDR color reconstruction and cached width-curve submission. These are measurements of the earlier adapter. Use the later line-hdr run for current LineRenderer costs. Other rendering adapters are unchanged. The reference ribbons remain within LDR, so this is a code-version distinction, not a claim that these reference images lost HDR."
+}

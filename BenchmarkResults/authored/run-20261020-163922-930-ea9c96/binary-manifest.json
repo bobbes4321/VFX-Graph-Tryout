@@ -1,0 +1,17 @@
+{
+    "utc": "2026-10-20T14:37:33.9526789Z",
+    "files": [
+        {
+            "path": "Builds/AuthoredLab/AuthoredLab.exe",
+            "sha256": "a24b809c68c731996f3dd09fc18e2bc497f534a63597d4f184093ef2ea00abc3"
+        },
+        {
+            "path": "Builds/AuthoredLab/AuthoredLab_Data/Managed/Assembly-CSharp.dll",
+            "sha256": "04171460d69896b4c59d82e78cb7d7c03da9b4822de85845ecaceec92d2a7972"
+        },
+        {
+            "path": "Builds/AuthoredLab/AuthoredLab_Data/Plugins/x86_64/lib_burst_generated.dll",
+            "sha256": "2a5de0ad0b1db2d9229191a1c84ecb440a8006f5d4b47fd223c3022088970efe"
+        }
+    ]
+}

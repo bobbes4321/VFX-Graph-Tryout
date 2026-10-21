@@ -1,0 +1,9 @@
+{
+    "schemaVersion": 1,
+    "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79",
+    "contentSnapshotSha256": "27ca58fb16ac62e5de96ef164b9265be5da9dd81b871504ff1caed9167deb6e1",
+    "suiteSha256": "df83c6c6b203085d1da1502723272ba897ea1a4fc3df834e81ec388b1058c9f9",
+    "expectedCells": 468,
+    "repetitions": 3,
+    "particleCensus": "Taken after warmup, before samples. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads count active authored modules, including transparent cards."
+}

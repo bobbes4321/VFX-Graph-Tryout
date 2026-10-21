@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e0cef67608f8e47b30218e00334763, type: 3}
+  m_Name: VoidConduit
+  m_EditorClassIdentifier: Assembly-CSharp::LineLab.Production.EffectDefinition
+  StableKey: void-conduit
+  Tint: {r: 0.79773766, g: 0.48452914, b: 1, a: 1}
+  Width: 0.18
+  ChargeSeconds: 0.55
+  CoreReleaseSeconds: 0.24
+  Path: {fileID: 11400000, guid: 3fbc8e20c2cbda049ab1ca71d019da21, type: 2}
+  Ribbons:
+  - {fileID: 11400000, guid: 0cd3c860a344d6947bae87015aef3e50, type: 2}
+  - {fileID: 11400000, guid: 928344eb14c4b624fbccfee0c9cabb3f, type: 2}
+  Layers:
+  - {fileID: 11400000, guid: 930613e5718df4749b9afda779ddced3, type: 2}
+  - {fileID: 11400000, guid: 7fec71cfef1b9bb43ac11bd66a0247a9, type: 2}
+  - {fileID: 11400000, guid: 5fd7e8563097e1b4db364edbec0c0799, type: 2}
+  - {fileID: 11400000, guid: 7720fdb5e267a214a9e7605aab9e2085, type: 2}
+  - {fileID: 11400000, guid: 89be209f4037d3649aea5f42536d634e, type: 2}

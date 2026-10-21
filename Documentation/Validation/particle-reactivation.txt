@@ -1,0 +1,3 @@
+initial particles=96
+retired disabled=True
+reactivated particles=96 vertices=384 alpha=0.9882353 passed=True

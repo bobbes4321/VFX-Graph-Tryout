@@ -1,0 +1,582 @@
+{
+  "success": true,
+  "command": "command console",
+  "data": {
+    "command": "console",
+    "parameters": {
+      "level": "warn",
+      "tail": "100"
+    },
+    "result": {
+      "entries": [
+        {
+          "seq": 1,
+          "timestampUtc": "2026-10-20T17:45:44.5425659Z",
+          "level": "error",
+          "logType": "Error",
+          "message": "Failed to handle /api/exec request: Main thread operation timed out after 5000ms",
+          "stackTrace": "UnityEngine.Debug:LogError (object)\nUnity.Pipeline.BasePipelineServer/<HandleExecRequest>d__119:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@62c08c808737/Runtime/Common/BasePipelineServer.cs:2257)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<ExecuteGated>d__109:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@62c08c808737/Runtime/Common/BasePipelineServer.cs:1590)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<>c__DisplayClass119_1/<<HandleExecRequest>b__0>d:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@62c08c808737/Runtime/Common/BasePipelineServer.cs:2219)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<object>:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<ExecuteCommandByName>d__137:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@62c08c808737/Runtime/Common/BasePipelineServer.cs:2664)\nSystem.Runtime.CompilerServices.AsyncTaskMethodBuilder`1<object>:SetException (System.Exception)\nUnity.Pipeline.BasePipelineServer/<ExecuteCommand>d__138:MoveNext () (at ./Library/PackageCache/com.unity.pipeline@62c08c808737/Runtime/Common/BasePipelineServer.cs:2703)\nSystem.Threading._ThreadPoolWaitCallback:PerformWaitCallback ()\n",
+          "seeded": false
+        },
+        {
+          "seq": 3,
+          "timestampUtc": "2026-10-20T17:45:57.1223468Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 4,
+          "timestampUtc": "2026-10-20T17:45:57.12338Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 5,
+          "timestampUtc": "2026-10-20T17:45:57.3155408Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 6,
+          "timestampUtc": "2026-10-20T17:45:57.3165725Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 7,
+          "timestampUtc": "2026-10-20T17:45:57.515056Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedFull_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 8,
+          "timestampUtc": "2026-10-20T17:45:57.5165836Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedFull_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 9,
+          "timestampUtc": "2026-10-20T17:45:57.6099365Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 10,
+          "timestampUtc": "2026-10-20T17:45:57.6109431Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 11,
+          "timestampUtc": "2026-10-20T17:45:57.7049929Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 12,
+          "timestampUtc": "2026-10-20T17:45:57.7076716Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 13,
+          "timestampUtc": "2026-10-20T17:45:57.8028888Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedBeam_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedBeam_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 14,
+          "timestampUtc": "2026-10-20T17:45:57.8049604Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedBeam_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedBeam_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 15,
+          "timestampUtc": "2026-10-20T17:45:57.905011Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer4] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 16,
+          "timestampUtc": "2026-10-20T17:45:57.9073693Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer4] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 17,
+          "timestampUtc": "2026-10-20T17:45:58.0397004Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 18,
+          "timestampUtc": "2026-10-20T17:45:58.040688Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 19,
+          "timestampUtc": "2026-10-20T17:45:58.1677781Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 20,
+          "timestampUtc": "2026-10-20T17:45:58.168843Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 21,
+          "timestampUtc": "2026-10-20T17:45:58.2998965Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 22,
+          "timestampUtc": "2026-10-20T17:45:58.301907Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 23,
+          "timestampUtc": "2026-10-20T17:45:58.3946294Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 24,
+          "timestampUtc": "2026-10-20T17:45:58.3961432Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 25,
+          "timestampUtc": "2026-10-20T17:45:58.5259825Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 26,
+          "timestampUtc": "2026-10-20T17:45:58.528016Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 27,
+          "timestampUtc": "2026-10-20T17:45:58.7294435Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedFull_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 28,
+          "timestampUtc": "2026-10-20T17:45:58.7314444Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedFull_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 29,
+          "timestampUtc": "2026-10-20T17:45:58.8327788Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 30,
+          "timestampUtc": "2026-10-20T17:45:58.8342865Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 31,
+          "timestampUtc": "2026-10-20T17:45:58.9700084Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer4] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 32,
+          "timestampUtc": "2026-10-20T17:45:58.9720562Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer4] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 33,
+          "timestampUtc": "2026-10-20T17:45:59.063082Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 34,
+          "timestampUtc": "2026-10-20T17:45:59.0640676Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 35,
+          "timestampUtc": "2026-10-20T17:45:59.1989086Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 36,
+          "timestampUtc": "2026-10-20T17:45:59.2006909Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 37,
+          "timestampUtc": "2026-10-20T17:45:59.2916821Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 38,
+          "timestampUtc": "2026-10-20T17:45:59.293184Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 39,
+          "timestampUtc": "2026-10-20T17:45:59.4223755Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 40,
+          "timestampUtc": "2026-10-20T17:45:59.4247916Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 41,
+          "timestampUtc": "2026-10-20T17:45:59.5526887Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 42,
+          "timestampUtc": "2026-10-20T17:45:59.5541939Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilityBatchedBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilityBatchedBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 43,
+          "timestampUtc": "2026-10-20T17:45:59.6853234Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 44,
+          "timestampUtc": "2026-10-20T17:45:59.6878203Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 45,
+          "timestampUtc": "2026-10-20T17:45:59.8156835Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 46,
+          "timestampUtc": "2026-10-20T17:45:59.816724Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 47,
+          "timestampUtc": "2026-10-20T17:45:59.9640555Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 48,
+          "timestampUtc": "2026-10-20T17:45:59.9660569Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleFull_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 49,
+          "timestampUtc": "2026-10-20T17:46:00.137426Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 50,
+          "timestampUtc": "2026-10-20T17:46:00.1399456Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 51,
+          "timestampUtc": "2026-10-20T17:46:00.317429Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 52,
+          "timestampUtc": "2026-10-20T17:46:00.3196144Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleBeam_1] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySingleBeam_1.vfx(173) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 53,
+          "timestampUtc": "2026-10-20T17:46:00.4548319Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedBeam_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedBeam_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 54,
+          "timestampUtc": "2026-10-20T17:46:00.4578424Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedBeam_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedBeam_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 55,
+          "timestampUtc": "2026-10-20T17:46:00.6514681Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer4] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 56,
+          "timestampUtc": "2026-10-20T17:46:00.6549937Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySingleFull_1] [Layer4] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 57,
+          "timestampUtc": "2026-10-20T17:46:28.9390334Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Core] Update Particle': signed/unsigned mismatch, unsigned assumed at kernel CSMain at AbilitySharedFull_4.vfx(171) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 58,
+          "timestampUtc": "2026-10-20T17:46:28.9405385Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer0] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 59,
+          "timestampUtc": "2026-10-20T17:46:28.9405385Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer1] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 60,
+          "timestampUtc": "2026-10-20T17:46:28.9420723Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer2] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        },
+        {
+          "seq": 61,
+          "timestampUtc": "2026-10-20T17:46:28.9420723Z",
+          "level": "warn",
+          "logType": "Warning",
+          "message": "Shader warning in '[AbilitySharedFull_4] [Layer3] Update Particle': integer modulus may be much slower, try using uints if possible. at kernel CSMain at Assets/LineLab/Production/Shaders/AbilityCommon.hlsl(143) (on d3d11)",
+          "stackTrace": "",
+          "seeded": false
+        }
+      ],
+      "cursor": 61,
+      "session": "3b964048f32b4e918f8a45dccadf2ab8",
+      "returned": 60,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 1,
+        "warn": 59,
+        "log": 1
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-10-20T17:48:26.9787412Z",
+        "ageMs": 250,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 0,
+        "consoleWarnings": 5,
+        "consoleLogs": 0,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "C:\\Unity Projects\\VFX Graph Tryout"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

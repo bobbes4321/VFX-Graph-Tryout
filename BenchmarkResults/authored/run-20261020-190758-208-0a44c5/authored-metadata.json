@@ -1,0 +1,9 @@
+{
+    "schemaVersion": 1,
+    "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79",
+    "contentSnapshotSha256": "27ca58fb16ac62e5de96ef164b9265be5da9dd81b871504ff1caed9167deb6e1",
+    "suiteSha256": "324cc2300034c2cf5e812c6da4beabdd256cc383d2750676d7c249c1ffecd2f6",
+    "expectedCells": 144,
+    "repetitions": 3,
+    "particleCensus": "After warmup, freeze native inputs for 16 unmeasured frames so asynchronous GPU alive counts settle; take census, then resume for 8 unmeasured recovery frames. Shared systems retain every allocated slot; per-ability systems contain only active components. Logical quads include transparent cards."
+}

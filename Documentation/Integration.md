@@ -1,84 +1,121 @@
-# Unmanaged gameplay integration
+# Unmanaged ECS integration
 
-Every renderer consumes the same `LineWorld`. Gameplay never calls a GameObject, VFX component, LineRenderer, ParticleSystem, Material, or graphics API. A job receives a `LineWriter`, which wraps `NativeQueue<LineCommand>.ParallelWriter`.
+The complete-effect API accepts value commands from Burst jobs. Gameplay never calls a GameObject, Transform, VisualEffect, LineRenderer, ParticleSystem, Material or graphics API. Resolve content once during managed setup; copy only an `EffectId` and `AbilityWriter` into gameplay jobs.
+
+The executable example is [AbilityHealerExample.cs](../Assets/LineLab/Production/Runtime/AbilityHealerExample.cs), specifically `PresentHealingJob`. Its component-like inputs are native arrays; replace those with your custom ECS accessors. No Unity Entities dependency is required.
+
+## Setup and content IDs
 
 ```csharp
-// Inside a Burst job: an ability begins.
-var handle = new LineHandle(ability.LineSlot, ++ability.LineGeneration);
-lines.Begin(handle, healerPosition, targetPosition,
-    new float4(.04f, 1f, .57f, 1f), width: .16f, style: 0);
+// Managed presentation setup, once. Never run this inside a Burst job.
+EffectLibrary library = Resources.Load<EffectLibrary>("Production/EffectLibrary");
+var catalog = new NativeEffectCatalog(library);
+EffectId healingEffect = catalog.GetEffectId("renewal");
 
-// In subsequent ticks: follow both moving entities.
-lines.Update(handle, healerPosition, targetPosition,
-    new float4(.04f, 1f, .57f, 1f), width: .16f, style: 0);
-
-// Healing ends, the target dies, or the ability is interrupted.
-lines.Stop(handle);
+var world = new AbilityWorld(capacity, catalog);
+var backend = new AbilityBackend(
+    Technique.VfxBuffer, capacity, camera, full: true, catalog: catalog,
+    worldBounds: new Bounds(mapCenter, mapSize));
 ```
 
-`HealerExample.cs` implements the entire state transition inside `HealerLinesJob`, including target validity, start detection, movement updates, stop detection and generation increments. Change its native component arrays to your ECS accessors. The renderer choice does not appear in that job.
+`StableKey` is the authored gameplay lookup key; asset names are display labels. An unknown key throws. Effect IDs are library indices valid for that baked catalog, not global permanent IDs. Rebuilding/reordering a library requires resolving IDs again and replacing the dependent presentation pools. The consumer rejects an invalid ID before committing its slot generation.
 
-## Scheduling boundary
+Keep the cached ID and writer tied to the same world/catalog lifetime. An old ID can still be numerically in range after reordering while referring to a different effect; range checking cannot detect that mistake. Re-resolve keys and update job inputs together during a rebuild.
+
+Compile needed graphs in the Editor before building a player. The player loads compiled resources and baked content; it does not run graph authoring or editor reflection.
+
+Supply a world-space bounds volume containing every endpoint, path excursion and release tail. The optional default is the laboratory's origin-centered 400 × 100 × 400 m volume. VFX, particle, mesh and procedural adapters use the supplied conservative volume; LineRenderer computes bounds from its points. Per-ability pools currently share that same volume. Spatial grouping, moving bounds and large-map culling remain game integration policies. Keep the rendering root at its identity transform because geometry is expressed in world coordinates.
+
+## A real healer producer
+
+`HealingPresentationState` stores `Generation` and `WasHealing` as unmanaged component data. `PresentHealingJob` receives the writer, cached effect ID, clock, healing flags, endpoint arrays and state. Each healer has one exclusively owned stable slot. `IsHealing` must already incorporate gameplay validity, including whether its target entity still exists.
+
+Inside the Burst job, the lifecycle is:
 
 ```csharp
-// Initialization, once, on the presentation thread.
-var world = new LineWorld(capacity: 1024);
-var backend = new LineBackend(Technique.VfxBuffer, 1024, 16, camera);
+// On the transition from idle to healing:
+state.Generation++;
+var handle = new LineHandle(healerSlot, state.Generation);
+Writer.Begin(handle, sourcePosition, targetPosition, HealingEffect, Clock);
 
-// Schedule after position updates in your ECS.
-JobHandle producers = new HealerLinesJob {
-    Healers = healerComponents,
-    EntityPositions = positions,
-    Lines = world.Writer
-}.Schedule(healerComponents.Length, 64, movementDependency);
+// On subsequent healing ticks:
+Writer.Follow(handle, sourcePosition, targetPosition);
 
-// Drain commands only after ALL writers have finished.
-JobHandle consumed = world.Consume(producers);
+// On the transition from healing to idle/interrupted/target invalid:
+Writer.Release(handle, Clock);
+```
 
-// Presentation boundary. Complete as late as practical before rendering.
-consumed.Complete();
-backend.Present(world.Lines, visualClock, firstFrame);
+These are separate state branches, not three calls issued together. The actual job guards generation exhaustion and retains state after each tick. Release keeps last endpoint values while authored layers fade; it does not keep target GameObjects alive. A repeated Release cannot restart the tail, and Follow cannot move a released effect.
 
-// Shutdown only after outstanding jobs have completed.
+## Schedule and present
+
+```csharp
+// Schedule after the ECS has produced current positions and valid healing flags.
+JobHandle producers = new PresentHealingJob
+{
+    Writer = world.Writer,
+    HealingEffect = healingEffect,
+    Clock = visualClock,
+    IsHealing = healingFlags,
+    HealerPositions = healerPositions,
+    TargetPositions = targetPositions,
+    State = healingPresentationState,
+}.Schedule(healingPresentationState.Length, 64, gameplayDependency);
+
+// Depend on ALL producers. This schedules consumption and common ribbon expansion.
+JobHandle ready = world.PreparePresentation(producers, visualClock);
+
+// Complete once at the presentation boundary, as late as practical.
+ready.Complete();
+backend.Present(world, visualClock, firstFrame);
+```
+
+`PreparePresentation` hides catalog storage and renderer preparation from the external ECS. It returns a dependency, so unrelated jobs can overlap before completion. Do not complete once per healer. Unity component calls and GPU submissions occur in `Present` on the main thread after native inputs are ready.
+
+A VFX-only integration can call `world.Consume(producers, visualClock)` instead and complete that handle before `Present`, because VFX derives its own ribbons. The benchmark deliberately uses `PreparePresentation` for every technique and baseline to retain a common command/expansion policy. Skipping work in a game is valid, but those savings are not silently included in the measured comparison.
+
+Direct Shuriken jobs additionally schedule/complete within Unity's `OnParticleUpdateJobScheduled` callback. The presentation adapter owns that boundary. Gameplay producers remain unchanged when switching renderer techniques.
+
+## Slot, ordering and ownership contract
+
+- Reserve one slot per simultaneously active ability, in the configured 1-5,000 capacity range. This proof of concept does not supply an ECS entity allocator.
+- Begin with a newer generation replaces the previous visual in that slot, including any unfinished release tail. Allocate a separate slot when an old tail must overlap a new cast. The healer example deliberately allows only one visual per healer slot.
+- Use monotonically increasing generations per slot. Generation zero is reserved by the complete-effect world. Do not wrap a generation counter; reclaim/reset an exhausted slot only with an explicit world lifetime strategy.
+- Give each slot one authoritative producer. Different slots can be produced concurrently. Concurrent conflicting commands for the same slot have no guaranteed meaningful order; resolve conflicts in the ECS or establish job dependencies.
+- Combine every producer dependency before consuming. Do not enqueue while the consumer drains the same queue.
+- Validate ECS entity identity/generation and liveness before providing positions. A target index alone is not a sufficient entity validity contract.
+- The persistent native queue can grow. Warm expected peak throughput if native allocation spikes matter.
+- Writers and read-only views are borrowed values, not independent owners. Never keep using them after the owning world/catalog is disposed.
+
+```csharp
+// Shutdown or structural rebuild: first stop scheduling new producers,
+// complete outstanding jobs and ensure particle callbacks no longer read inputs.
+ready.Complete();
 backend.Dispose();
 world.Dispose();
+catalog.Dispose();
 ```
 
-Unity rendering APIs are called by the presentation bridge on the main thread. Starting, updating and stopping from gameplay remains unmanaged and Burst-compatible for every backend, including per-line VFX/LineRenderer/GameObject implementations. The bridge is measured separately because its managed API work still costs CPU time.
+The backend owns Unity render pools, buffers and preparation storage. The world owns native state/commands and borrows catalog tables. The catalog owns immutable recipe tables, sampled ramps and its runtime atlas. Disposal order matters. Public catalog tables are read-only borrowed views (`EffectRecipes`, `RibbonRecipes`, `LayerRecipes`, `RampSamples`); internal adapters and explicitly trusted editor tools access the underlying arrays.
 
-This proof of concept completes presentation jobs immediately so their full schedule/wait cost is visible. A real ECS can overlap producer jobs with unrelated work and complete once at the render boundary. Avoid completing once per entity.
+The scene controller's preview rebuild is a concrete implementation of this boundary. Ordinary field/content edits are applied together when a fresh catalog/pool is built, rather than mutating native tables while jobs read them.
 
-## Handle and ordering contract
+## Content and packed data
 
-* Reserve one slot per simultaneously active ability. A slot is an integer, not an object reference. The example does not contain a general-purpose entity allocator.
-* Assign monotonically increasing generations when reusing a slot. A stale stop/update cannot affect a newer generation. Duplicate Begin is ignored. An update cannot revive a stopped generation.
-* Give a slot one authoritative producer. Jobs may write different slots concurrently. Multiple producers writing different updates to the same slot have no deterministic ordering; resolve that conflict in the ECS first.
-* If different jobs start and update the same slot in the same frame, order them with job dependencies. The consumer runs after all producers.
-* Target identifiers in the example are indices. A real ECS should validate its entity generations before supplying positions, and enqueue Stop when an entity/ability is destroyed.
-* The queue grows in native memory as necessary. Warm it to your expected peak and keep it persistent. The measured steady-state workloads do this during warmup.
-* Complete pending jobs before switching/disposal. Native container lifetime remains your scheduler's responsibility.
+An effect references a path, ordered ribbons and ordered secondary modules. The reference library's three ribbons and 48/24/8/4 cards are editable defaults. Runtime jobs consume flattened float4 records, sampled gradients/curves and texture indices. They never evaluate ScriptableObjects, strings, AnimationCurve or Gradient objects.
 
-The benchmark deliberately uses fixed slot counts. Shared VFX and procedural buffers keep inactive slots; per-line pools disable inactive objects. An actual game can compact active lines before upload, or partition shared systems spatially for culling. Those are useful production extensions, and are not silently credited as optimizations in these results.
+`EffectRecipeData.cs` documents every packed component. `LineData` is 64 bytes and carries world-space endpoints, active state, width, tint, effect index, deterministic phase and timestamps. Expanded strand records are a presentation representation with documented repurposed fields. Use writer calls rather than constructing render records in gameplay.
 
-## What changes between techniques
+Each library reserves the largest ribbon count and particle count at each slot across its recipes. Padding keeps inactive slots valid but can cost GPU/particle work. Adding/removing/reordering a layer is a structural rebuild. Spatial compaction, culling and LOD are separate policies.
 
-| Bridge | Presentation work | Authoring/maintenance |
-|---|---|---|
-| Shared VFX | Upload line records once, bind buffer once, update common clock/camera | One graph; index the buffer by particle ID/segment. Capacity must cover the pool. |
-| Per-line VFX | Pool objects; set Start/End/Tint/Shape on each component | Convenient isolated effect authoring. Automatic batching is an explicit separate test. |
-| LineRenderer | Build positions/color keys in Burst; submit native position slices, width and eight-key gradients on each component | Familiar components and connected joins. Main-thread engine calls still scale per line. |
-| Burst mesh | Sample and build vertices in a parallel Burst job, upload one mesh | Full geometry control; CPU work and larger vertex uploads. |
-| Procedural GPU | Upload endpoints/parameters, submit one instanced procedural draw | Compact data path; maintain the shader and bounds yourself. |
-| Shared Shuriken | Build native particles in Burst and submit one SetParticles array | Familiar renderer/modules; particle array copy and CPU renderer work remain. |
-| Per-line Shuriken | Same particle builder, one slice/submission per pooled system | Simple independent effect lifecycles; more component/API work. |
-| Instanced Shuriken | Same CPU particles, GPU-instanced mesh rendering | GPU instancing affects rendering; simulation remains CPU-side. |
-| Shuriken particle jobs | Write positions/rotations/sizes/colors directly to Shuriken arrays | Less copying, but couples job scheduling to ParticleSystem storage. |
+Slot ordering therefore affects packaging cost: adding a large module to one recipe can increase reserved work for every ability using that library. Keep similar layer roles aligned across recipes, inspect the workbench allocation summary, and split libraries when their topology differs substantially. If any recipe places a ground layer at a particular slot, the Shuriken billboard adapter uses mesh cards for that entire secondary stream so its world-plane orientation remains correct. This fallback can change another recipe's renderer cost even when that recipe itself has no ground card in that slot.
 
-The shared HLSL and Burst math implement four styles: restoration, electrical arc, plasma beam and dashed order. The common HDR cross-section texture supplies a bright core and falloff. The dedicated VFX showcase adds a second graph with traveling motes and endpoint coronas. This decorative layer is excluded from the matched comparison and all timed runs. No downloaded artwork or external licenses are required.
+Creating a new effect or a mote variant from the supported motion vocabulary is an asset operation. Adding an entirely new motion algorithm, material/blend model, distortion pass, collision behavior or historical trail requires a programmer to extend and validate the relevant CPU/GPU adapters. The reusable layer assets do not imply arbitrary VFX Graph or Shuriken module authoring support.
 
+See [Artist Workflow](ArtistWorkflow.md) for no-code recipe variants and reusable motes, [Code Overview](CodeOverview.md) for renderer internals, and [Production](Production.md) for measured-counter interpretation.
 
+## Original line-only integration
 
-## Runtime package versions
+Scenes 01/02 retain the independent `LineWorld` / `LineWriter` API and [HealerLinesJob](../Assets/LineLab/Runtime/HealerExample.cs). Its `Begin`, `Update` and immediate `Stop` accept explicit width/tint/style values rather than authored complete-effect IDs. Its first Begin can use generation zero because it tracks initialization separately. Do not mix that historical API with `AbilityWriter.Begin/Follow/Release`.
 
-This project resolves Burst 1.8.28, Collections 2.6.2, Mathematics 1.3.2, URP 17.3.0 and VFX Graph 17.3.0 under Unity 6000.3.10f1. The runtime has no Unity Entities dependency. Render roots are kept at the identity transform and line data uses world coordinates.
-
+The original minimal frame is producer -> `LineWorld.Consume` -> complete -> `LineBackend.Present`. The renderer table and historical implementation are described in [the archived walkthrough](History/CodeOverview-v1.md).

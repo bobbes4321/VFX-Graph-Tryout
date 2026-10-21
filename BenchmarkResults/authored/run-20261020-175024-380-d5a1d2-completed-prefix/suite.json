@@ -1,0 +1,2528 @@
+{
+  "schemaVersion": 1,
+  "suite": "full-completed-prefix",
+  "repetitions": 3,
+  "seed": 32194,
+  "cells": [
+    {
+      "order": 0,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 1,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 2,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 3,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 4,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 5,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 6,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 7,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 8,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 9,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 10,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 11,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 12,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 13,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 14,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 15,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 16,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 17,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 18,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 19,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 20,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 21,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 22,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 23,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 24,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 25,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 26,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 27,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 28,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 29,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 30,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 31,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 32,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 33,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 34,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 35,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 32,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 36,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 37,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 38,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 39,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 40,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 41,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 42,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 43,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 44,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 45,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 46,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 47,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 48,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 49,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 50,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 51,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 52,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 53,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 54,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 55,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 56,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 57,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 58,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 59,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 60,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 61,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 62,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 63,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 64,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 65,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 66,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 67,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 68,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 69,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 70,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 71,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 128,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 72,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 73,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 74,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 75,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 76,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 77,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 78,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 79,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 80,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 81,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 82,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 83,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 84,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 85,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 86,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 87,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 88,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 89,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 90,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 91,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 92,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 93,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 94,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 95,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 96,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 97,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 98,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 99,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 100,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 101,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 102,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 103,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 104,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 105,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 106,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 107,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 256,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 108,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 109,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 110,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 111,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 112,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 113,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 114,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 115,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 116,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 117,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 118,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 119,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 120,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 121,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 122,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 123,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 124,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 125,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 126,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 127,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 128,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 129,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 130,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 131,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 132,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 133,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 134,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 135,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 136,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 137,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 138,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 139,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 140,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 141,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 142,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 143,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 512,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 144,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 145,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 146,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 147,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 148,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 149,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 150,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 151,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 152,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 153,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 154,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 155,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 156,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 157,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 158,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 159,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 160,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 161,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 162,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 163,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 164,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 165,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 166,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 167,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 168,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 169,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 170,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 171,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 172,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 173,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 174,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 175,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 176,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 177,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 178,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 179,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 1024,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 180,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 181,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 182,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 183,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 184,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 185,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 186,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 187,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 188,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 189,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 190,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 191,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 192,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 193,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 194,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 195,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 196,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 197,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 198,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 199,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 200,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 201,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 202,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 203,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 204,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 205,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 206,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 207,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 208,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 209,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 210,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 211,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 212,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 213,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 214,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 215,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 2500,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 216,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 217,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 218,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 219,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 220,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 221,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 222,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 223,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 224,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 225,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 226,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 227,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 0,
+      "fullStack": true
+    },
+    {
+      "order": 228,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 229,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 230,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 231,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 232,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 233,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 234,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 235,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 236,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 237,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 238,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 239,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 1,
+      "fullStack": true
+    },
+    {
+      "order": 240,
+      "technique": "ParticleBillboardPerLine",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 241,
+      "technique": "VfxBuffer",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 242,
+      "technique": "ParticleMeshShared",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 243,
+      "technique": "ParticleBillboardShared",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 244,
+      "technique": "VfxPerLine",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 245,
+      "technique": "ParticleMeshInstanced",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 246,
+      "technique": "Procedural",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 247,
+      "technique": "BurstMesh",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 248,
+      "technique": "Baseline",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 249,
+      "technique": "ParticleJobs",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 250,
+      "technique": "LineRenderer",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    },
+    {
+      "order": 251,
+      "technique": "VfxPerLineBatched",
+      "workload": "Sustain",
+      "count": 5000,
+      "width": 1920,
+      "height": 1080,
+      "repetition": 2,
+      "fullStack": true
+    }
+  ]
+}

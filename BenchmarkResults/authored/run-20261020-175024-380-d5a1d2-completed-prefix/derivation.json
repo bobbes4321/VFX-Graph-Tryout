@@ -1,0 +1,13 @@
+{
+  "kind": "completed-prefix-excerpt",
+  "parent": "run-20261020-175024-380-d5a1d2",
+  "completedCells": 252,
+  "originalCommandLine": "\"C:\\Unity Projects\\VFX Graph Tryout\\Builds\\AuthoredLab\\AuthoredLab.exe\" --production-benchmark --suite full --warmup 120 --samples 240 --results \"C:\\Unity Projects\\VFX Graph Tryout\\BenchmarkResults\\authored\\run-20261020-175024-380-d5a1d2\" -logFile \"C:\\Unity Projects\\VFX Graph Tryout\\BenchmarkResults\\authored\\run-20261020-175024-380-d5a1d2.player.log\" -screen-fullscreen 0 -force-d3d12",
+  "sourceHashes": {
+    "suite.json": "df83c6c6b203085d1da1502723272ba897ea1a4fc3df834e81ec388b1058c9f9",
+    "summary.jsonl": "322335435b7586f5696850c131a5aa51853d5f892d2a844ea5f42ed47c5e5cfc",
+    "raw-frames.csv": "3d8ef66ed9d1b223e959d69de7c5cf89b6cebc5740d86cb0e4c54c4713c7b7ce",
+    "content-snapshot.json": "27ca58fb16ac62e5de96ef164b9265be5da9dd81b871504ff1caed9167deb6e1"
+  },
+  "parentFailure": "INVALID 252 GPU samples 149 particles 18720 expected streams [10080,5040,2520,840,420] observed [9984,4992,2496,832,416]"
+}

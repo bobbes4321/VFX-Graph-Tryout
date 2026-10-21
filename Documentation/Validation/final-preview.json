@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "var lab = UnityEngine.Object.FindFirstObjectByType<LineLab.Production.ProductionController>();\nif (UnityEditor.AssetDatabase.IsValidFolder(\"Assets/Screenshots/Authored\")) UnityEditor.AssetDatabase.DeleteAsset(\"Assets/Screenshots/Authored\");\nreturn new { playing = UnityEditor.EditorApplication.isPlaying, library = lab.Library.name, technique = lab.Technique.ToString(), abilities = lab.Count, reservedCards = lab.Count * lab.Catalog.AllocatedFullQuadsPerAbility, liveParticles = lab.Backend.LiveParticles(), cameraFarClip = UnityEngine.Camera.main.farClipPlane, frame = lab.Frame };"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "playing": true,
+        "library": "ArtistLibrary",
+        "technique": "VfxBuffer",
+        "abilities": 3,
+        "reservedCards": 612,
+        "liveParticles": 612,
+        "cameraFarClip": 180,
+        "frame": 5793
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "C:\\Unity Projects\\VFX Graph Tryout"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

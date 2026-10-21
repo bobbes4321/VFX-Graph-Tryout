@@ -1,0 +1,1 @@
+288/288 VfxBuffer 5000 Spread full=True GPU=0.530432 bridge=0.0215 particles=900000

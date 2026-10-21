@@ -1,0 +1,1 @@
+144/144 ParticleMeshShared 5000 Spread full=True GPU=34.936832 bridge=134.1261 particles=900000

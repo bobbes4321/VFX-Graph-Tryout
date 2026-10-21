@@ -1,52 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.ParticleSystemJobs;
 using UnityEngine.Rendering;
-using UnityEngine.VFX;
 
 namespace LineLab.Production
 {
-    [BurstCompile]
-    public struct CoreLineRendererJob : IJobParallelFor
-    {
-        [ReadOnly]
-        public NativeArray<LineData> Lines;
-
-        [NativeDisableParallelForRestriction]
-        public NativeArray<Vector3> Positions;
-
-        [NativeDisableParallelForRestriction]
-        public NativeArray<float4> Colors;
-        public int Segments;
-        public float Clock;
-
-        public void Execute(int index)
-        {
-            var line = Lines[index];
-            if (line.Start.w == 0)
-            {
-                return;
-            }
-
-            int offset = index * (Segments + 1);
-            for (int j = 0; j <= Segments; j++)
-            {
-                Positions[offset + j] = AbilityGeometry.Point(line, (float)j / Segments, Clock);
-            }
-
-            for (int j = 0; j < 8; j++)
-            {
-                Colors[index * 8 + j] = AbilityGeometry.Tint(line, j / 7f, Clock);
-            }
-        }
-    }
-
     [StructLayout(LayoutKind.Sequential)]
     public struct CoreVertex
     {
@@ -56,576 +18,360 @@ namespace LineLab.Production
     }
 
     [BurstCompile]
-    public struct CoreRibbonJob : IJobParallelFor
+    public struct BuildCoreMesh : IJobParallelFor
     {
-        [ReadOnly]
-        public NativeArray<LineData> Lines;
+        public SurfaceRecipeView Recipe;
 
-        [Unity.Collections.NativeDisableParallelForRestriction]
+        [NativeDisableParallelForRestriction]
         public NativeArray<CoreVertex> Vertices;
-        public int Segments;
-        public float Clock;
-        public float3 Camera;
+        public int AtlasGrid;
 
         public void Execute(int index)
         {
-            int lineIndex = index / Segments;
-            int segment = index % Segments;
-            var line = Lines[lineIndex];
-            AbilityGeometry.Segment(
-                line,
-                segment,
-                Segments,
-                Clock,
-                Camera,
-                out var mid,
-                out var tangent,
-                out var side,
-                out float length,
-                out var color
-            );
-            int v = index * 4;
-            for (int k = 0; k < 4; k++)
+            var card = Recipe.Evaluate(index);
+            for (int corner = 0; corner < 4; corner++)
             {
-                float u = k == 1 || k == 2 ? 1 : 0;
-                float y = k >= 2 ? 1 : 0;
-                Vertices[v + k] = new CoreVertex
+                float u = corner == 1 || corner == 2 ? 1 : 0;
+                float v = corner >= 2 ? 1 : 0;
+                Vertices[index * 4 + corner] = new CoreVertex
                 {
                     Position =
-                        mid + tangent * ((u - .5f) * length) + side * ((y - .5f) * line.End.w),
-                    Uv = new float2(u, y),
-                    Color = color,
+                        card.Position
+                        + (u - .5f) * card.X * card.Size.x
+                        + (v - .5f) * card.Y * card.Size.y,
+                    Color = new float4(card.Color, card.Alpha),
+                    Uv = EffectRenderResources.AtlasUv(
+                        new float2(u, v),
+                        card.TextureIndex,
+                        AtlasGrid
+                    ),
                 };
             }
         }
     }
 
     [BurstCompile]
-    public struct CoreParticlesJob : IJobParallelFor
+    public struct BuildCoreLinePositions : IJobParallelFor
     {
-        [ReadOnly]
-        public NativeArray<LineData> Lines;
-        public NativeArray<ParticleSystem.Particle> Particles;
-        public int Segments;
-        public float Clock;
-        public float3 Camera;
-        public bool Billboard;
-        public float3 CameraRight;
-        public float3 CameraUp;
+        public SurfaceRecipeView Recipe;
+
+        [NativeDisableParallelForRestriction]
+        public NativeArray<Vector3> Positions;
+
+        [NativeDisableParallelForRestriction]
+        public NativeArray<float4> Colors;
+
+        public NativeArray<float> ColorScales;
 
         public void Execute(int index)
         {
-            var line = Lines[index / Segments];
-            AbilityGeometry.Segment(
-                line,
-                index % Segments,
-                Segments,
-                Clock,
-                Camera,
-                out var mid,
-                out var tangent,
-                out var side,
-                out float length,
-                out var color
-            );
-            var rotation = new quaternion(
-                new float3x3(tangent, side, math.normalizesafe(math.cross(tangent, side)))
-            );
-            float3 angles = math.degrees(math.EulerZXY(rotation));
-            if (Billboard)
+            var line = Recipe.Strands[index];
+            int effectIndex = (int)line.Shape.x;
+            var effect = Recipe.Effects[effectIndex];
+            var ribbon = Recipe.Ribbons[
+                effectIndex * Recipe.RibbonSlots + index % Recipe.RibbonSlots
+            ];
+            for (int sample = 0; sample <= Recipe.Segments; sample++)
             {
-                angles = new float3(
-                    0,
-                    0,
-                    -math.degrees(
-                        math.atan2(math.dot(tangent, CameraUp), math.dot(tangent, CameraRight))
-                    )
+                Positions[index * (Recipe.Segments + 1) + sample] = AbilityGeometry.Point(
+                    line,
+                    effect,
+                    (float)sample / Recipe.Segments,
+                    Recipe.Clock
                 );
             }
 
-            Particles[index] = new ParticleSystem.Particle
+            float colorScale = 1;
+            for (int sample = 0; sample < 8; sample++)
             {
-                position = mid,
-                rotation3D = angles,
-                startSize3D = new Vector3(length, line.End.w, 1),
-                startColor = new Color(color.x, color.y, color.z, color.w),
-                startLifetime = 1000000,
-                remainingLifetime = 1000000,
-                randomSeed = (uint)index + 1,
-            };
+                float4 color = AbilityGeometry.Tint(
+                    line,
+                    effect,
+                    ribbon,
+                    Recipe.Ramps,
+                    sample / 7f,
+                    Recipe.Clock
+                );
+                Colors[index * 8 + sample] = color;
+                colorScale = math.max(colorScale, math.cmax(color.xyz));
+            }
+            // LineRenderer stores UNorm8 colors. Preserve HDR with a shared
+            // per-ribbon multiplier; the shader restores RGB after interpolation.
+            ColorScales[index] = colorScale;
+            for (int sample = 0; sample < 8; sample++)
+            {
+                float4 color = Colors[index * 8 + sample];
+                color.xyz /= colorScale;
+                Colors[index * 8 + sample] = color;
+            }
         }
     }
 
-    [BurstCompile]
-    public struct CoreParticleUpdateJob : IJobParticleSystemParallelFor
-    {
-        [ReadOnly]
-        public NativeArray<LineData> Lines;
-        public int Segments;
-        public float Clock;
-        public float3 Camera;
-
-        public void Execute(ParticleSystemJobData particles, int index)
-        {
-            var line = Lines[index / Segments];
-            AbilityGeometry.Segment(
-                line,
-                index % Segments,
-                Segments,
-                Clock,
-                Camera,
-                out var mid,
-                out var tangent,
-                out var side,
-                out float length,
-                out var color
-            );
-            var positions = particles.positions;
-            var rotations = particles.rotations;
-            var sizes = particles.sizes;
-            var colors = particles.startColors;
-            var ages = particles.aliveTimePercent;
-            positions[index] = mid;
-            rotations[index] = math.EulerZXY(
-                new quaternion(
-                    new float3x3(tangent, side, math.normalizesafe(math.cross(tangent, side)))
-                )
-            );
-            sizes[index] = new float3(length, line.End.w, 1);
-            colors[index] = new Color(color.x, color.y, color.z, color.w);
-            ages[index] = 0;
-        }
-    }
-
-    // Unity calls stay here. All gameplay-facing calls use LineWriter, regardless of backend.
-    // Complete-ability ribbon implementations. This deliberately parallels
-    // LineBackend so changing the richer recipes does not change the line study.
+    /// <summary>Ribbon-only adapters. VFX owns its complete graph in AbilityBackend.</summary>
     public sealed class CoreBackend : IDisposable
     {
-        static readonly int VfxSegments = Shader.PropertyToID("Segments");
-        static readonly int VfxSpawnCount = Shader.PropertyToID("SpawnCount");
-        static readonly int VfxLines = Shader.PropertyToID("Lines");
-        static readonly int VfxClock = Shader.PropertyToID("Clock");
-        static readonly int VfxCamera = Shader.PropertyToID("CameraPosition");
-        static readonly int VfxStart = Shader.PropertyToID("Start");
-        static readonly int VfxEnd = Shader.PropertyToID("End");
-        static readonly int VfxTint = Shader.PropertyToID("Tint");
-        static readonly int VfxShape = Shader.PropertyToID("Shape");
-        static readonly int ShaderLines = Shader.PropertyToID("_Lines");
-        static readonly int ShaderSegments = Shader.PropertyToID("_Segments");
-        static readonly int ShaderClock = Shader.PropertyToID("_Clock");
-        static readonly int ShaderCamera = Shader.PropertyToID("_Camera");
-        public readonly Technique Technique;
-        public readonly int Count;
-        public readonly int Segments;
-        public readonly GameObject Root;
+        readonly Technique technique;
+        readonly NativeEffectCatalog catalog;
+        readonly EffectRenderResources resources;
         readonly Camera camera;
-        readonly Material ribbon;
-        readonly Material procedural;
-        readonly Material particleMaterial;
+        readonly int abilities;
+        readonly int strands;
+        readonly Bounds bounds;
+        readonly Material material;
         readonly GraphicsBuffer buffer;
-        readonly VisualEffect[] effects;
-        readonly LineRenderer[] renderers;
-        readonly ParticleSystem[] systems;
         readonly Mesh mesh;
-        readonly Mesh quad;
         readonly NativeArray<CoreVertex> vertices;
-        readonly NativeArray<ParticleSystem.Particle> particles;
-        readonly NativeArray<Vector3> linePositions;
-        readonly NativeArray<float4> lineColors;
+        readonly NativeArray<Vector3> positions;
+        readonly NativeArray<float4> colors;
+        readonly NativeArray<float> colorScales;
+        readonly int[] assignedRibbonRecipes;
+        readonly LineRenderer[] renderers;
+        readonly AnimationCurve[] widthCurves;
         readonly Gradient gradient;
         readonly GradientColorKey[] colorKeys;
         readonly GradientAlphaKey[] alphaKeys;
-        readonly CoreParticleBridge particleJobBridge;
-        readonly Bounds bounds = new Bounds(Vector3.zero, new Vector3(200, 100, 200));
-        int presentedFrames;
+        readonly MaterialPropertyBlock properties;
+        readonly ParticleSurfacePool particles;
+        bool disposed;
+        public readonly GameObject Root;
         public long UploadBytes { get; private set; }
-        public int ObjectCount => Root.transform.childCount + 1;
-        public int ParticleCount => Count * Segments;
-        public double ParticleCallbackMs =>
-            particleJobBridge != null ? particleJobBridge.LastCallbackMs : 0;
-        public bool InstancingActive =>
-            Technique == Technique.VfxPerLineBatched
-            || (
-                systems != null
-                && systems.Length > 0
-                && systems[0].GetComponent<ParticleSystemRenderer>().enableGPUInstancing
-            );
+        public double ParticleCallbackMs => particles?.CallbackMs ?? 0;
+        public bool InstancingActive => particles?.InstancingEnabled ?? false;
+        public int LiveParticles => particles?.LiveParticles ?? 0;
 
+        /// <summary>
+        /// Shared geometry is evaluated in world space. Keep Root at identity;
+        /// worldBounds drives mesh, procedural and particle culling. LineRenderer
+        /// derives its bounds from the actual positions supplied each frame.
+        /// </summary>
         public CoreBackend(
             Technique technique,
-            int count,
-            int segments,
+            int abilities,
             Camera camera,
-            bool showcase = false
+            EffectRenderResources resources,
+            Bounds worldBounds
         )
         {
-            Technique = technique;
-            Count = count;
-            Segments = segments;
+            this.technique = technique;
+            this.abilities = abilities;
+            this.resources = resources;
+            this.catalog = resources.Catalog;
             this.camera = camera;
-            Root = new GameObject(TechniqueInfo.Names[(int)technique]);
-            ribbon = UnityEngine.Object.Instantiate(
-                Resources.Load<Material>("Production/RibbonMaterial")
-            );
-            quad = Resources.Load<Mesh>("SegmentQuad");
-            if (technique == Technique.VfxBuffer || technique == Technique.Procedural)
+            this.bounds = worldBounds;
+            strands = checked(abilities * catalog.RibbonSlots);
+            Root = new GameObject("Core ribbons / " + TechniqueInfo.Names[(int)technique]);
+            try
             {
-                buffer = new GraphicsBuffer(
-                    GraphicsBuffer.Target.Structured,
-                    math.max(4, count * 4),
-                    16
-                );
-            }
-
-            if (technique == Technique.Procedural)
-            {
-                procedural = UnityEngine.Object.Instantiate(
-                    Resources.Load<Material>("Production/ProceduralMaterial")
-                );
-                procedural.SetBuffer(ShaderLines, buffer);
-                procedural.SetInt(ShaderSegments, segments);
-            }
-            else if (
-                technique == Technique.VfxBuffer
-                || technique == Technique.VfxPerLine
-                || technique == Technique.VfxPerLineBatched
-            )
-            {
-                bool shared = technique == Technique.VfxBuffer;
-                effects = new VisualEffect[
-                    shared
-                        ? showcase
-                            ? 2
-                            : 1
-                        : count
-                ];
-                int capacity = math.max(
-                    shared ? 16 : 8,
-                    math.ceilpow2(shared ? count * segments : segments)
-                );
-                string graphName =
-                    shared ? "LinesBuffer"
-                    : technique == Technique.VfxPerLineBatched ? "LineSingleBatched"
-                    : "LineSingle";
-                var graph = Resources.Load<VisualEffectAsset>(graphName + "_" + capacity);
-                if (graph == null)
+                if (technique == Technique.LineRenderer)
                 {
-                    throw new InvalidOperationException(
-                        "Missing VFX capacity variant " + graphName + "_" + capacity
+                    material = resources.Material("AuthoredRibbon");
+                    material.EnableKeyword("LINELAB_LINE_COLOR");
+                    positions = new NativeArray<Vector3>(
+                        strands * (catalog.Segments + 1),
+                        Allocator.Persistent
                     );
-                }
-
-                for (int i = 0; i < effects.Length; i++)
-                {
-                    var go = new GameObject(shared ? "Shared GPU line system" : "Pooled VFX " + i);
-                    go.transform.SetParent(Root.transform);
-                    var vfx = go.AddComponent<VisualEffect>();
-                    vfx.visualEffectAsset =
-                        shared && i == 1
-                            ? Resources.Load<VisualEffectAsset>("ShowcaseMotes")
-                            : graph;
-                    vfx.resetSeedOnPlay = false;
-                    vfx.startSeed = 41;
-                    int effectSegments = shared && i == 1 ? 48 : segments;
-                    vfx.SetUInt(VfxSegments, (uint)effectSegments);
-                    vfx.SetFloat(VfxSpawnCount, shared ? count * effectSegments : effectSegments);
-                    if (shared)
+                    colors = new NativeArray<float4>(strands * 8, Allocator.Persistent);
+                    colorScales = new NativeArray<float>(strands, Allocator.Persistent);
+                    assignedRibbonRecipes = new int[strands];
+                    Array.Fill(assignedRibbonRecipes, -1);
+                    renderers = new LineRenderer[strands];
+                    gradient = new Gradient();
+                    colorKeys = new GradientColorKey[8];
+                    alphaKeys = new GradientAlphaKey[8];
+                    properties = new MaterialPropertyBlock();
+                    widthCurves = new AnimationCurve[catalog.Ribbons.Length];
+                    for (int r = 0; r < widthCurves.Length; r++)
                     {
-                        vfx.SetGraphicsBuffer(VfxLines, buffer);
-                    }
-
-                    effects[i] = vfx;
-                }
-            }
-            else if (technique == Technique.LineRenderer)
-            {
-                renderers = new LineRenderer[count];
-                linePositions = new NativeArray<Vector3>(
-                    count * (segments + 1),
-                    Allocator.Persistent
-                );
-                lineColors = new NativeArray<float4>(count * 8, Allocator.Persistent);
-                gradient = new Gradient();
-                colorKeys = new GradientColorKey[8];
-                alphaKeys = new GradientAlphaKey[2];
-                for (int i = 0; i < count; i++)
-                {
-                    var go = new GameObject("Pooled LineRenderer " + i);
-                    go.transform.SetParent(Root.transform);
-                    var lr = go.AddComponent<LineRenderer>();
-                    lr.sharedMaterial = ribbon;
-                    lr.positionCount = segments + 1;
-                    lr.useWorldSpace = true;
-                    lr.alignment = LineAlignment.View;
-                    lr.textureMode = LineTextureMode.Stretch;
-                    lr.numCapVertices = 0;
-                    lr.numCornerVertices = 0;
-                    lr.shadowCastingMode = ShadowCastingMode.Off;
-                    lr.receiveShadows = false;
-                    renderers[i] = lr;
-                }
-            }
-            else if (technique == Technique.BurstMesh)
-            {
-                vertices = new NativeArray<CoreVertex>(count * segments * 4, Allocator.Persistent);
-                mesh = new Mesh
-                {
-                    name = "Burst combined ribbons",
-                    indexFormat = IndexFormat.UInt32,
-                };
-                mesh.MarkDynamic();
-                mesh.SetVertexBufferParams(
-                    vertices.Length,
-                    new VertexAttributeDescriptor(
-                        VertexAttribute.Position,
-                        VertexAttributeFormat.Float32,
-                        3
-                    ),
-                    new VertexAttributeDescriptor(
-                        VertexAttribute.Color,
-                        VertexAttributeFormat.Float32,
-                        4
-                    ),
-                    new VertexAttributeDescriptor(
-                        VertexAttribute.TexCoord0,
-                        VertexAttributeFormat.Float32,
-                        2
-                    )
-                );
-                var indices = new int[count * segments * 6];
-                for (int i = 0; i < count * segments; i++)
-                {
-                    int v = i * 4;
-                    int n = i * 6;
-                    indices[n] = v;
-                    indices[n + 1] = v + 1;
-                    indices[n + 2] = v + 2;
-                    indices[n + 3] = v;
-                    indices[n + 4] = v + 2;
-                    indices[n + 5] = v + 3;
-                }
-
-                mesh.SetIndices(indices, MeshTopology.Triangles, 0, false);
-                mesh.bounds = bounds;
-                Root.AddComponent<MeshFilter>().sharedMesh = mesh;
-                var renderer = Root.AddComponent<MeshRenderer>();
-                renderer.sharedMaterial = ribbon;
-                renderer.shadowCastingMode = ShadowCastingMode.Off;
-            }
-            else if (technique >= Technique.ParticleBillboardShared)
-            {
-                bool perLine = technique == Technique.ParticleBillboardPerLine;
-                bool billboard = technique == Technique.ParticleBillboardShared || perLine;
-                bool instanced = technique == Technique.ParticleMeshInstanced;
-                particleMaterial = UnityEngine.Object.Instantiate(
-                    Resources.Load<Material>(
-                        instanced
-                            ? "Production/ParticleInstancedMaterial"
-                            : "Production/RibbonMaterial"
-                    )
-                );
-                particles = new NativeArray<ParticleSystem.Particle>(
-                    count * segments,
-                    Allocator.Persistent
-                );
-                systems = new ParticleSystem[perLine ? count / 3 : 1];
-                for (int i = 0; i < systems.Length; i++)
-                {
-                    var go = new GameObject(perLine ? "Pooled Shuriken " + i : "Shared Shuriken");
-                    go.transform.SetParent(Root.transform);
-                    var ps = go.AddComponent<ParticleSystem>();
-                    var main = ps.main;
-                    main.playOnAwake = false;
-                    main.loop = false;
-                    main.simulationSpace = ParticleSystemSimulationSpace.World;
-                    main.maxParticles = perLine ? segments * 3 : count * segments;
-                    main.startSpeed = 0;
-                    main.startLifetime = 1000000;
-                    main.startSize3D = true;
-                    main.startRotation3D = true;
-                    main.cullingMode = ParticleSystemCullingMode.AlwaysSimulate;
-                    var emission = ps.emission;
-                    emission.enabled = false;
-                    var shape = ps.shape;
-                    shape.enabled = false;
-                    var r = go.GetComponent<ParticleSystemRenderer>();
-                    r.sharedMaterial = particleMaterial;
-                    r.applyActiveColorSpace = false; // Native line colors are already linear.
-                    r.renderMode = billboard
-                        ? ParticleSystemRenderMode.Billboard
-                        : ParticleSystemRenderMode.Mesh;
-                    r.alignment = billboard
-                        ? ParticleSystemRenderSpace.View
-                        : ParticleSystemRenderSpace.World;
-                    if (!billboard)
-                    {
-                        r.mesh = quad;
-                    }
-
-                    r.enableGPUInstancing = instanced;
-                    r.sortMode = ParticleSystemSortMode.None;
-                    r.shadowCastingMode = ShadowCastingMode.Off;
-                    r.receiveShadows = false;
-                    r.localBounds = bounds;
-                    r.SetActiveVertexStreams(
-                        new List<ParticleSystemVertexStream>
+                        var keys = new Keyframe[EffectRecipeLayout.RampSamples];
+                        for (int k = 0; k < keys.Length; k++)
                         {
-                            ParticleSystemVertexStream.Position,
-                            ParticleSystemVertexStream.Color,
-                            ParticleSystemVertexStream.UV,
+                            keys[k] = new Keyframe(
+                                k / 31f,
+                                AbilityGeometry
+                                    .SampleRamp(
+                                        catalog.Ramps,
+                                        (int)catalog.Ribbons[r].Surface.z,
+                                        k / 31f
+                                    )
+                                    .x
+                            );
                         }
-                    );
-                    systems[i] = ps;
-                    if (technique == Technique.ParticleJobs)
+
+                        widthCurves[r] = new AnimationCurve(keys);
+                    }
+
+                    for (int i = 0; i < strands; i++)
                     {
-                        particleJobBridge = go.AddComponent<CoreParticleBridge>();
+                        var go = new GameObject("Pooled ribbon " + i);
+                        go.transform.SetParent(Root.transform, false);
+                        var renderer = go.AddComponent<LineRenderer>();
+                        renderer.sharedMaterial = material;
+                        renderer.positionCount = catalog.Segments + 1;
+                        renderer.useWorldSpace = true;
+                        renderer.alignment = LineAlignment.View;
+                        renderer.textureMode = LineTextureMode.Stretch;
+                        renderer.numCapVertices = 0;
+                        renderer.numCornerVertices = 0;
+                        renderer.shadowCastingMode = ShadowCastingMode.Off;
+                        renderer.receiveShadows = false;
+                        renderers[i] = renderer;
                     }
                 }
+                else if (technique == Technique.BurstMesh)
+                {
+                    material = resources.Material("AuthoredRibbon");
+                    vertices = new NativeArray<CoreVertex>(
+                        checked(strands * catalog.Segments * 4),
+                        Allocator.Persistent
+                    );
+                    mesh = new Mesh
+                    {
+                        name = "Authored combined ribbons",
+                        indexFormat = IndexFormat.UInt32,
+                    };
+                    mesh.MarkDynamic();
+                    mesh.SetVertexBufferParams(
+                        vertices.Length,
+                        new VertexAttributeDescriptor(
+                            VertexAttribute.Position,
+                            VertexAttributeFormat.Float32,
+                            3
+                        ),
+                        new VertexAttributeDescriptor(
+                            VertexAttribute.Color,
+                            VertexAttributeFormat.Float32,
+                            4
+                        ),
+                        new VertexAttributeDescriptor(
+                            VertexAttribute.TexCoord0,
+                            VertexAttributeFormat.Float32,
+                            2
+                        )
+                    );
+                    var indices = new int[checked(strands * catalog.Segments * 6)];
+                    for (int q = 0; q < indices.Length / 6; q++)
+                    {
+                        int vertex = q * 4;
+                        int at = q * 6;
+                        indices[at] = vertex;
+                        indices[at + 1] = vertex + 1;
+                        indices[at + 2] = vertex + 2;
+                        indices[at + 3] = vertex;
+                        indices[at + 4] = vertex + 2;
+                        indices[at + 5] = vertex + 3;
+                    }
+
+                    mesh.SetIndices(indices, MeshTopology.Triangles, 0, false);
+                    mesh.bounds = bounds;
+                    Root.AddComponent<MeshFilter>().sharedMesh = mesh;
+                    var renderer = Root.AddComponent<MeshRenderer>();
+                    renderer.sharedMaterial = material;
+                    renderer.shadowCastingMode = ShadowCastingMode.Off;
+                }
+                else if (technique == Technique.Procedural)
+                {
+                    material = resources.Material("AuthoredCore");
+                    buffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, strands * 4, 16);
+                    material.SetBuffer("_Lines", buffer);
+                    material.SetInt("_Segments", catalog.Segments);
+                }
+                else
+                {
+                    bool perAbility = technique == Technique.ParticleBillboardPerLine;
+                    bool billboard = perAbility || technique == Technique.ParticleBillboardShared;
+                    particles = new ParticleSurfacePool(
+                        Root.transform,
+                        "Ribbon particles",
+                        abilities,
+                        catalog.AllocatedCoreQuadsPerAbility,
+                        perAbility,
+                        billboard,
+                        technique == Technique.ParticleMeshInstanced,
+                        technique == Technique.ParticleJobs,
+                        resources,
+                        bounds
+                    );
+                }
+            }
+            catch
+            {
+                Dispose();
+                throw;
             }
         }
 
-        public void Present(
-            NativeArray<LineData> lines,
-            float clock,
-            bool first,
-            bool dynamic = true
-        )
+        public void Present(AbilityWorld world, float clock, bool first)
         {
             UploadBytes = 0;
-            presentedFrames++;
-            float3 cam = camera.transform.position;
-            if (Technique == Technique.Baseline)
+            var recipe = Recipe(world, clock);
+            if (particles != null)
             {
-                return;
-            }
-
-            if (!first && !dynamic && Technique != Technique.Procedural)
-            {
-                // Once initialized, static VFX can keep cached GPU attributes.
-                if (effects != null && presentedFrames == 5)
-                {
-                    foreach (var effect in effects)
-                    {
-                        effect.pause = true;
-                    }
-                }
-
-                if (particleJobBridge != null && presentedFrames == 2)
-                {
-                    particleJobBridge.Ready = false;
-                    systems[0].Pause();
-                    particleJobBridge.LastCallbackMs = 0;
-                }
-
-                return;
-            }
-
-            if (buffer != null && (first || dynamic))
-            {
-                buffer.SetData(lines.Reinterpret<float4>(64), 0, 0, Count * 4);
-                UploadBytes = Count * 64L;
-            }
-
-            if (Technique == Technique.Procedural)
-            {
-                procedural.SetFloat(ShaderClock, clock);
-                procedural.SetVector(ShaderCamera, (Vector3)cam);
-                Graphics.DrawProcedural(
-                    procedural,
-                    bounds,
-                    MeshTopology.Triangles,
-                    Segments * 6,
-                    Count,
-                    camera,
-                    null,
-                    ShadowCastingMode.Off,
-                    false,
-                    0
-                );
-            }
-            else if (effects != null)
-            {
-                for (int i = 0; i < effects.Length; i++)
-                {
-                    var vfx = effects[i];
-                    if (Technique != Technique.VfxBuffer)
-                    {
-                        var l = lines[i];
-                        bool active = l.Start.w > 0;
-                        if (vfx.gameObject.activeSelf != active)
-                        {
-                            vfx.gameObject.SetActive(active);
-                        }
-
-                        if (!active)
-                        {
-                            continue;
-                        }
-
-                        vfx.SetVector4(VfxStart, l.Start);
-                        vfx.SetVector4(VfxEnd, l.End);
-                        vfx.SetVector4(VfxTint, l.Color);
-                        vfx.SetVector4(VfxShape, l.Shape);
-                    }
-
-                    vfx.SetFloat(VfxClock, clock);
-                    vfx.SetVector3(VfxCamera, cam);
-                    if (first)
-                    {
-                        vfx.Reinit();
-                    }
-                }
+                particles.Present(recipe, camera, first);
+                UploadBytes = particles.UploadBytes;
             }
             else if (renderers != null)
             {
-                new CoreLineRendererJob
+                new BuildCoreLinePositions
                 {
-                    Lines = lines,
-                    Positions = linePositions,
-                    Colors = lineColors,
-                    Segments = Segments,
-                    Clock = clock,
+                    Recipe = recipe,
+                    Positions = positions,
+                    Colors = colors,
+                    ColorScales = colorScales,
                 }
-                    .Schedule(Count, 32)
+                    .Schedule(strands, 32)
                     .Complete();
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < strands; i++)
                 {
-                    var line = lines[i];
-                    var lr = renderers[i];
-                    lr.enabled = line.Start.w > 0;
-                    if (!lr.enabled)
+                    var line = world.Strands[i];
+                    var renderer = renderers[i];
+                    renderer.enabled = line.Start.w > 0 && line.Color.w > 0;
+                    if (!renderer.enabled)
                     {
                         continue;
                     }
 
-                    lr.SetPositions(linePositions.GetSubArray(i * (Segments + 1), Segments + 1));
-                    lr.widthMultiplier = line.End.w;
+                    int ribbonIndex =
+                        (int)line.Shape.x * catalog.RibbonSlots + i % catalog.RibbonSlots;
+                    renderer.SetPositions(
+                        positions.GetSubArray(i * (catalog.Segments + 1), catalog.Segments + 1)
+                    );
+                    renderer.widthMultiplier = line.End.w;
+                    if (assignedRibbonRecipes[i] != ribbonIndex)
+                    {
+                        renderer.widthCurve = widthCurves[ribbonIndex];
+                        assignedRibbonRecipes[i] = ribbonIndex;
+                    }
                     for (int k = 0; k < 8; k++)
                     {
-                        var c = lineColors[i * 8 + k];
-                        colorKeys[k] = new GradientColorKey(new Color(c.x, c.y, c.z), k / 7f);
+                        var color = colors[i * 8 + k];
+                        colorKeys[k] = new GradientColorKey(
+                            new Color(color.x, color.y, color.z),
+                            k / 7f
+                        );
+                        alphaKeys[k] = new GradientAlphaKey(color.w, k / 7f);
                     }
 
-                    alphaKeys[0] = new GradientAlphaKey(line.Color.w, 0);
-                    alphaKeys[1] = new GradientAlphaKey(line.Color.w, 1);
                     gradient.SetKeys(colorKeys, alphaKeys);
-                    lr.colorGradient = gradient;
+                    renderer.colorGradient = gradient;
+                    properties.SetFloat(
+                        EffectPropertyIds.Tile,
+                        catalog.Ribbons[ribbonIndex].Surface.x
+                    );
+                    properties.SetFloat(EffectPropertyIds.LineColorScale, colorScales[i]);
+                    renderer.SetPropertyBlock(properties);
                 }
 
-                UploadBytes = Count * (Segments + 1) * 12L; // API input bytes; Unity internal transfers not exposed.
+                UploadBytes = strands * (catalog.Segments + 1) * 12L;
             }
             else if (mesh != null)
             {
-                new CoreRibbonJob
+                new BuildCoreMesh
                 {
-                    Lines = lines,
+                    Recipe = recipe,
                     Vertices = vertices,
-                    Segments = Segments,
-                    Clock = clock,
-                    Camera = cam,
+                    AtlasGrid = catalog.AtlasGrid,
                 }
-                    .Schedule(Count * Segments, 64)
+                    .Schedule(strands * catalog.Segments, 64)
                     .Complete();
                 mesh.SetVertexBufferData(
                     vertices,
@@ -637,124 +383,78 @@ namespace LineLab.Production
                 );
                 UploadBytes = vertices.Length * 36L;
             }
-            else if (systems != null)
+            else
             {
-                if (particleJobBridge != null)
-                {
-                    particleJobBridge.Lines = lines;
-                    particleJobBridge.Segments = Segments;
-                    particleJobBridge.Clock = clock;
-                    particleJobBridge.CameraPosition = cam;
-                    particleJobBridge.Ready = true;
-                }
-
-                if (Technique == Technique.ParticleJobs && !first)
-                {
-                    return;
-                }
-
-                new CoreParticlesJob
-                {
-                    Lines = lines,
-                    Particles = particles,
-                    Segments = Segments,
-                    Clock = clock,
-                    Camera = cam,
-                    Billboard =
-                        Technique == Technique.ParticleBillboardShared
-                        || Technique == Technique.ParticleBillboardPerLine,
-                    CameraRight = camera.transform.right,
-                    CameraUp = camera.transform.up,
-                }
-                    .Schedule(Count * Segments, 64)
-                    .Complete();
-                for (int i = 0; i < systems.Length; i++)
-                {
-                    if (systems.Length > 1)
-                    {
-                        bool active = lines[i * 3].Start.w > 0;
-                        if (systems[i].gameObject.activeSelf != active)
-                        {
-                            systems[i].gameObject.SetActive(active);
-                        }
-
-                        if (!active)
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (first)
-                    {
-                        systems[i].Play();
-                        if (Technique != Technique.ParticleJobs)
-                        {
-                            systems[i].Pause();
-                        }
-                    }
-
-                    if (systems.Length > 1)
-                    {
-                        systems[i]
-                            .SetParticles(
-                                particles.GetSubArray(i * Segments * 3, Segments * 3),
-                                Segments * 3
-                            );
-                    }
-                    else
-                    {
-                        systems[i].SetParticles(particles, Count * Segments);
-                    }
-                }
-
-                UploadBytes = particles.Length * (long)Marshal.SizeOf<ParticleSystem.Particle>();
+                buffer.SetData(world.Strands.Reinterpret<float4>(64));
+                UploadBytes = strands * 64L;
+                material.SetFloat(EffectPropertyIds.ShaderClock, clock);
+                material.SetVector(EffectPropertyIds.ShaderCamera, camera.transform.position);
+                Graphics.DrawProcedural(
+                    material,
+                    bounds,
+                    MeshTopology.Triangles,
+                    catalog.Segments * 6,
+                    strands,
+                    camera,
+                    null,
+                    ShadowCastingMode.Off,
+                    false
+                );
             }
+        }
+
+        SurfaceRecipeView Recipe(AbilityWorld world, float clock)
+        {
+            return new SurfaceRecipeView
+            {
+                Lines = world.Lines,
+                Strands = world.Strands,
+                Effects = catalog.Effects,
+                Ribbons = catalog.Ribbons,
+                Layers = catalog.Layers,
+                Ramps = catalog.Ramps,
+                RibbonSlots = catalog.RibbonSlots,
+                LayerSlots = catalog.LayerSlots,
+                Segments = catalog.Segments,
+                Core = true,
+                Clock = clock,
+                Camera = camera.transform.position,
+                CardsPerAbility = catalog.AllocatedCoreQuadsPerAbility,
+            };
         }
 
         public void Dispose()
         {
-            if (particleJobBridge != null)
+            if (disposed)
             {
-                particleJobBridge.Ready = false;
+                return;
             }
 
+            disposed = true;
+            particles?.Dispose();
+            buffer?.Dispose();
             if (vertices.IsCreated)
             {
                 vertices.Dispose();
             }
 
-            if (particles.IsCreated)
+            if (positions.IsCreated)
             {
-                particles.Dispose();
+                positions.Dispose();
             }
 
-            if (linePositions.IsCreated)
+            if (colors.IsCreated)
             {
-                linePositions.Dispose();
+                colors.Dispose();
+            }
+            if (colorScales.IsCreated)
+            {
+                colorScales.Dispose();
             }
 
-            if (lineColors.IsCreated)
-            {
-                lineColors.Dispose();
-            }
-
-            buffer?.Dispose();
-            if (mesh != null)
-            {
-                UnityEngine.Object.Destroy(mesh);
-            }
-
-            UnityEngine.Object.Destroy(Root);
-            UnityEngine.Object.Destroy(ribbon);
-            if (procedural != null)
-            {
-                UnityEngine.Object.Destroy(procedural);
-            }
-
-            if (particleMaterial != null)
-            {
-                UnityEngine.Object.Destroy(particleMaterial);
-            }
+            EffectRenderResources.DestroyOwned(material);
+            EffectRenderResources.DestroyOwned(mesh);
+            EffectRenderResources.DestroyOwned(Root);
         }
     }
 }

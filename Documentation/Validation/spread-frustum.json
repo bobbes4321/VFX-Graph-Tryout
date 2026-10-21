@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "var l=UnityEngine.Object.FindFirstObjectByType<LineLab.Production.ProductionController>(); var c=UnityEngine.Camera.main; int visible=(int)typeof(LineLab.Production.ProductionBenchmark).GetMethod(\"VisibleEndpoints\",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic).Invoke(null,new object[]{l.World,c}); return new { abilities=l.Count, visibleEndpoints=visible, expectedEndpoints=l.Count*2, liveParticles=l.Backend.LiveParticles(), farClip=c.farClipPlane, camera=c.transform.position, passed=visible==10000 };"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": "{ abilities = 5000, visibleEndpoints = 10000, expectedEndpoints = 10000, liveParticles = 900000, farClip = 500, camera = (95.00, 140.00, -165.00), passed = True }"
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "C:\\Unity Projects\\VFX Graph Tryout"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

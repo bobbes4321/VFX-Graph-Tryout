@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e0cef67608f8e47b30218e00334763, type: 3}
+  m_Name: SolarTether
+  m_EditorClassIdentifier: Assembly-CSharp::LineLab.Production.EffectDefinition
+  StableKey: solar-tether
+  Tint: {r: 1, g: 0.65762764, b: 0.303532, a: 1}
+  Width: 0.22
+  ChargeSeconds: 0.55
+  CoreReleaseSeconds: 0.24
+  Path: {fileID: 11400000, guid: 2b829ab6bcb7e2a46b92d7f27ec76f4f, type: 2}
+  Ribbons:
+  - {fileID: 11400000, guid: f32bd3ec29d3f974d9f59238d5cb710d, type: 2}
+  - {fileID: 11400000, guid: 928344eb14c4b624fbccfee0c9cabb3f, type: 2}
+  - {fileID: 11400000, guid: 386a0cb4dbf560f42ad600a386522ee5, type: 2}
+  Layers:
+  - {fileID: 11400000, guid: c7ca544b706f0884d9d4a997bbe03ec8, type: 2}
+  - {fileID: 11400000, guid: 6bc96b0994d6e7d4ea2033590996d58a, type: 2}
+  - {fileID: 11400000, guid: 5fd7e8563097e1b4db364edbec0c0799, type: 2}
+  - {fileID: 11400000, guid: 7720fdb5e267a214a9e7605aab9e2085, type: 2}

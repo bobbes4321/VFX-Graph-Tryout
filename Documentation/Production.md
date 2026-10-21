@@ -1,101 +1,97 @@
-# Complete ability experiment / AETHER
+# Authored complete abilities / AETHER
 
-Open `Assets/LineLab/Scenes/03_Complete_Abilities.unity`, or run `Builds/ProductionLab/ProductionLab.exe`. The original two scenes, player and line-only measurements are retained. The new player contains only the new scene.
+The current scene is `Assets/LineLab/Scenes/03_Complete_Abilities.unity`. The authored standalone target is `Builds/AuthoredLab/AuthoredLab.exe`. This is a refactored implementation and content model; its performance must be measured independently of the historical complete-effect player.
 
-Read [the measured complete-effect findings](ProductionFindings.md) for the conclusions and representative CPU/GPU costs.
+The original 360-cell complete-effect reference remains under `BenchmarkResults/production/`, with its original `Builds/ProductionLab/ProductionLab.exe` and [historical findings](ProductionFindings.md). Those measurements describe the earlier implementation, not the current authored code. The original line-only player/data also remain separate. New authored results go to fresh directories under `BenchmarkResults/authored/`. The current comparison selects 612 audited source cells and 146,880 raw frames, including corrected full-field Spread measurements through 5,000. Earlier clipped-camera rows are excluded. See the [report index](../BenchmarkResults/authored/report.html) and [measured findings](AuthoredFindings.md); incomplete runs are not successful measurements.
 
-The diorama has three complete abilities: **Renewal**, **Storm Lance** and **Solar Tether**. Click their named buttons for close views. Switch the rendering method using the method button at the bottom. Choose Complete/Core only, pooled charge/release, heavy overlap, or 32/128/256/512 links. Preview timers are diagnostic; open `BenchmarkResults/production/report.html` for the measured comparison.
+## Preview and authoring
 
-## What is rendered
+Open the scene and press Play. Use the reference/artist library switch, effect choices, technique selector, complete/core toggle, lifecycle/overlap/spread workloads and count controls. Recipe choices come from the selected library and paginate four at a time; they are not a fixed list of effect names. Preview timing is diagnostic, not the controlled standalone benchmark.
 
-Each ability allocates three 32-segment ribbons, 48 travelling motes, 24 ballistic sparks, eight layered endpoint-corona cards and four rotating ground-rune cards: **180 quads per complete ability**. The core-only case keeps the three ribbons (96 quads). Shapes, movement, textures, seed, width and color recipes match across renderers, subject to documented differences in joins, gradients, billboard orientation and Color32 quantization.
+Open **Line Lab > Authoring > Effect Workbench** to edit reusable source assets, inspect allocations, compile the current preview capacity and explicitly rebuild preview. [Artist Workflow](ArtistWorkflow.md) explains making a new line or traveling mote without code. [Code Overview](CodeOverview.md) maps the files; [Integration](Integration.md) shows the actual Burst healer example.
 
-The effect starts with a 0.55-second charge envelope. Release fades the core quickly while the secondary layers finish; after 1.4 seconds the slot retires. Release freezes the last known endpoints, so a disappearing target does not require a managed Transform. A new generation can reuse the slot safely. All trajectories are analytic; there is no hidden managed particle simulation credited to a GPU backend.
+The default `Production/EffectLibrary` resource has Renewal, Storm Lance and Solar Tether. `Production/ArtistLibrary` adds VoidConduit. The reference recipes share three ribbons, 32 segments, 48 traveling motes, 24 sparks, eight coronas and four runes: 96 core / 180 full quads per ability. These are authored defaults. Counts, gradients, profiles, size curves, speeds, path settings, release tails and reusable module composition are editable. VoidConduit adds a second traveling layer and different topology, so its library reserves more work than the reference catalog.
 
-The scene includes original generated terrain, erosion rocks, beveled metal props, armoured units, detailed energy profiles, lighting, soft shadows, color grading and bloom. These assets were made in this project; no third-party download or attribution requirement is involved.
+The outpost environment, armored placeholders and profile artwork are original project assets. The example is an elevated 3D RTS presentation, with retained endpoint values during release. All motion is analytic from time/seed/endpoints, which makes deterministic cross-renderer comparison practical. Arbitrary historical trails, collision-driven smoke, distortion, dynamic effect lighting and depth collisions require separate implementations.
 
-## The meaningful packaging differences
+## Source versus compiled outputs
 
-| Technique | Complete effect implementation |
-|---|---|
-| Shared VFX | One component, one shared 64-byte-per-ability buffer, five GPU systems inside one graph. Core expansion also happens on the GPU. |
-| Per-ability VFX, batching off/on | One component/graph per ability. Each graph owns its three strands and all four secondary layers. This is the convenient isolated ability/prefab authoring path. Both instance-batching settings are measured. |
-| LineRenderer | Three pooled LineRenderers per ability, with Burst preparation. A four-layer procedural GPU companion renders the free particles and ground cards. |
-| Burst combined mesh | One CPU/Burst-generated mesh for the core ribbons, plus the same explicit procedural companion. |
-| Procedural ribbons | One GPU core draw plus four secondary-layer draws. Both use endpoint buffers. |
-| Shared Shuriken billboards | One shared core particle system and four secondary systems. Ground runes use mesh cards for world orientation. |
-| Per-line Shuriken billboards | One core system containing all three strands, plus four secondary systems per ability: a five-system pooled ability. |
-| Shared mesh / instanced mesh Shuriken | Native core and secondary particles, with ordinary or compatible GPU-instanced rendering. |
-| Direct Burst particle jobs | Five particle-job callbacks write core/secondary native storage directly. Unity requires scheduling in OnParticleUpdateJobScheduled. The bridge includes the last completed callback duration. |
+`Assets/LineLab/Recipes/` holds authored paths/ribbons/particle modules/effects. Libraries are assets under `Assets/LineLab/Resources/Production/`. **Create Missing Sample Recipes** creates absent samples only; it does not reset edited assets.
 
-LineRenderer itself does not provide free particles, endpoint surfaces or arbitrary ground orientation. Its measured full stack explicitly includes the companion. Likewise, GPU instancing of Shuriken changes rendering, not ownership of its CPU particle simulation. The report does not hide these differences behind a common technique name.
+Compilation outputs are under `Assets/LineLab/Resources/Production/Generated/<LayoutKey>_v1/`. `EffectRecipeLayout.GraphVersion` is v1. The layout key identifies segment and slot/capacity structure; changing recipe colors/curves/motion values changes baked tables and the content fingerprint without requiring a new topology graph.
 
-## Unmanaged integration
+`EffectGraphCompiler.CompileLibrary(library, allCapacities, requiredAbilityCount, forceRebuild)` reuses graphs only when their importer signature matches the current compiler, adapter, shared shader math, recipe ABI, Unity version and graph version. An explicit force rebuild removes/recreates graph nodes inside the existing asset, retaining its GUID. It does not rewrite source recipes, imported texture profiles, custom graphs outside Generated, or the scene. Reflection against Unity's internal VFX model is isolated in the editor-only adapter. Players load ordinary compiled graphs and use public rendering APIs.
 
-```csharp
-// Inside Burst gameplay jobs. Slot ownership and generations come from your ECS.
-var handle = new LineHandle(ability.Slot, ++ability.Generation);
-abilities.Begin(handle, sourcePosition, targetPosition, style: 0, time: clock);
+The workbench compiles only the currently needed capacity and per-ability variants. Full library compilation covers power-of-two shared capacities through 8,192 so a 5,000-ability pool can load the appropriate graph. Actual VFX storage may round individual system capacities further; allocated logical cards and engine capacity are different counters.
 
-// While the ability remains active, follow moving entities.
-abilities.Follow(handle, sourcePosition, targetPosition);
+To build, use **Line Lab > 4 - Build authored combat effects player**. That operation compiles both sample libraries and writes a distinct AuthoredLab build plus source/binary manifests. **Line Lab > Authoring > Create New Sample Scene** is a separate explicit command requiring a new scene path; compilation does not recreate your edited scene.
 
-// Ability ends, target disappears, or the player interrupts it.
-// No managed object is required. The visual tail retains its last endpoints.
-abilities.Release(handle, time: clock);
-```
+## Renderer packaging
 
-`AbilityWriter` wraps a `NativeQueue<AbilityCommand>.ParallelWriter`. The consumer ignores stale generations, repeated release cannot reset the tail, and Follow cannot move a released effect. Use one authoritative writer per slot and schedule the consumer after every producer. Validate entity identity/liveness in your ECS before sending positions.
+| Technique | Complete stack |
+| --- | --- |
+| Shared VFX | One component, a shared base-record buffer, core stream and one GPU stream per reserved secondary slot |
+| Per-ability VFX, batching off/Auto | One pooled component per ability with the same tables/atlas and individual endpoints/timing |
+| LineRenderer | Reserved ribbons as connected LineRenderers with Burst preparation, plus procedural secondary streams |
+| Combined Burst mesh | One generated core mesh, plus the same explicit procedural secondary companion |
+| Procedural | GPU core cards plus one draw/stream per reserved secondary slot |
+| Shared Shuriken billboards | Shared core and secondary pools; world-plane cards use mesh orientation where required |
+| Per-ability Shuriken | Core and secondary pools per ability, with whole-effect activation policy |
+| Shared mesh / instanced mesh Shuriken | Same CPU card recipes with ordinary or GPU-instanced mesh rendering |
+| Direct particle jobs | Native particle/custom-data updates inside Unity's required particle callbacks |
+| Baseline | Same environment and common native commands/ribbon expansion; no effect renderer |
 
-```csharp
-// Presentation setup, once.
-var world = new AbilityWorld(capacity);
-var renderer = new AbilityBackend(Technique.VfxBuffer, capacity, camera, full: true);
+All methods consume the same baked recipe data. The updated particle path carries HDR RGB in custom float data; alpha still passes through the quantized particle color channel. This replaces historical RGB Color32 clipping, and is one reason historical performance/content cannot be relabeled as the new implementation. Connected joins, gradient interpolation and billboard frames remain real visual differences.
 
-// Each presentation tick, after all unmanaged producers finish:
-JobHandle consumed = world.Consume(producers, clock);
-new ExpandStrands {
-    Lines = world.Lines, Strands = world.Strands, Clock = clock
-}.Schedule(capacity * 3, 64, consumed).Complete();
-renderer.Present(world, clock, firstFrame);
+A LineRenderer full-stack result includes its procedural secondary companion. Shuriken GPU instancing affects rendering; it does not move CPU particle ownership to GPU simulation. Procedural shaders reconstruct analytic card state per vertex invocation, while VFX computes/stores attributes and then renders outputs; a ranking measures that implementation tradeoff, not an isolated GPU stage.
 
-// Dispose only after outstanding producers/consumers and particle callbacks finish.
-renderer.Dispose();
-world.Dispose();
-```
+## Allocation and limits
 
-The common strand expansion is deliberately included in every measured baseline and backend, even when VFX computes strands on the GPU. A production VFX-only integration can omit that unused CPU expansion. All Unity rendering and component calls remain in the main-thread presentation boundary. Avoid completing jobs separately for individual entities.
+The catalog supports eight ribbons, twelve secondary slots, up to 4,096 particles per layer, 1-128 segments and 64 texture tiles including default white. The ability limit is 5,000. Validation rejects unsupported modes, missing references, duplicate keys and invalid/nonfinite values rather than silently truncating content.
 
-The procedural implementation uploads the three expanded core records, plus the base records for its secondary-layer companion. Shared VFX uploads only the base record and expands all three strands in its graph. This is a difference between these implementations, rather than an intrinsic bandwidth requirement of procedural rendering: a custom shader could also expand strands from a single base record. The CSV bulk-input column makes the current traffic explicit.
+Every ability reserves the maximum ribbon count and per-slot particle count across its selected library. Unused ribbons have zero opacity and unused particle entries zero count. This fixed-slot policy deliberately exposes reserved work; transparent cards can still execute. Broad bounds and dense placement are not a full large-map culling solution. Spread is a distinct workload rather than a hidden optimization.
 
-There is also a GPU-work difference: these procedural shaders reconstruct a card's recipe in each vertex invocation, while VFX updates particle attributes in compute and reuses them for its output geometry. The procedural path avoids VFX system dispatch/storage overhead, but repeats more recipe math. The measured ranking includes that tradeoff; it does not isolate the cost of each individual GPU stage.
+Catalog baking samples gradients/curves into 32-entry rows and creates a linear RGBAHalf atlas with 256-pixel tiles, duplicated two-pixel borders and no mipmaps. Unreadable textures use setup-time ARGBHalf GPU readback. Atlas hashing uses exact raw half-float bytes. The content snapshot records native tables, ramps, topology, names and stable keys. IDs are resolved before gameplay jobs; no managed content API is called by Begin/Follow/Release.
 
-## Authoring and code map
-
-- `Runtime/AbilityWorld.cs`: unmanaged commands, generation-safe native state, lifecycle and deterministic demo producers.
-- `Runtime/AbilityGeometry.cs`: common Burst curve, color, envelope and adornment recipes.
-- `Shaders/AbilityCommon.hlsl`: GPU equivalent generated by `python Tools/sync_ability_math.py`; edit the C# recipe and regenerate to keep them synchronized.
-- `Runtime/AbilityBackend.cs`: complete VFX and secondary-layer presentation paths.
-- `Runtime/CoreBackend.cs`: separate copy of the original renderer bridges using the new core recipes/materials. The original reference implementations remain unchanged.
-- `Runtime/ProductionArt.cs`: environment and unit authoring.
-- `Editor/ProductionAssets.cs`: textures, meshes, materials, five-system VFX assets, atmosphere, scene and separate player builder.
-- `Editor/ProductionValidation.cs`: ten meaningful lifecycle checks, including stale commands, parallel producers, release tails and skipped render-frame boundaries.
-
-Paths above are relative to `Assets/LineLab/Production`. Runtime resources are under `Assets/LineLab/Resources/Production`. Shared graphs are `AbilitySharedFull_*`; per-ability graphs are `AbilitySingleFull_1` and `AbilityBatchedFull_1`. Core-only graphs use `Beam` instead of `Full`. They are real compiled VFX assets and can be opened in the VFX editor. The five columns contain core, motes, sparks, coronas and ground runes. Per-ability exposed inputs are Start, End, Tint, Shape, Clock and CameraPosition; SpawnCore and SpawnLayer0–3 set the allocation. Shared graphs read Lines instead of individual endpoint inputs.
-
-The generated shared VFX capacity variants cover 1–512 abilities. Extend the generator's capacity loop and rebuild before requesting a larger shared VFX pool. Per-ability graphs use the same single-ability asset for every pooled instance.
-
-## Reproduce
-
-Use **Line Lab → Generate complete combat effects**, then **Line Lab → Build complete combat effects player**. The generator uses Editor APIs and rebuilds only the new assets and scene.
+## Run new standalone measurements
 
 ```powershell
 ./Tools/production_benchmark.ps1 -Suite smoke
+./Tools/production_benchmark.ps1 -Suite scale
 ./Tools/production_benchmark.ps1 -Suite full
 ```
 
-The full matrix has 360 cells: eleven methods plus baseline, three shuffled repetitions, 32/128/256/512 complete moving abilities at 1080p; lifecycle at 128/256; 256 heavy overlap; 256 core-only; and 256 moving/overlap at 1440p. It uses 120 warmup frames and 240 measured frames per cell. All stress counts fill the same 36×19 m footprint; line lengths do not shrink with count. Only fresh GPU timing stamps are accepted. The report audits raw counts, repetitions, timestamps and GPU medians before producing output. Unsupported counters are missing, never invented.
+The script launches the visible AuthoredLab player with Direct3D 12, waits for completion, retains the player log, and audits/reports into a unique run directory. It never overwrites the historical production reference. `-Warmup` and `-Samples` override the defaults of 120 and 240 frames; both accept 20-10,000. Minimized players can skip GPU work, so keep the visible benchmark running normally.
 
-The six-unit diorama and native command/strand jobs remain identical in all timed cases, including baseline. UI is hidden. This measures effect stacks in a rendered environment, not a full RTS with hundreds of animated units, AI or a contested GPU budget. Fixed-slot alpha-zero particles still execute. There is no active compaction, depth collision, dynamic effect lighting, distortion, history-dependent smoke or arbitrary historical trails in this experiment. Those features need dedicated implementations and measurements in the actual game.
+Current suite specification:
 
-Lifecycle retirement differs between the implemented pools: per-ability VFX disables its entire component once the tail ends. Per-ability Shuriken disables the core system, while its four secondary pools keep their allocated alpha-zero particles. Disabling those secondary GameObjects as a group is a further optimization available to Shuriken; the lifecycle results do not credit an optimization this implementation does not perform. All shared systems retain fixed slots. Bounds are deliberately broad and the benchmark does not measure large-map spatial culling.
+| Suite | Configurations | Repetitions / cells |
+| --- | --- | --- |
+| smoke | 128 complete moving abilities at 1080p | One repetition, 12 cells |
+| scale | 512 / 1,024 / 2,500 / 5,000 complete abilities; sustain and spread at 1080p | Three repetitions, 288 cells |
+| spread | 512 / 1,024 / 2,500 / 5,000 complete abilities in the wide field at 1080p | Three repetitions, 144 cells |
+| full | Sustain at 32 / 128 / 256 / 512 / 1,024 / 2,500 / 5,000; lifecycle 128/256; overlap 256; core-only 256; sustain/overlap 256 at 1440p | Three repetitions, 468 cells |
+| workloads | Lifecycle 128/256; overlap 256; core-only 256; sustain/overlap 256 at 1440p | Three repetitions, 216 cells |
+| line-hdr | Dense 32 through 5,000; Spread 512 through 5,000; all additional workloads, LineRenderer and baseline only | Three repetitions, 102 cells |
+
+Each group includes all eleven techniques and baseline with deterministic shuffled order, except the focused `line-hdr` suite, which includes only LineRenderer and baseline. The emitted suite manifest, rather than this descriptive table, is the authoritative planned matrix. Missing/failed/incomplete cells cannot be interpreted as successful results. High-count object-heavy methods may be expensive to construct and run; their costs must remain visible rather than dropping them from comparisons.
+
+Spread moves the camera farther from the field and extends its far clip to 500 m. Each cell records camera position, direction, field of view and clip planes, and requires both endpoints of every active line to lie inside the camera frustum. This proves endpoint coverage, rather than visibility of every particle or fragment. Earlier Spread rows with the original 180 m far clip are retained as clipped diagnostics and excluded from the current comparison.
+
+The runner emits build identity, catalog digest, source/generated/binary manifest information, immutable content/suite snapshots, raw rows, cell summaries and per-stream particle census. Requested slots, active ability counts, logical authored cards, reserved work and observed particles are different quantities. A complete core does not prove that every secondary stream rendered; the census is per stream.
+
+The revised census freezes native inputs for 16 unmeasured render frames to let asynchronous GPU alive counts settle, then resumes simulation and procedural submissions for eight unmeasured recovery frames. This avoids comparing a changing native owner count with an earlier GPU readback. The precise protocol is recorded in authored-metadata.json. Earlier sustained runs retain their original protocol and build identity.
+
+The [consolidated comparison](../BenchmarkResults/authored/comparison/report.html) selects current rows from independently audited runs. It retains each row's source orders and original matched-baseline delta, without pooling populations. A completed-prefix excerpt is labeled as a derivation; its failed parent remains failed. [Measured findings](AuthoredFindings.md) document the interrupted lifecycle census, corrected LineRenderer and source selection.
+
+## Exactly what timing means
+
+`CommandsMs` brackets producer scheduling, native command consumption, common ribbon expansion and the completion wait. The common expansion is included in baseline and every technique even when a GPU method derives its own ribbons. A VFX-only game can omit it through the lower-level Consume path, but the benchmark does not credit that optimization.
+
+`BridgeMs` brackets explicit presentation preparation/uploads/component submissions, plus the last completed direct-particle callback duration. It excludes later internal Unity work. Whole-frame main-thread, render-thread, present-wait and GPU values come separately from FrameTimingManager. Timers measure elapsed wall time, not worker-core execution totals.
+
+GPU delta subtracts the matching baseline's whole-frame median per repetition and then aggregates repetitions. No GPU timestamp surrounds an individual effect pass. FrameTiming results are asynchronous: a CSV row's explicit CPU timer and GPU record need not describe the same rendered frame. Only fresh nonzero GPU timestamps are accepted; missing counters remain missing. Interpret aggregate distributions, not row-by-row causal correlations.
+
+Simulation advances 1/60 second per rendered benchmark frame. VSync and the frame cap are disabled during measured runs. This is an uncapped deterministic-throughput experiment in the rendered environment, not proof of a saturated RTS's 60 FPS headroom. Calculated bulk input bytes are explicit API input estimates rather than PCIe traffic; total-used-memory is not isolated effect VRAM; configured instancing is not a hardware capture.
+
+[Methodology](Methodology.md) explains the shared measurement conventions. Historical findings remain labeled historical until independently audited authored results are appended.

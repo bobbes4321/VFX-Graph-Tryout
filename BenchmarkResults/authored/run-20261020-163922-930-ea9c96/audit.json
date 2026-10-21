@@ -1,0 +1,6 @@
+{
+  "passed": false,
+  "errors": [
+    "Incomplete content snapshot; missing: effects, layers, ribbons"
+  ]
+}

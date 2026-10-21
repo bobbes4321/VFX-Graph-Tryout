@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "cells": 144,
+  "rawSamples": 34560,
+  "validGpuSamples": 31250,
+  "buildGuid": "bb6050f6ba5b410fa1541f07362d4b79",
+  "checks": [
+    "Completion and cell matrix",
+    "Release / Burst / frame timing flags",
+    "Unique cells and 3 repetitions",
+    "Complete technique/baseline groups",
+    "Actual output dimensions",
+    "Allocated recipe and live particle counts",
+    "Explicit instancing configuration",
+    "Raw sample counts and unique fresh GPU timestamps",
+    "GPU medians match raw frames",
+    "Content and suite SHA-256 digests",
+    "Every cell matches immutable suite plan",
+    "Authored table dimensions and capacity arithmetic",
+    "Exact per-stream particle census",
+    "Active recipe populations and logical geometry",
+    "Spread endpoint frustum coverage"
+  ],
+  "errors": [],
+  "catalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79"
+}

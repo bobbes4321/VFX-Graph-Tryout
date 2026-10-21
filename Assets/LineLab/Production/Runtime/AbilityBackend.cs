@@ -1,153 +1,70 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Unity.Burst;
-using Unity.Collections;
-using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.ParticleSystemJobs;
 using UnityEngine.Rendering;
 using UnityEngine.VFX;
 
 namespace LineLab.Production
 {
-    [BurstCompile]
-    // Prepare Shuriken input for SetParticles. This is the copying particle path.
-    public struct DecorParticles : IJobParallelFor
-    {
-        [ReadOnly]
-        public NativeArray<LineData> Lines;
-        public NativeArray<ParticleSystem.Particle> Particles;
-        public int Layer;
-        public float Clock;
-        public float3 Camera;
-        public float3 CameraRight;
-        public float3 CameraUp;
-        public bool Billboard;
-
-        public void Execute(int i)
-        {
-            int n = AbilityGeometry.LayerCount(Layer);
-            AbilityGeometry.Decor(Lines[i / n], Layer, i % n, Clock, Camera, out var d);
-            var rotation = new quaternion(
-                new float3x3(d.X, d.Y, math.normalizesafe(math.cross(d.X, d.Y)))
-            );
-            float3 angles = math.degrees(math.EulerZXY(rotation));
-            if (Billboard)
-            {
-                angles = new float3(
-                    0,
-                    0,
-                    -math.degrees(math.atan2(math.dot(d.X, CameraUp), math.dot(d.X, CameraRight)))
-                );
-            }
-
-            Particles[i] = new ParticleSystem.Particle
-            {
-                position = d.Position,
-                rotation3D = angles,
-                startSize3D = new Vector3(d.Size.x, d.Size.y, 1),
-                startColor = new Color(d.Color.x, d.Color.y, d.Color.z, d.Alpha),
-                startLifetime = 1000000,
-                remainingLifetime = 1000000,
-                randomSeed = (uint)i + 1,
-            };
-        }
-    }
-
-    [BurstCompile]
-    // Write Shuriken's native arrays directly from its required scheduling callback.
-    public struct DecorParticleUpdate : IJobParticleSystemParallelFor
-    {
-        [ReadOnly]
-        public NativeArray<LineData> Lines;
-        public int Layer;
-        public float Clock;
-        public float3 Camera;
-
-        public void Execute(ParticleSystemJobData p, int i)
-        {
-            int n = AbilityGeometry.LayerCount(Layer);
-            AbilityGeometry.Decor(Lines[i / n], Layer, i % n, Clock, Camera, out var d);
-            var positions = p.positions;
-            var sizes = p.sizes;
-            var rotations = p.rotations;
-            var colors = p.startColors;
-            var ages = p.aliveTimePercent;
-            positions[i] = d.Position;
-            sizes[i] = new float3(d.Size.x, d.Size.y, 1);
-            rotations[i] = math.EulerZXY(
-                new quaternion(new float3x3(d.X, d.Y, math.normalizesafe(math.cross(d.X, d.Y))))
-            );
-            colors[i] = new Color(d.Color.x, d.Color.y, d.Color.z, d.Alpha);
-            ages[i] = 0;
-        }
-    }
-
-    // Full-stack boundary. VFX owns all five systems in one graph. Mesh/line paths
-    // explicitly use a procedural adornment companion; Shuriken owns four PS layers.
+    /// <summary>
+    /// Managed presentation boundary for a baked effect library. Gameplay only
+    /// writes AbilityCommands; authoring assets are never consulted in a job.
+    /// </summary>
     public sealed class AbilityBackend : IDisposable
     {
-        static readonly int LinesId = Shader.PropertyToID("Lines");
-        static readonly int ClockId = Shader.PropertyToID("Clock");
-        static readonly int CameraId = Shader.PropertyToID("CameraPosition");
-        static readonly int StartId = Shader.PropertyToID("Start");
-        static readonly int EndId = Shader.PropertyToID("End");
-        static readonly int TintId = Shader.PropertyToID("Tint");
-        static readonly int ShapeId = Shader.PropertyToID("Shape");
-        static readonly int SLines = Shader.PropertyToID("_Lines");
-        static readonly int SClock = Shader.PropertyToID("_Clock");
-        static readonly int SCamera = Shader.PropertyToID("_Camera");
         readonly Technique technique;
+        readonly NativeEffectCatalog catalog;
+        readonly EffectRenderResources resources;
         readonly int count;
         readonly Camera camera;
         readonly CoreBackend core;
-        readonly VisualEffect[] vfx;
-        readonly GraphicsBuffer buffer;
+        readonly VisualEffect[] effects;
+        readonly GraphicsBuffer lines;
         readonly Material[] materials;
-        readonly ParticleSystem[][] systems;
-        readonly NativeArray<ParticleSystem.Particle>[] particles;
-        readonly DecorParticleBridge[] bridges;
-        readonly Bounds bounds = new Bounds(Vector3.zero, new Vector3(150, 80, 150));
+        readonly ParticleSurfacePool[] layers;
+        readonly Bounds bounds;
+        public Bounds WorldBounds => bounds;
+
         public readonly GameObject Root;
         public readonly bool Full;
+        bool disposed;
         public long UploadBytes { get; private set; }
 
         public double CallbackMs
         {
             get
             {
-                double v = core?.ParticleCallbackMs ?? 0;
-                if (bridges != null)
+                double total = core?.ParticleCallbackMs ?? 0;
+                if (layers != null)
                 {
-                    foreach (var b in bridges)
+                    foreach (var layer in layers)
                     {
-                        v += b.LastCallbackMs;
+                        total += layer.CallbackMs;
                     }
                 }
 
-                return v;
+                return total;
             }
         }
 
         public bool InstancingActive =>
             technique == Technique.VfxPerLineBatched
-            || (
-                technique == Technique.ParticleMeshInstanced
-                && core.InstancingActive
-                && (
-                    !Full
-                    || systems[0][0].GetComponent<ParticleSystemRenderer>().enableGPUInstancing
-                )
-            );
+            || (technique == Technique.ParticleMeshInstanced && core.InstancingActive);
         public int ObjectCount => Root.GetComponentsInChildren<Transform>(true).Length;
         public string Composition =>
-            technique == Technique.Baseline ? "No effects / common environment and native jobs"
-            : !Full ? "Three core ribbons / secondary layers omitted"
-            : IsVfx ? "One graph / core + four GPU particle systems"
-            : IsParticle ? "Shuriken / core + four native particle layers"
-            : "Ribbon renderer + four procedural GPU particle layers";
+            technique == Technique.Baseline ? "Environment and native commands / no effects"
+            : IsVfx
+                ? "Authored VFX graph / "
+                    + catalog.RibbonSlots
+                    + " ribbon slots + "
+                    + (Full ? catalog.LayerSlots : 0)
+                    + " secondary streams"
+            : IsParticle
+                ? "Authored native Shuriken / " + (Full ? catalog.LayerSlots + 1 : 1) + " streams"
+            : "Authored ribbons + "
+                + (Full ? catalog.LayerSlots : 0)
+                + " procedural secondary streams";
 
         bool IsVfx =>
             technique == Technique.VfxBuffer
@@ -157,206 +74,238 @@ namespace LineLab.Production
         bool IsParticle =>
             technique >= Technique.ParticleBillboardShared && technique <= Technique.ParticleJobs;
 
-        public AbilityBackend(Technique t, int count, Camera camera, bool full)
+        /// <summary>
+        /// Creates a fixed pool inside the supplied world-space culling volume.
+        /// Include every possible endpoint, path excursion and secondary tail.
+        /// Roots remain at the identity transform: analytic geometry is world-space.
+        /// Per-ability VFX/particles currently share this conservative volume; group
+        /// pools spatially when tighter per-region culling matters to your game.
+        /// LineRenderer continues to compute its bounds from actual ribbon points.
+        /// </summary>
+        public AbilityBackend(
+            Technique technique,
+            int count,
+            Camera camera,
+            bool full,
+            NativeEffectCatalog catalog,
+            Bounds? worldBounds = null
+        )
         {
-            technique = t;
-            this.count = count;
-            this.camera = camera;
-            Full = full;
-            Root = new GameObject("Complete ability / " + TechniqueInfo.Names[(int)t]);
-            if (t == Technique.Baseline)
+            if (count < 1 || count > EffectRecipeLayout.MaximumAbilities)
             {
-                return;
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            bool shared = t == Technique.VfxBuffer;
-            if (IsVfx)
+            bounds = worldBounds ?? new Bounds(Vector3.zero, new Vector3(400, 100, 400));
+            if (
+                !math.all(math.isfinite((float3)bounds.center))
+                || !math.all(math.isfinite((float3)bounds.size))
+                || !math.all((float3)bounds.size > 0)
+            )
             {
-                if (shared)
+                throw new ArgumentException(
+                    "Culling bounds need a finite center and positive finite size.",
+                    nameof(worldBounds)
+                );
+            }
+
+            this.technique = technique;
+            this.count = count;
+            this.camera = camera != null ? camera : throw new ArgumentNullException(nameof(camera));
+            this.catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
+            Full = full;
+            Root = new GameObject("Authored effects / " + TechniqueInfo.Names[(int)technique]);
+            try
+            {
+                if (technique == Technique.Baseline)
                 {
-                    buffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, count * 4, 16);
+                    return;
                 }
 
-                int capacity = shared ? math.ceilpow2(count) : 1;
-                string name =
-                    "Production/Ability"
-                    + (
-                        shared ? "Shared"
-                        : t == Technique.VfxPerLineBatched ? "Batched"
-                        : "Single"
-                    )
-                    + (full ? "Full_" : "Beam_")
-                    + capacity;
-                var asset = Resources.Load<VisualEffectAsset>(name);
-                if (asset == null)
+                resources = new EffectRenderResources(catalog);
+                if (IsVfx)
                 {
-                    throw new InvalidOperationException("Missing complete graph " + name);
-                }
-
-                vfx = new VisualEffect[shared ? 1 : count];
-                for (int i = 0; i < vfx.Length; i++)
-                {
-                    var go = new GameObject(
-                        shared ? "Shared five-system graph" : "Complete pooled ability " + i
-                    );
-                    go.transform.SetParent(Root.transform);
-                    var e = go.AddComponent<VisualEffect>();
-                    e.visualEffectAsset = asset;
-                    e.resetSeedOnPlay = false;
-                    e.startSeed = 41;
-                    e.SetFloat("SpawnCore", (shared ? count : 1) * 96);
-                    if (full)
-                    {
-                        for (int layer = 0; layer < 4; layer++)
-                        {
-                            e.SetFloat(
-                                "SpawnLayer" + layer,
-                                (shared ? count : 1) * AbilityGeometry.LayerCount(layer)
-                            );
-                        }
-                    }
-
+                    bool shared = technique == Technique.VfxBuffer;
                     if (shared)
                     {
-                        e.SetGraphicsBuffer(LinesId, buffer);
+                        lines = new GraphicsBuffer(GraphicsBuffer.Target.Structured, count * 4, 16);
                     }
 
-                    vfx[i] = e;
-                }
-
-                return;
-            }
-
-            core = new CoreBackend(t, count * 3, 32, camera);
-            core.Root.transform.SetParent(Root.transform);
-            if (!full)
-            {
-                return;
-            }
-
-            materials = new Material[4];
-            if (!IsParticle)
-            {
-                buffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, count * 4, 16);
-                for (int layer = 0; layer < 4; layer++)
-                {
-                    materials[layer] = UnityEngine.Object.Instantiate(
-                        Resources.Load<Material>("Production/DecorProcedural" + layer)
-                    );
-                    materials[layer].SetBuffer(SLines, buffer);
-                    materials[layer].SetInt("_Layer", layer);
-                }
-            }
-            else
-            {
-                bool per = t == Technique.ParticleBillboardPerLine;
-                bool instanced = t == Technique.ParticleMeshInstanced;
-                bool jobs = t == Technique.ParticleJobs;
-                systems = new ParticleSystem[4][];
-                particles = new NativeArray<ParticleSystem.Particle>[4];
-                if (jobs)
-                {
-                    bridges = new DecorParticleBridge[4];
-                }
-
-                for (int layer = 0; layer < 4; layer++)
-                {
-                    materials[layer] = UnityEngine.Object.Instantiate(
-                        Resources.Load<Material>(
-                            "Production/" + (instanced ? "DecorInstanced" : "Decor") + layer
-                        )
-                    );
-                    int n = AbilityGeometry.LayerCount(layer);
-                    particles[layer] = new NativeArray<ParticleSystem.Particle>(
-                        count * n,
-                        Allocator.Persistent
-                    );
-                    systems[layer] = new ParticleSystem[per ? count : 1];
-                    for (int i = 0; i < systems[layer].Length; i++)
+                    string graph = GraphResourcePath(catalog, technique, count, full);
+                    var asset = Resources.Load<VisualEffectAsset>(graph);
+                    if (asset == null)
                     {
-                        var go = new GameObject("Layer " + layer + " / pool " + i);
-                        go.transform.SetParent(Root.transform);
-                        var ps = go.AddComponent<ParticleSystem>();
-                        var m = ps.main;
-                        m.playOnAwake = false;
-                        m.loop = false;
-                        m.simulationSpace = ParticleSystemSimulationSpace.World;
-                        m.maxParticles = (per ? 1 : count) * n;
-                        m.startSpeed = 0;
-                        m.startLifetime = 1000000;
-                        m.startSize3D = true;
-                        m.startRotation3D = true;
-                        m.cullingMode = ParticleSystemCullingMode.AlwaysSimulate;
-                        var emit = ps.emission;
-                        emit.enabled = false;
-                        var shape = ps.shape;
-                        shape.enabled = false;
-                        var r = go.GetComponent<ParticleSystemRenderer>();
-                        r.sharedMaterial = materials[layer];
-                        r.applyActiveColorSpace = false;
-                        bool billboard =
-                            layer != 3 && (t == Technique.ParticleBillboardShared || per);
-                        r.renderMode = billboard
-                            ? ParticleSystemRenderMode.Billboard
-                            : ParticleSystemRenderMode.Mesh;
-                        r.alignment = billboard
-                            ? ParticleSystemRenderSpace.View
-                            : ParticleSystemRenderSpace.World;
-                        if (!billboard)
+                        throw new InvalidOperationException(
+                            "This library topology needs compiling in the Effect Workbench. Missing graph: "
+                                + graph
+                        );
+                    }
+
+                    effects = new VisualEffect[shared ? 1 : count];
+                    for (int i = 0; i < effects.Length; i++)
+                    {
+                        var go = new GameObject(
+                            shared ? "Shared authored graph" : "Pooled authored graph " + i
+                        );
+                        go.transform.SetParent(Root.transform, false);
+                        var effect = go.AddComponent<VisualEffect>();
+                        effect.visualEffectAsset = asset;
+                        effect.resetSeedOnPlay = false;
+                        effect.startSeed = 41;
+                        if (!effect.HasVector3("BoundsCenter") || !effect.HasVector3("BoundsSize"))
                         {
-                            r.mesh = Resources.Load<Mesh>("SegmentQuad");
+                            throw new InvalidOperationException(
+                                "Recompile this library in the Effect Workbench: its graph predates configurable culling bounds."
+                            );
                         }
 
-                        r.enableGPUInstancing = instanced;
-                        r.sortMode = ParticleSystemSortMode.None;
-                        r.localBounds = bounds;
-                        r.shadowCastingMode = ShadowCastingMode.Off;
-                        r.receiveShadows = false;
-                        r.SetActiveVertexStreams(
-                            new List<ParticleSystemVertexStream>
-                            {
-                                ParticleSystemVertexStream.Position,
-                                ParticleSystemVertexStream.Color,
-                                ParticleSystemVertexStream.UV,
-                            }
+                        effect.SetVector3("BoundsCenter", bounds.center);
+                        effect.SetVector3("BoundsSize", bounds.size);
+                        resources.Bind(effect);
+                        effect.SetFloat(
+                            "SpawnCore",
+                            (shared ? count : 1) * catalog.AllocatedCoreQuadsPerAbility
                         );
-                        systems[layer][i] = ps;
-                        if (jobs)
+                        if (full)
                         {
-                            bridges[layer] = go.AddComponent<DecorParticleBridge>();
+                            for (int layer = 0; layer < catalog.LayerSlots; layer++)
+                            {
+                                effect.SetFloat(
+                                    "SpawnLayer" + layer,
+                                    (shared ? count : 1) * catalog.LayerCapacities[layer]
+                                );
+                            }
                         }
+
+                        if (shared)
+                        {
+                            effect.SetGraphicsBuffer("Lines", lines);
+                        }
+
+                        effects[i] = effect;
+                    }
+
+                    return;
+                }
+
+                core = new CoreBackend(technique, count, camera, resources, bounds);
+                core.Root.transform.SetParent(Root.transform, false);
+                if (!full || catalog.LayerSlots == 0)
+                {
+                    return;
+                }
+
+                if (IsParticle)
+                {
+                    layers = new ParticleSurfacePool[catalog.LayerSlots];
+                    for (int slot = 0; slot < layers.Length; slot++)
+                    {
+                        bool perAbility = technique == Technique.ParticleBillboardPerLine;
+                        bool billboard =
+                            (technique == Technique.ParticleBillboardShared || perAbility)
+                            && !HasGroundLayer(slot);
+                        layers[slot] = new ParticleSurfacePool(
+                            Root.transform,
+                            "Secondary layer " + slot,
+                            count,
+                            catalog.LayerCapacities[slot],
+                            perAbility,
+                            billboard,
+                            technique == Technique.ParticleMeshInstanced,
+                            technique == Technique.ParticleJobs,
+                            resources,
+                            bounds
+                        );
+                    }
+                }
+                else
+                {
+                    lines = new GraphicsBuffer(GraphicsBuffer.Target.Structured, count * 4, 16);
+                    materials = new Material[catalog.LayerSlots];
+                    for (int slot = 0; slot < materials.Length; slot++)
+                    {
+                        var material = resources.Material("AuthoredAdornment");
+                        material.SetBuffer("_Lines", lines);
+                        material.SetInt("_LayerSlot", slot);
+                        material.SetInt("_CardsPerAbility", catalog.LayerCapacities[slot]);
+                        materials[slot] = material;
                     }
                 }
             }
+            catch
+            {
+                Dispose();
+                throw;
+            }
+        }
+
+        public static string GraphResourcePath(
+            NativeEffectCatalog catalog,
+            Technique technique,
+            int count,
+            bool full
+        )
+        {
+            bool shared = technique == Technique.VfxBuffer;
+            string mode =
+                shared ? "Shared"
+                : technique == Technique.VfxPerLineBatched ? "Batched"
+                : "Single";
+            return "Production/Generated/"
+                + catalog.LayoutKey
+                + "_"
+                + EffectRecipeLayout.GraphVersion
+                + "/Ability"
+                + mode
+                + (full ? "Full_" : "Beam_")
+                + (shared ? math.ceilpow2(count) : 1);
+        }
+
+        bool HasGroundLayer(int slot)
+        {
+            for (int effect = 0; effect < catalog.EffectCount; effect++)
+            {
+                if ((int)catalog.Layers[effect * catalog.LayerSlots + slot].Layout.x == 3)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void Present(AbilityWorld world, float clock, bool first)
         {
+            if (disposed)
+            {
+                throw new ObjectDisposedException(nameof(AbilityBackend));
+            }
+
             UploadBytes = 0;
             if (technique == Technique.Baseline)
             {
                 return;
             }
 
-            float3 cam = camera.transform.position;
-            if (buffer != null)
+            var cameraPosition = camera.transform.position;
+            if (lines != null)
             {
-                buffer.SetData(world.Lines.Reinterpret<float4>(64));
-                UploadBytes = count * 64L;
+                lines.SetData(world.Lines.Reinterpret<float4>(64));
+                UploadBytes += count * 64L;
             }
 
-            if (vfx != null)
+            if (effects != null)
             {
-                for (int i = 0; i < vfx.Length; i++)
+                for (int i = 0; i < effects.Length; i++)
                 {
-                    var e = vfx[i];
+                    var effect = effects[i];
                     if (technique != Technique.VfxBuffer)
                     {
-                        var l = world.Lines[i];
-                        bool active = l.Start.w > 0;
-                        if (e.gameObject.activeSelf != active)
+                        var line = world.Lines[i];
+                        bool active = line.Start.w > 0;
+                        if (effect.gameObject.activeSelf != active)
                         {
-                            e.gameObject.SetActive(active);
+                            effect.gameObject.SetActive(active);
                         }
 
                         if (!active)
@@ -364,163 +313,188 @@ namespace LineLab.Production
                             continue;
                         }
 
-                        e.SetVector4(StartId, l.Start);
-                        e.SetVector4(EndId, l.End);
-                        e.SetVector4(TintId, l.Color);
-                        e.SetVector4(ShapeId, l.Shape);
+                        effect.SetVector4(EffectPropertyIds.Start, line.Start);
+                        effect.SetVector4(EffectPropertyIds.End, line.End);
+                        effect.SetVector4(EffectPropertyIds.Tint, line.Color);
+                        effect.SetVector4(EffectPropertyIds.Shape, line.Shape);
                     }
 
-                    e.SetFloat(ClockId, clock);
-                    e.SetVector3(CameraId, cam);
+                    effect.SetFloat(EffectPropertyIds.Clock, clock);
+                    effect.SetVector3(EffectPropertyIds.CameraPosition, cameraPosition);
                     if (first)
                     {
-                        e.Reinit();
+                        effect.Reinit();
                     }
                 }
 
                 return;
             }
 
-            core.Present(world.Strands, clock, first);
+            core.Present(world, clock, first);
             UploadBytes += core.UploadBytes;
             if (!Full)
             {
                 return;
             }
 
-            for (int layer = 0; layer < 4; layer++)
+            for (int slot = 0; slot < catalog.LayerSlots; slot++)
             {
-                if (systems == null)
+                if (layers != null)
                 {
-                    var m = materials[layer];
-                    m.SetFloat(SClock, clock);
-                    m.SetVector(SCamera, (Vector3)cam);
+                    var view = new SurfaceRecipeView
+                    {
+                        Lines = world.Lines,
+                        Strands = world.Strands,
+                        Effects = catalog.Effects,
+                        Ribbons = catalog.Ribbons,
+                        Layers = catalog.Layers,
+                        Ramps = catalog.Ramps,
+                        RibbonSlots = catalog.RibbonSlots,
+                        LayerSlots = catalog.LayerSlots,
+                        Segments = catalog.Segments,
+                        LayerSlot = slot,
+                        CardsPerAbility = catalog.LayerCapacities[slot],
+                        Core = false,
+                        Clock = clock,
+                        Camera = cameraPosition,
+                    };
+                    layers[slot].Present(view, camera, first);
+                    UploadBytes += layers[slot].UploadBytes;
+                }
+                else if (materials != null)
+                {
+                    var material = materials[slot];
+                    material.SetFloat(EffectPropertyIds.ShaderClock, clock);
+                    material.SetVector(EffectPropertyIds.ShaderCamera, cameraPosition);
                     Graphics.DrawProcedural(
-                        m,
+                        material,
                         bounds,
                         MeshTopology.Triangles,
                         6,
-                        count * AbilityGeometry.LayerCount(layer),
+                        count * catalog.LayerCapacities[slot],
                         camera,
                         null,
                         ShadowCastingMode.Off,
-                        false,
-                        0
+                        false
                     );
                 }
-                else
+            }
+        }
+
+        public int[] StreamParticleCounts()
+        {
+            int streamCount = 1 + (Full ? catalog.LayerSlots : 0);
+            var totals = new int[streamCount];
+            if (effects != null)
+            {
+                var names = new List<string>();
+                foreach (var effect in effects)
                 {
-                    int n = AbilityGeometry.LayerCount(layer);
-                    bool jobs = bridges != null;
-                    bool billboard =
-                        layer != 3
-                        && (
-                            technique == Technique.ParticleBillboardShared
-                            || technique == Technique.ParticleBillboardPerLine
-                        );
-                    if (jobs)
+                    if (!effect.gameObject.activeInHierarchy)
                     {
-                        var b = bridges[layer];
-                        b.Lines = world.Lines;
-                        b.Layer = layer;
-                        b.Clock = clock;
-                        b.CameraPosition = cam;
-                        b.Ready = true;
-                        if (!first)
-                        {
-                            continue;
-                        }
+                        continue;
                     }
 
-                    new DecorParticles
+                    names.Clear();
+                    effect.GetParticleSystemNames(names);
+                    foreach (var name in names)
                     {
-                        Lines = world.Lines,
-                        Particles = particles[layer],
-                        Layer = layer,
-                        Clock = clock,
-                        Camera = cam,
-                        Billboard = billboard,
-                        CameraRight = camera.transform.right,
-                        CameraUp = camera.transform.up,
-                    }
-                        .Schedule(count * n, 64)
-                        .Complete();
-                    for (int i = 0; i < systems[layer].Length; i++)
-                    {
-                        var ps = systems[layer][i];
-                        if (first)
+                        // Generated graph system names carry their explicit stream number.
+                        int stream = name.StartsWith("Core") ? 0 : ParseLayer(name) + 1;
+                        if ((uint)stream < (uint)totals.Length)
                         {
-                            ps.Play();
-                            if (!jobs)
-                            {
-                                ps.Pause();
-                            }
-                        }
-
-                        if (systems[layer].Length > 1)
-                        {
-                            ps.SetParticles(particles[layer].GetSubArray(i * n, n), n);
-                        }
-                        else
-                        {
-                            ps.SetParticles(particles[layer], count * n);
+                            totals[stream] += (int)effect.GetParticleSystemInfo(name).aliveCount;
                         }
                     }
-
-                    UploadBytes +=
-                        particles[layer].Length * (long)Marshal.SizeOf<ParticleSystem.Particle>();
                 }
             }
+            else if (core != null)
+            {
+                totals[0] = core.LiveParticles;
+                if (layers != null)
+                {
+                    for (int i = 0; i < layers.Length; i++)
+                    {
+                        totals[i + 1] = layers[i].LiveParticles;
+                    }
+                }
+            }
+
+            return totals;
+        }
+
+        static int ParseLayer(string name)
+        {
+            if (!name.StartsWith("Layer"))
+            {
+                return -2;
+            }
+
+            int end = 5;
+            while (end < name.Length && char.IsDigit(name[end]))
+            {
+                end++;
+            }
+
+            return int.TryParse(name.Substring(5, end - 5), out int layer) ? layer : -2;
         }
 
         public int LiveParticles()
         {
-            int n = 0;
-            foreach (var e in Root.GetComponentsInChildren<VisualEffect>())
+            int total = 0;
+            if (effects != null)
             {
-                n += (int)e.aliveParticleCount;
-            }
-
-            foreach (var ps in Root.GetComponentsInChildren<ParticleSystem>())
-            {
-                n += ps.particleCount;
-            }
-
-            return n;
-        }
-
-        public void Dispose()
-        {
-            if (bridges != null)
-            {
-                foreach (var b in bridges)
+                foreach (var effect in effects)
                 {
-                    b.Ready = false;
+                    if (effect.gameObject.activeInHierarchy)
+                    {
+                        total += (int)effect.aliveParticleCount;
+                    }
                 }
             }
-
-            core?.Dispose();
-            buffer?.Dispose();
-            if (particles != null)
+            else
             {
-                foreach (var p in particles)
+                total = core?.LiveParticles ?? 0;
+                if (layers != null)
                 {
-                    if (p.IsCreated)
+                    foreach (var layer in layers)
                     {
-                        p.Dispose();
+                        total += layer.LiveParticles;
                     }
                 }
             }
 
-            if (materials != null)
+            return total;
+        }
+
+        public void Dispose()
+        {
+            if (disposed)
             {
-                foreach (var m in materials)
+                return;
+            }
+
+            disposed = true;
+            if (layers != null)
+            {
+                foreach (var layer in layers)
                 {
-                    UnityEngine.Object.Destroy(m);
+                    layer?.Dispose();
                 }
             }
 
-            UnityEngine.Object.Destroy(Root);
+            core?.Dispose();
+            if (materials != null)
+            {
+                foreach (var material in materials)
+                {
+                    EffectRenderResources.DestroyOwned(material);
+                }
+            }
+
+            lines?.Dispose();
+            resources?.Dispose();
+            EffectRenderResources.DestroyOwned(Root);
         }
     }
 }

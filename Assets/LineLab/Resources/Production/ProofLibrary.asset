@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b71c703a9d52847b89f767068022d6, type: 3}
+  m_Name: ProofLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::LineLab.Production.EffectLibrary
+  Segments: 32
+  Effects:
+  - {fileID: 11400000, guid: 865a053e9d7443a48939a7ec00f7ab96, type: 2}
+  - {fileID: 11400000, guid: c001f62e6b0c65148b145154bf054d70, type: 2}
+  - {fileID: 11400000, guid: 8b4c40a2476f7a249bd5f5d0423aab5d, type: 2}
+  - {fileID: 11400000, guid: db6b4f3c19ce0a74fac88b9e607e6d66, type: 2}
+  - {fileID: 11400000, guid: b9618021d5e9eca4fb3ef15664a07267, type: 2}

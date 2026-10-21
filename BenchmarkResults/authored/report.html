@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RTS effects — authored proof and measurements</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        background: #081215;
+        color: #e4efec;
+      }
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 48px 28px 72px;
+      }
+      .eyebrow {
+        color: #4de2b6;
+        letter-spacing: .14em;
+        font-size: 12px;
+      }
+      h1 {
+        font-size: clamp(32px, 5vw, 58px);
+        margin: 16px 0;
+        line-height: 1.08;
+      }
+      p {
+        color: #afc4c6;
+        line-height: 1.6;
+        max-width: 780px;
+      }
+      a {
+        color: #71ecc9;
+      }
+      .reports {
+        display: grid;
+        gap: 14px;
+        margin: 30px 0;
+      }
+      .card {
+        display: grid;
+        gap: 10px;
+        padding: 24px;
+        border: 1px solid #28434a;
+        border-radius: 10px;
+        text-decoration: none;
+        background: #102228;
+      }
+      .card:hover {
+        border-color: #4de2b6;
+      }
+      .card strong {
+        font-size: 22px;
+      }
+      .card span {
+        color: #d2e0df;
+      }
+      small, details {
+        color: #8da6ad;
+      }
+      figure {
+        margin: 38px 0;
+      }
+      img {
+        width: 100%;
+        display: block;
+        border-radius: 10px;
+      }
+      figcaption {
+        margin-top: 12px;
+        color: #afc4c6;
+        line-height: 1.5;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin: 28px 0;
+      }
+      li {
+        margin: 10px 0;
+      }
+      code {
+        color: #e4efec;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">RTS LINE LABORATORY / AUTHORED EFFECTS</div>
+      <h1>Reusable art. Native commands.<br />Measured through 5,000 effects.</h1>
+      <p>
+        Compare all eleven rendering techniques and baseline. Each audited report
+        retains raw frames, repetition details, CPU and GPU-frame measurements,
+        particle counts, and content/build identity. Historical hardcoded results
+        remain separate from this refactored implementation.
+      </p>
+      <section class="reports" aria-label="Audited runs"><a class="card" href="comparison/report.html"><strong>Consolidated measured comparison</strong><span>17 conditions · all 12 configurations · corrected LineRenderer</span><small>Cross-run view with source orders and matched-baseline provenance</small></a>
+<a class="card" href="run-20261020-190758-208-0a44c5/report/report.html"><strong>authored-spread</strong><span>144 cells · 34,560 frames · 31,250 fresh GPU samples</span><small>run-20261020-190758-208-0a44c5 · Audit passed</small></a>
+<a class="card" href="run-20261020-184837-229-c685cb/report/report.html"><strong>authored-line-hdr</strong><span>102 cells · 24,480 frames · 19,492 fresh GPU samples</span><small>run-20261020-184837-229-c685cb · Audit passed</small><small>Version note: Earlier Spread camera rows used a 180 m far clip and clipped most of the distant field. They are retained as diagnostics and excluded from the consolidated full-field comparison. Use the later frustum-validated Spread run.</small></a>
+<a class="card" href="run-20261020-184209-382-da299f/report/report.html"><strong>authored-workloads</strong><span>216 cells · 51,840 frames · 46,594 fresh GPU samples</span><small>run-20261020-184209-382-da299f · Audit passed</small></a>
+<a class="card" href="run-20261020-175024-380-d5a1d2-completed-prefix/report/report.html"><strong>authored-full-completed-prefix</strong><span>252 cells · 60,480 frames · 53,269 fresh GPU samples</span><small>run-20261020-175024-380-d5a1d2-completed-prefix · Audit passed</small><small>Version note: The LineRenderer adapter was subsequently updated for HDR color reconstruction and cached width-curve submission. These are measurements of the earlier adapter. Use the later line-hdr run for current LineRenderer costs. Other rendering adapters are unchanged. The reference ribbons remain within LDR, so this is a code-version distinction, not a claim that these reference images lost HDR.</small></a>
+<a class="card" href="run-20261020-164230-346-484934/report/report.html"><strong>authored-scale</strong><span>288 cells · 69,120 frames · 62,871 fresh GPU samples</span><small>run-20261020-164230-346-484934 · Audit passed</small><small>Version note: The LineRenderer adapter was subsequently updated for HDR color reconstruction and cached width-curve submission. These are measurements of the earlier adapter. Use the later line-hdr run for current LineRenderer costs. Other rendering adapters are unchanged. The reference ribbons remain within LDR, so this is a code-version distinction, not a claim that these reference images lost HDR. Earlier Spread camera rows used a 180 m far clip and clipped most of the distant field. They are retained as diagnostics and excluded from the consolidated full-field comparison. Use the later frustum-validated Spread run.</small></a>
+<a class="card" href="run-20261020-164211-718-0d1881/report/report.html"><strong>authored-smoke</strong><span>12 cells · 2,880 frames · 2,473 fresh GPU samples</span><small>run-20261020-164211-718-0d1881 · Audit passed</small><small>Version note: The LineRenderer adapter was subsequently updated for HDR color reconstruction and cached width-curve submission. These are measurements of the earlier adapter. Use the later line-hdr run for current LineRenderer costs. Other rendering adapters are unchanged. The reference ribbons remain within LDR, so this is a code-version distinction, not a claim that these reference images lost HDR.</small></a></section>
+      <nav>
+        <a href="../../Documentation/AuthoredFindings.md">Findings and limits</a>
+        <a href="../../Documentation/ArtistWorkflow.md">Artist workflow</a>
+        <a href="../../Documentation/Integration.md">Unmanaged healer example</a>
+        <a href="../../Documentation/CodeOverview.md">Code overview</a>
+        <a href="../../Documentation/AdversarialReview.md">Adversarial review</a>
+      </nav>
+      <figure>
+        <img src="../../Screenshots/Authored/Proof/Hero3.png"
+             alt="Void Conduit: layered ribbons, traveling motes, coronas and ground runes" />
+        <figcaption>
+          Void Conduit is composed from reusable assets. The separate Opal Transfer
+          proof combines a shared mote module with a new profile, gradient and size
+          curve. Open <code>Line Lab → Authoring → Effect Workbench</code> in Unity.
+        </figcaption>
+      </figure>
+      <p>
+        Whole-frame GPU deltas are baseline estimates, not isolated effect-pass
+        timestamps. Fixed-slot cards and configured VFX storage capacity differ.
+        A 60 FPS laboratory result does not establish headroom in a saturated RTS.
+        See the findings and each report's methodology before choosing a renderer.
+      </p>
+      <details>
+        <summary>Other run folders</summary>
+        <ul><li>run-20261020-175024-380-d5a1d2 — Audit failed</li>
+<li>run-20261020-163922-930-ea9c96 — Audit failed</li></ul>
+      </details>
+    </main>
+  </body>
+</html>

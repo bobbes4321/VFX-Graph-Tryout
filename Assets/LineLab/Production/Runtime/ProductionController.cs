@@ -13,7 +13,17 @@ namespace LineLab.Production
     {
         public AbilityWorld World { get; private set; }
         public AbilityBackend Backend { get; private set; }
+        public NativeEffectCatalog Catalog { get; private set; }
 
+        [Tooltip(
+            "Reusable source library. Rebuild Preview applies edits; gameplay jobs only see baked IDs."
+        )]
+        public EffectLibrary Library;
+        public static Action<EffectLibrary, int> BeforePreviewConfiguration;
+        int previewEffect = -1;
+        bool previewReleased;
+        bool capturing;
+        int effectPage;
         public Technique Technique = Technique.VfxBuffer;
         public int Count = 3;
         public int Scenario;
@@ -32,6 +42,7 @@ namespace LineLab.Production
         int focus = -1;
         int previousSimulationFrame = -1;
         Camera viewCamera;
+        float originalFarClipPlane = 180;
         float hudClock;
         string stats = "";
         string composition = "";
@@ -54,12 +65,28 @@ namespace LineLab.Production
         IEnumerator Start()
         {
             viewCamera = Camera.main;
+            originalFarClipPlane = viewCamera.farClipPlane;
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 60;
             Application.runInBackground = true;
+            var args = Environment.GetCommandLineArgs();
+            string libraryName = Arg(args, "--library", "");
+            if (!string.IsNullOrEmpty(libraryName))
+            {
+                Library = Resources.Load<EffectLibrary>("Production/" + libraryName);
+                if (Library == null)
+                {
+                    throw new ArgumentException("Unknown effect library: " + libraryName);
+                }
+            }
+
+            if (Library == null)
+            {
+                Library = Resources.Load<EffectLibrary>("Production/EffectLibrary");
+            }
+
             Configure(Technique, 3, true, 0, true);
             SetFocus(-1, true);
-            var args = Environment.GetCommandLineArgs();
             if (Array.IndexOf(args, "--production-benchmark") >= 0)
             {
                 Benchmarking = true;
@@ -69,12 +96,57 @@ namespace LineLab.Production
             else if (Array.IndexOf(args, "--production-capture") >= 0)
             {
                 Benchmarking = true;
+                capturing = true;
+                string effectKey = Arg(args, "--effect", "");
+                if (!string.IsNullOrEmpty(effectKey))
+                {
+                    SetPreviewEffect(Catalog.GetEffectId(effectKey).Value);
+                }
+
                 yield return Capture(Arg(args, "--results", "Screenshots/Production"));
             }
         }
 
         public void Configure(Technique t, int count, bool full, int scenario, bool hero = false)
         {
+            if (count < 1 || count > EffectRecipeLayout.MaximumAbilities)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            if (Catalog == null)
+            {
+                Catalog = new NativeEffectCatalog(Library);
+            }
+
+            if (Application.isEditor && !Benchmarking)
+            {
+                BeforePreviewConfiguration?.Invoke(Library, count);
+            }
+
+            var nextWorld = new AbilityWorld(count, Catalog);
+            AbilityBackend nextBackend;
+            long start = System.Diagnostics.Stopwatch.GetTimestamp();
+            try
+            {
+                nextBackend = new AbilityBackend(
+                    t,
+                    count,
+                    viewCamera ?? Camera.main,
+                    full,
+                    Catalog
+                );
+            }
+            catch
+            {
+                nextWorld.Dispose();
+                throw;
+            }
+
+            double setup =
+                (System.Diagnostics.Stopwatch.GetTimestamp() - start)
+                * 1000d
+                / System.Diagnostics.Stopwatch.Frequency;
             Backend?.Dispose();
             World?.Dispose();
             Technique = t;
@@ -86,14 +158,62 @@ namespace LineLab.Production
             Clock = 0;
             first = true;
             previousSimulationFrame = -1;
-            World = new AbilityWorld(count);
-            long start = System.Diagnostics.Stopwatch.GetTimestamp();
-            Backend = new AbilityBackend(t, count, viewCamera ?? Camera.main, full);
-            SetupMs =
-                (System.Diagnostics.Stopwatch.GetTimestamp() - start)
-                * 1000d
-                / System.Diagnostics.Stopwatch.Frequency;
+            previewReleased = false;
+            World = nextWorld;
+            Backend = nextBackend;
+            SetupMs = setup;
             composition = Backend.Composition;
+        }
+
+        public void RebuildLibrary()
+        {
+            var replacement = new NativeEffectCatalog(Library);
+            var previous = Catalog;
+            Catalog = replacement;
+            if (previewEffect >= replacement.EffectCount)
+            {
+                previewEffect = -1;
+            }
+
+            try
+            {
+                Configure(Technique, Count, Full, Scenario, Hero);
+            }
+            catch
+            {
+                Catalog = previous;
+                replacement.Dispose();
+                throw;
+            }
+
+            previous?.Dispose();
+        }
+
+        public void SetPreviewEffect(int effect)
+        {
+            if (Catalog == null || (uint)effect >= (uint)Catalog.EffectCount)
+            {
+                throw new ArgumentOutOfRangeException(nameof(effect));
+            }
+
+            previewEffect = effect;
+            Configure(Technique, 3, Full, 0, true);
+            SetFocus(1);
+        }
+
+        public void ReleasePreview()
+        {
+            if (World == null || Benchmarking)
+            {
+                return;
+            }
+
+            for (int slot = 0; slot < Count; slot++)
+            {
+                World.Writer.Release(new LineHandle(slot, World.Generations[slot]), Clock);
+            }
+
+            previewReleased = true;
         }
 
         void Update()
@@ -119,17 +239,12 @@ namespace LineLab.Production
                 Hero = Hero,
                 Scenario = Scenario,
                 Count = Count,
+                EffectCount = Catalog.EffectCount,
+                PreviewEffect = Benchmarking && !capturing ? -1 : previewEffect,
+                Released = previewReleased,
             }.Schedule(Count, 32);
-            var consumed = World.Consume(produced, time);
             // One dependency chain and one completion boundary for all abilities.
-            new ExpandStrands
-            {
-                Lines = World.Lines,
-                Strands = World.Strands,
-                Clock = time,
-            }
-                .Schedule(Count * 3, 64, consumed)
-                .Complete();
+            World.PreparePresentation(produced, time).Complete();
             CommandsMs =
                 (System.Diagnostics.Stopwatch.GetTimestamp() - start)
                 * 1000d
@@ -164,7 +279,7 @@ namespace LineLab.Production
                 {
                     hudClock = 0;
                     stats =
-                        $"{Count:N0} abilities   /   {(Technique == Technique.Baseline ? 0 : (Full ? 180 : 96) * Count):N0} allocated quads\nCommands {CommandsMs:F3} ms   ·   Bridge {BridgeMs:F3} ms\nPreview only — use the standalone measured report.";
+                        $"{Count:N0} abilities   /   {(Technique == Technique.Baseline ? 0 : (Full ? Catalog.AllocatedFullQuadsPerAbility : Catalog.AllocatedCoreQuadsPerAbility) * Count):N0} reserved quads\nCommands {CommandsMs:F3} ms   ·   Bridge {BridgeMs:F3} ms\nPreview only — use the standalone measured report.";
                 }
 
                 if (Keyboard.current?.f12Key.wasPressedThisFrame == true)
@@ -185,6 +300,15 @@ namespace LineLab.Production
             cameraTargetLook = i < 0 ? new Vector3(0, 1, .5f) : new Vector3((i - 1) * 12, 1, .5f);
             cameraTargetPosition =
                 i < 0 ? new Vector3(19, 28, -33) : cameraTargetLook + new Vector3(9.5f, 11, -14);
+            if (Scenario == 3)
+            {
+                cameraTargetLook = new Vector3(0, 1, 0);
+                cameraTargetPosition = new Vector3(95, 140, -165);
+            }
+            var presentationCamera = viewCamera ?? Camera.main;
+            presentationCamera.farClipPlane =
+                Scenario == 3 ? Mathf.Max(originalFarClipPlane, 500) : originalFarClipPlane;
+
             if (snap)
             {
                 var c = viewCamera ?? Camera.main;
@@ -233,10 +357,11 @@ namespace LineLab.Production
                 yield return null;
             }
 
-            Configure(Technique.VfxBuffer, 3, true, 0, true);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Catalog.EffectCount; i++)
             {
-                SetFocus(i, true);
+                previewEffect = i;
+                Configure(Technique.VfxBuffer, 3, true, 0, true);
+                SetFocus(1, true);
                 for (int j = 0; j < 120; j++)
                 {
                     yield return null;
@@ -247,6 +372,8 @@ namespace LineLab.Production
                 yield return null;
             }
 
+            previewEffect = -1;
+            Configure(Technique.VfxBuffer, 3, true, 0, true);
             SetFocus(-1, true);
             Benchmarking = false;
             for (int j = 0; j < 30; j++)
@@ -336,7 +463,7 @@ namespace LineLab.Production
             GUI.Label(new Rect(42, 60, 900, 70), "SIGNALS OF THE FRONTIER", title);
             GUI.Label(
                 new Rect(45, 126, 750, 38),
-                "Three abilities. Full lifecycles. One unmanaged gameplay contract.",
+                "Reusable effects. Authored layers. One unmanaged gameplay contract.",
                 label
             );
             GUI.DrawTexture(new Rect(width - 360, 32, 316, 180), panel);
@@ -345,29 +472,64 @@ namespace LineLab.Production
             GUI.DrawTexture(new Rect(32, 875, width - 64, 176), panel);
             if (Button(new Rect(48, 891, 118, 32), "DIORAMA", focus < 0))
             {
+                previewEffect = -1;
+                Configure(Technique, 3, Full, 0, true);
                 SetFocus(-1);
             }
 
-            string[] names = { "01   RENEWAL", "02   STORM LANCE", "03   SOLAR TETHER" };
-            for (int i = 0; i < 3; i++)
+            string[] names = Catalog.EffectNames;
+            effectPage = Math.Min(effectPage, (names.Length - 1) / 4);
+            for (int visible = 0; visible < Math.Min(names.Length - effectPage * 4, 4); visible++)
             {
-                if (Button(new Rect(176 + i * 178, 891, 168, 32), names[i], focus == i))
+                int i = effectPage * 4 + visible;
+                if (
+                    Button(
+                        new Rect(176 + visible * 148, 891, 138, 32),
+                        names[i],
+                        previewEffect == i
+                    )
+                )
                 {
-                    SetFocus(i);
+                    SetPreviewEffect(i);
                 }
             }
 
-            if (Button(new Rect(732, 891, 120, 32), "3 HERO LINKS", Hero))
+            if (names.Length > 4 && Button(new Rect(1442, 891, 108, 32), "MORE EFFECTS"))
+            {
+                effectPage = (effectPage + 1) % ((names.Length + 3) / 4);
+            }
+
+            if (
+                Button(
+                    new Rect(1560, 891, 178, 32),
+                    Library.name == "ArtistLibrary" ? "REFERENCE LIBRARY" : "ARTIST LIBRARY"
+                )
+            )
+            {
+                Library = Resources.Load<EffectLibrary>(
+                    Library.name == "ArtistLibrary"
+                        ? "Production/EffectLibrary"
+                        : "Production/ArtistLibrary"
+                );
+                RebuildLibrary();
+            }
+
+            if (Button(new Rect(1748, 891, 118, 32), "RELEASE"))
+            {
+                ReleasePreview();
+            }
+
+            if (Button(new Rect(780, 891, 136, 32), "RESTART LINKS", Hero))
             {
                 Configure(Technique, 3, Full, Scenario, true);
             }
 
-            int[] counts = { 32, 128, 256, 512 };
-            for (int i = 0; i < 4; i++)
+            int[] counts = { 32, 128, 256, 512, 1024, 2500, 5000 };
+            for (int i = 0; i < counts.Length; i++)
             {
                 if (
                     Button(
-                        new Rect(862 + i * 72, 891, 62, 32),
+                        new Rect(930 + i * 72, 891, 62, 32),
                         counts[i].ToString(),
                         !Hero && Count == counts[i]
                     )
@@ -392,10 +554,16 @@ namespace LineLab.Production
                 Configure(Technique, Count, false, Scenario, Hero);
             }
 
-            string[] scenarios = { "SUSTAIN / MOVE", "CHARGE + RELEASE", "HEAVY OVERLAP" };
-            for (int i = 0; i < 3; i++)
+            string[] scenarios =
             {
-                if (Button(new Rect(732 + i * 188, 935, 178, 34), scenarios[i], Scenario == i))
+                "SUSTAIN / MOVE",
+                "CHARGE + RELEASE",
+                "HEAVY OVERLAP",
+                "SPREAD FIELD",
+            };
+            for (int i = 0; i < scenarios.Length; i++)
+            {
+                if (Button(new Rect(732 + i * 172, 935, 162, 34), scenarios[i], Scenario == i))
                 {
                     Configure(Technique, Count, Full, i, Hero);
                 }
@@ -407,20 +575,24 @@ namespace LineLab.Production
                     ? Directory.GetParent(Application.dataPath).FullName
                     : Path.GetFullPath(Path.Combine(Application.dataPath, "../../.."));
                 Application.OpenURL(
-                    new Uri(
-                        Path.Combine(root, "BenchmarkResults/production/report.html")
-                    ).AbsoluteUri
+                    new Uri(Path.Combine(root, "BenchmarkResults/authored/report.html")).AbsoluteUri
                 );
             }
 
             GUI.Label(
                 new Rect(48, 987, width - 100, 22),
-                composition + "    ·    3 ribbons × 32 segments + 84 secondary quads per ability",
+                composition
+                    + "    ·    "
+                    + Catalog.Segments
+                    + " segments / "
+                    + Catalog.EffectCount
+                    + " authored recipes / "
+                    + Catalog.Fingerprint.Substring(0, 12),
                 small
             );
             GUI.Label(
                 new Rect(48, 1017, width - 100, 20),
-                "Begin → Follow → Release from Burst jobs     /     Release keeps a 1.4 s tail     /     F12 screenshot",
+                "Begin → Follow → Release from Burst jobs     /     Editable layers, curves, gradients and textures     /     F12 screenshot",
                 small
             );
             if (showMethods)
@@ -449,6 +621,7 @@ namespace LineLab.Production
         {
             Backend?.Dispose();
             World?.Dispose();
+            Catalog?.Dispose();
             if (panel != null)
             {
                 Destroy(panel);

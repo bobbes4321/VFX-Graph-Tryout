@@ -1,0 +1,1028 @@
+{
+    "schemaVersion": 1,
+    "suite": "line-hdr",
+    "repetitions": 3,
+    "seed": 32194,
+    "cells": [
+        {
+            "order": 0,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 32,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 1,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 32,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 2,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 32,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 3,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 32,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 4,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 32,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 5,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 32,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 6,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 7,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 8,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 9,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 10,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 11,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 12,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 13,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 14,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 15,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 16,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 17,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 18,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 19,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 20,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 21,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 22,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 23,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 24,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 25,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 26,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 27,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 28,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 29,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 30,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 31,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 32,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 33,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 34,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 35,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 36,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 37,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 38,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 39,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 40,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 41,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 42,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 43,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 44,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 45,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 46,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 47,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 512,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 48,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 49,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 50,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 51,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 52,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 53,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 1024,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 54,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 55,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 56,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 57,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 58,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 59,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 2500,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 60,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 61,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 62,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 63,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 64,
+            "technique": "LineRenderer",
+            "workload": "Spread",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 65,
+            "technique": "Baseline",
+            "workload": "Spread",
+            "count": 5000,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 66,
+            "technique": "Baseline",
+            "workload": "Lifecycle",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 67,
+            "technique": "LineRenderer",
+            "workload": "Lifecycle",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 68,
+            "technique": "LineRenderer",
+            "workload": "Lifecycle",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 69,
+            "technique": "Baseline",
+            "workload": "Lifecycle",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 70,
+            "technique": "Baseline",
+            "workload": "Lifecycle",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 71,
+            "technique": "LineRenderer",
+            "workload": "Lifecycle",
+            "count": 128,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 72,
+            "technique": "LineRenderer",
+            "workload": "Lifecycle",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 73,
+            "technique": "Baseline",
+            "workload": "Lifecycle",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 74,
+            "technique": "Baseline",
+            "workload": "Lifecycle",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 75,
+            "technique": "LineRenderer",
+            "workload": "Lifecycle",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 76,
+            "technique": "LineRenderer",
+            "workload": "Lifecycle",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 77,
+            "technique": "Baseline",
+            "workload": "Lifecycle",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 78,
+            "technique": "Baseline",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 79,
+            "technique": "LineRenderer",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 80,
+            "technique": "LineRenderer",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 81,
+            "technique": "Baseline",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 82,
+            "technique": "Baseline",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 83,
+            "technique": "LineRenderer",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 84,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": false
+        },
+        {
+            "order": 85,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 0,
+            "fullStack": false
+        },
+        {
+            "order": 86,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": false
+        },
+        {
+            "order": 87,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 1,
+            "fullStack": false
+        },
+        {
+            "order": 88,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": false
+        },
+        {
+            "order": 89,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 1920,
+            "height": 1080,
+            "repetition": 2,
+            "fullStack": false
+        },
+        {
+            "order": 90,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 91,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 92,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 93,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 94,
+            "technique": "Baseline",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 95,
+            "technique": "LineRenderer",
+            "workload": "Sustain",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 96,
+            "technique": "LineRenderer",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 97,
+            "technique": "Baseline",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 0,
+            "fullStack": true
+        },
+        {
+            "order": 98,
+            "technique": "Baseline",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 99,
+            "technique": "LineRenderer",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 1,
+            "fullStack": true
+        },
+        {
+            "order": 100,
+            "technique": "Baseline",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 2,
+            "fullStack": true
+        },
+        {
+            "order": 101,
+            "technique": "LineRenderer",
+            "workload": "Overdraw",
+            "count": 256,
+            "width": 2560,
+            "height": 1440,
+            "repetition": 2,
+            "fullStack": true
+        }
+    ]
+}

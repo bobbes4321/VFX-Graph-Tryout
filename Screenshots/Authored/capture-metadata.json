@@ -1,0 +1,7 @@
+{
+  "buildGuid": "fd9eff18d25a4b8b9bad0da42128c44e",
+  "referenceCatalogHash": "0c96ba2577950948a4ef8c7d1713f51242b6f3b9b15f407077a6a0b399c24f79",
+  "referenceCompletedUtc": "2026-10-20T14:38:35.9102625Z",
+  "proofCompletedUtc": "2026-10-20T14:39:22.0791773Z",
+  "notes": "Standalone 1920x1080 captures. Each method captures after 150 deterministic simulation frames. Hero views capture each catalog effect after 120 frames. Proof method images select opal-transfer. Subsequent measured build changes snapshot serialization and adds its pre-sampling guard; renderer math and authored content are unchanged. Captures are visual evidence, not pixel-equality tests."
+}

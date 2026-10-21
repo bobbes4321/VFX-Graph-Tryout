@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "kind": "audited-source-comparison-view",
+  "cells": 612,
+  "rawSamples": 146880,
+  "validGpuSamples": 131078,
+  "conditions": 17,
+  "aggregateRows": 204,
+  "checks": [
+    "Source audits",
+    "Identical content/hardware",
+    "Complete technique groups",
+    "Row provenance",
+    "Exclude Spread populations without corrected frustum validation"
+  ],
+  "errors": []
+}

@@ -1,0 +1,1 @@
+252/468 VfxPerLineBatched 5000 Sustain full=True GPU=10.682368 bridge=3.7183 particles=900000

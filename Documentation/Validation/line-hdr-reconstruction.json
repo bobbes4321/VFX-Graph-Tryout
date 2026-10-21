@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "var l=UnityEngine.Object.FindFirstObjectByType<LineLab.Production.ProductionController>(); l.Freeze=true; var r=l.Backend.Root.GetComponentsInChildren<UnityEngine.LineRenderer>()[0]; var p=new UnityEngine.MaterialPropertyBlock(); r.GetPropertyBlock(p); var m=new UnityEngine.Mesh(); r.BakeMesh(m,UnityEngine.Camera.main,false); float maximum=0; foreach(var c in m.colors) maximum=System.Math.Max(maximum,System.Math.Max(c.r,System.Math.Max(c.g,c.b))); float scale=p.GetFloat(\"_LineColorScale\"); var result=new { vertices=m.vertexCount, normalizedMaximum=maximum, scale=scale, reconstructedMaximum=maximum*scale, keyword=r.sharedMaterial.IsKeywordEnabled(\"LINELAB_LINE_COLOR\"), passed=scale>1 && maximum<=1 && maximum*scale>1 }; UnityEngine.Object.DestroyImmediate(m); l.Library=UnityEngine.Resources.Load<LineLab.Production.EffectLibrary>(\"Production/EffectLibrary\"); l.RebuildLibrary(); l.Freeze=false; return result;"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "vertices": 66,
+        "normalizedMaximum": 0.929411769,
+        "scale": 2.49675679,
+        "reconstructedMaximum": 2.32051516,
+        "keyword": true,
+        "passed": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "C:\\Unity Projects\\VFX Graph Tryout"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -141,13 +141,7 @@
             <h1>AETHER<br />Signals of the frontier</h1>
             <p id="hardware" class="muted"></p>
             <div class="cards" id="cards"></div>
-            <div class="note">
-                This experiment measures the complete effect: three 32-segment ribbons, 48
-                travelling motes, 24 ballistic sparks, eight endpoint corona cards and four animated
-                ground runes per ability. All effects support charge-up and a retained 1.4-second
-                release tail. The core-only case keeps all three ribbons and removes the four
-                secondary layers.
-            </div>
+            <div class="note">__CONTENT_NOTE__</div>
             __OVERVIEW__
             <div class="controls">
                 <label
@@ -160,7 +154,9 @@
                         <option value="mainMedianMs">Main CPU frame / ms</option>
                         <option value="bridgeMedianMs">Presentation bridge / ms</option>
                     </select></label
-                ><button id="export">Export selected CSV</button>
+                ><label>Scale workload
+                    <select id="scaleWorkload" aria-label="Scale workload"></select>
+                </label><button id="export">Export selected CSV</button>
             </div>
             <h2 id="selected"></h2>
             <div class="scroll">
@@ -177,9 +173,11 @@
                             <th>Commands ms</th>
                             <th>Bridge ms</th>
                             <th>Bridge p95 / max</th>
+                            <th>Frame p50 ms</th>
                             <th>Frame p95 ms</th>
                             <th>Batches</th>
                             <th>Objects</th>
+                            <th>Quads logical / allocated</th>
                             <th>Bulk input KiB</th>
                             <th>Setup ms</th>
                         </tr>
@@ -187,11 +185,8 @@
                     <tbody id="table"></tbody>
                 </table>
             </div>
-            <h2>Complete effects / moving endpoints / 1080p</h2>
-            <p class="muted">
-                The legend toggles techniques. Hover points for values. Curves cover 32–512
-                simultaneous abilities.
-            </p>
+            <h2 id="scaleTitle">Complete effects / moving endpoints / 1080p</h2>
+            <p class="muted" id="scaleNote"></p>
             <div class="legend" id="legend"></div>
             <svg
                 id="chart"
@@ -201,9 +196,9 @@
             ></svg>
             <h2>What did the extra layers cost?</h2>
             <p class="muted">
-                256 sustained moving abilities, 1080p. Differences compare medians of the full and
-                core-only measurements; baseline-corrected GPU differences are estimates, with
-                ordinary run-to-run noise.
+                Matched full and core-only cases appear below when the selected suite contains
+                both. Differences compare medians; baseline-corrected GPU differences are
+                estimates with ordinary run-to-run noise.
             </p>
             <div class="scroll">
                 <table>
@@ -229,32 +224,29 @@
             <details open>
                 <summary>Capability and authoring differences</summary>
                 <p>
-                    <b>VFX Graph:</b> all five GPU systems live in one real graph asset, with shared
-                    or per-ability input. Per-ability graphs are tested with automatic instance
-                    batching both disabled and enabled. The graph exposes SpawnCore, SpawnLayer0–3,
-                    Start, End, Tint, Shape, Clock and CameraPosition. Shared graphs consume a
-                    64-byte ability record. Capacity variants avoid a huge fixed pool at low counts.
+                    <b>VFX Graph:</b> a real graph contains the configured ribbon and secondary
+                    streams. Shared input uses a 64-byte ability record; per-ability input uses
+                    component properties. Automatic instance batching is tested enabled and disabled.
+                    Generated graph topology follows the selected library. Gradients, curves and
+                    texture profiles come from the same baked catalog as the CPU renderers.
                 </p>
                 <p>
-                    <b>LineRenderer, Burst mesh and procedural ribbons:</b> the three ribbon strands
-                    use their corresponding renderer. Free motes, sparks, coronas and ground runes
-                    use a four-layer procedural GPU companion. This is an explicit hybrid
-                    implementation. These techniques do not gain particle systems merely by
-                    rendering a line.
+                    <b>LineRenderer, Burst mesh and procedural ribbons:</b> configured ribbon slots
+                    use the named renderer. Secondary modules use an explicitly measured procedural
+                    GPU companion. A combined effect is a hybrid implementation; its complete cost
+                    cannot be attributed to the ribbon renderer alone.
                 </p>
                 <p>
-                    <b>Shuriken:</b> native particle layers provide the same secondary geometry.
-                    Shared/per-line systems, ordinary mesh particles, GPU-instanced mesh particles
-                    and direct Burst particle jobs are measured independently. The per-line variant
-                    packs all three strands into one core system and has four secondary systems per
-                    ability. Mesh ground runes accompany the billboard variants because a
-                    view-facing billboard cannot represent the ground orientation.
+                    <b>Shuriken:</b> native particle streams reproduce the same analytic motion.
+                    Shared/per-ability systems, ordinary mesh particles, GPU-instanced mesh particles
+                    and direct Burst particle jobs are measured independently. Ground-oriented
+                    streams use mesh particles when billboards cannot represent their orientation.
                 </p>
                 <p>
-                    Three stacked ribbons are needed for these authored cores. Consequently a
-                    LineRenderer ability uses three LineRenderers, while a complete VFX ability
-                    still uses one component/graph containing five systems. That packaging
-                    difference is part of the practical comparison.
+                    Multiple ribbon modules require multiple LineRenderers per ability, whereas a
+                    VFX graph packages its configured streams inside one component. This practical
+                    packaging difference is part of the comparison. Reusable assets supply path
+                    algorithms, ribbon profiles, gradients, curves and secondary motion modules.
                 </p>
             </details>
             <details>
@@ -265,7 +257,8 @@
                     sees the same environment, endpoint sequence, fixed 60 Hz simulation and native
                     Begin/Follow/Release jobs. Baseline includes that environment and
                     command/strand-preparation work. Technique order is shuffled within each
-                    configuration/repetition. The full matrix has 360 cells and three repetitions.
+                    configuration/repetition. The protocol above states this run's actual cell
+                    count and frame durations; the immutable suite manifest lists every cell.
                     Warmup and shader first use are outside the timed interval; pool setup is
                     recorded separately. Lifecycle sampling spans pooled release tails and reuse,
                     with staggered phases.
@@ -276,18 +269,19 @@
                     frame times too. GPU deltas subtract paired whole-frame baselines; they are not
                     isolated-pass timestamps. CPU times are wall time, not summed active core
                     cycles. CPU and GPU frame times overlap; do not add them. Alpha-zero fixed slots
-                    still execute; no active compaction is credited. Per-ability VFX disables the
-                    complete component after its tail. Per-ability Shuriken disables its core, while
-                    its four secondary pools retain invisible particles; disabling those as a group
-                    is an available further optimization. Lifecycle results apply to these exact
-                    implementations. Color32 quantization and LineRenderer gradient/connected-join
+                    still execute; no active compaction is credited. <span id="poolPolicy"></span>
+                    Lifecycle results apply to these exact implementations. Color32 quantization
+                    and LineRenderer gradient/connected-join
                     differences remain. Release builds can lack GC counters. Total memory and bulk
                     input bytes are exported in the aggregate CSV; neither is isolated effect VRAM
                     or measured bus traffic.
                 </p>
                 <p>
                     The arena is a visual proof of concept with a fixed six-unit environment. Stress
-                    links fill the same 36×19 m footprint at every count; this does not simulate a
+                    links in Sustain fill the same 36×19 m footprint at every count. Spread
+                    uses a fixed wider 180x95 m footprint and a wider camera at every count.
+                    Lines are smaller on screen in Spread. These are separate density workloads;
+                    their difference is not an isolated CPU measurement. This does not simulate a
                     complete RTS with hundreds of animated units, AI, terrain streaming or contested
                     GPU resources. No depth collision, history-based smoke, distortion, dynamic
                     effect lights, trails following arbitrary historical paths or multiple cameras
@@ -312,11 +306,14 @@
             $("hardware").textContent =
                 `${meta.gpu} · ${meta.cpu} · ${meta.api} · Unity ${meta.unity}`;
             $("cards").innerHTML =
-                `<div class="card"><b>${audit.cells}</b>audited measured cells</div><div class="card"><b>${audit.rawSamples.toLocaleString()}</b>raw frame samples</div><div class="card"><b>11 + baseline</b>rendering configurations</div>`;
+                `<div class="card"><b>${audit.cells}</b>audited measured cells</div><div class="card"><b>${audit.rawSamples.toLocaleString()}</b>raw frame samples</div><div class="card"><b>${new Set(data.map((row) => row.technique)).size}</b>rendering configurations</div>`;
             $("protocol").textContent =
-                `Seed ${meta.seed}; ${meta.warmupFrames} warmup / ${meta.measurementFrames} measured frames per cell. Build ${meta.buildGuid}. ${meta.startedUtc}`;
+                `${meta.suite}; ${audit.cells} measured cells. Seed ${meta.seed}; ${meta.warmupFrames} warmup / ${meta.measurementFrames} measured frames per cell. Build ${meta.buildGuid}. ${meta.startedUtc}`;
+            $("poolPolicy").textContent = meta.authored
+                ? "Per-ability VFX and Shuriken disable all their streams after the authored tail. Exact stream counts are audited after warmup."
+                : "Historical per-ability VFX disables the complete component; historical per-ability Shuriken keeps invisible secondary pools after disabling its core.";
             $("audit").textContent =
-                `Audit passed · ${audit.validGpuSamples.toLocaleString()} fresh GPU samples · raw data and manifests retained in the reference folder.`;
+                `Audit passed · ${audit.validGpuSamples.toLocaleString()} fresh GPU samples · raw data and manifests retained in the source run folders.`;
             const key = (d) =>
                 `${d.count} abilities · ${d.workload} · ${d.fullStack ? "Complete" : "Core only"} · ${d.width}×${d.height}`;
             const cases = [...new Set(data.map(key))];
@@ -334,7 +331,7 @@
                 $("table").innerHTML = selected
                     .map(
                         (d) =>
-                            `<tr><td>${d.name}</td><td>${fmt(d.gpuMedianMs)}</td><td>${fmt(d.gpuMedianMsDelta)}</td><td>${fmt(d.gpuMedianMsMin)}–${fmt(d.gpuMedianMsMax)}</td><td>${fmt(d.gpuP95Ms)}</td><td>${fmt(d.mainMedianMs)}</td><td>${fmt(d.renderMedianMs)}</td><td>${fmt(d.commandMedianMs)}</td><td>${fmt(d.bridgeMedianMs)}</td><td>${fmt(d.bridgeP95Ms)} / ${fmt(d.bridgeMaxMs)}</td><td>${fmt(d.frameP95Ms)}</td><td>${d.batchesMedian ?? "N/A"}</td><td>${d.objects}</td><td>${(d.uploadBytes / 1024).toFixed(1)}</td><td>${fmt(d.setupMs)}</td></tr>`,
+                            `<tr><td>${d.name}</td><td>${fmt(d.gpuMedianMs)}</td><td>${fmt(d.gpuMedianMsDelta)}</td><td>${fmt(d.gpuMedianMsMin)}–${fmt(d.gpuMedianMsMax)}</td><td>${fmt(d.gpuP95Ms)}</td><td>${fmt(d.mainMedianMs)}</td><td>${fmt(d.renderMedianMs)}</td><td>${fmt(d.commandMedianMs)}</td><td>${fmt(d.bridgeMedianMs)}</td><td>${fmt(d.bridgeP95Ms)} / ${fmt(d.bridgeMaxMs)}</td><td>${fmt(d.frameMedianMs)}</td><td>${fmt(d.frameP95Ms)}</td><td>${d.batchesMedian ?? "N/A"}</td><td>${d.objects}</td><td>${d.logicalQuads ?? "N/A"} / ${d.allocatedQuads}</td><td>${(d.uploadBytes / 1024).toFixed(1)}</td><td>${fmt(d.setupMs)}</td></tr>`,
                     )
                     .join("");
             }
@@ -356,27 +353,36 @@
                     "#f4eeae",
                 ],
                 hidden = new Set();
+            const scaleWorkloads = [...new Set(data.filter((d) => d.fullStack && d.width === 1920).map((d) => d.workload))];
+            $("scaleWorkload").innerHTML = scaleWorkloads.map((name) => `<option>${name}</option>`).join("");
+            $("scaleWorkload").value = scaleWorkloads.includes("Sustain") ? "Sustain" : scaleWorkloads[0];
             function chart() {
                 const rows = data.filter(
-                        (d) => d.fullStack && d.workload === "Sustain" && d.width === 1920,
+                        (d) => d.fullStack && d.workload === $("scaleWorkload").value && d.width === 1920,
                     ),
                     metric = $("metric").value,
-                    visible = rows.filter((d) => !hidden.has(d.technique));
+                    visible = rows.filter((d) => !hidden.has(d.technique) && Number.isFinite(d[metric]));
+                const counts = [...new Set(rows.map((d) => d.count))].sort((a, b) => a - b);
+                const lowCount = counts[0] || 1;
+                const highCount = counts[counts.length - 1] || lowCount;
+                const logRange = Math.log2(highCount / lowCount);
+                $("scaleTitle").textContent = `Complete effects / ${$("scaleWorkload").value} / 1080p`;
+                $("scaleNote").textContent = `The legend toggles techniques. Hover points for values. Measured counts: ${counts.join(", ")}. Horizontal spacing is logarithmic.`;
                 const min = Math.min(0, ...visible.map((d) => d[metric])),
                     max = Math.max(0.01, ...visible.map((d) => d[metric])) * 1.1,
-                    x = (n) => 80 + Math.log2(n / 32) * 280,
+                    x = (n) => logRange ? 80 + Math.log2(n / lowCount) / logRange * 1140 : 650,
                     y = (v) => 370 - ((v - min) / (max - min)) * 310;
                 let s = "";
                 for (let i = 0; i <= 5; i++) {
                     let v = min + ((max - min) * i) / 5;
                     s += `<line x1="80" x2="1220" y1="${y(v)}" y2="${y(v)}" stroke="#294451"/><text x="70" y="${y(v) + 4}" fill="#8ba5b1" text-anchor="end" font-size="12">${v.toFixed(2)}</text>`;
                 }
-                for (let n of [32, 128, 256, 512])
+                for (let n of counts)
                     s += `<text x="${x(n)}" y="405" fill="#8ba5b1" text-anchor="middle">${n}</text>`;
                 methods.forEach((t, i) => {
                     if (hidden.has(t)) return;
                     const r = rows
-                        .filter((d) => d.technique === t)
+                        .filter((d) => d.technique === t && Number.isFinite(d[metric]))
                         .sort((a, b) => a.count - b.count);
                     s += `<polyline points="${r.map((d) => `${x(d.count)},${y(d[metric])}`).join(" ")}" fill="none" stroke="${colors[i]}" stroke-width="2.5"/>`;
                     for (const d of r)
@@ -398,6 +404,7 @@
                     };
             }
             $("metric").onchange = chart;
+            $("scaleWorkload").onchange = chart;
             chart();
             $("layers").innerHTML = methods
                 .map((t) => {
@@ -424,9 +431,11 @@
                 .join("");
             const visuals = [
                 ["Showcase", "Complete diorama"],
-                ["Hero0", "Renewal / close view"],
-                ["Hero1", "Storm lance / close view"],
-                ["Hero2", "Solar tether / close view"],
+                ...(meta.content ? meta.content.effectNames.map((name, i) => [`Hero${i}`, `${name} / close view`]) : [
+                    ["Hero0", "Renewal / close view"],
+                    ["Hero1", "Storm lance / close view"],
+                    ["Hero2", "Solar tether / close view"],
+                ]),
                 ...methods.map((t) => [t, data.find((d) => d.technique === t).name]),
             ];
             $("visual").innerHTML = visuals
