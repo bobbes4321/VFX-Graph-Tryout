@@ -10,7 +10,7 @@ Start with [Artist Workflow](ArtistWorkflow.md) if you want to change an effect,
 2. `Authoring/NativeEffectCatalog.cs` and `Runtime/EffectRecipeData.cs`: validation, ownership and the explicit packed contract.
 3. `Runtime/AbilityHealerExample.cs` and `AbilityWorld.cs`: real gameplay producers and native lifecycle.
 4. `Runtime/AbilityGeometry.cs`: shared visual vocabulary, consuming data rather than recipe names.
-5. `Runtime/AbilityBackend.cs`, `CoreBackend.cs`, `ParticleSurfacePool.cs`: presentation costs and renderer packaging.
+5. `Runtime/Techniques/`: [one implementation file per technique](../Assets/LineLab/Production/Runtime/Techniques/README.md), with setup, jobs, presentation, secondary streams and cleanup together. `Runtime/AbilityBackend.cs` selects and owns the implementation.
 6. `Runtime/ProductionBenchmark.cs` and `Tools/production_report.py`: measurement, immutable run identity and audits.
 
 Paths in this section are relative to `Assets/LineLab/Production/`.
@@ -112,13 +112,22 @@ All complete-effect entries below are under `Assets/LineLab/Production/`.
 | `Runtime/AbilityWorld.cs` | Value commands/writer, world ownership, Burst consumer, ribbon expansion and deterministic demo producer |
 | `Runtime/AbilityHealerExample.cs` | PresentHealingJob and unmanaged per-healer presentation state |
 | `Runtime/AbilityGeometry.cs` | Envelopes, paths, gradients, widths, cards and CPU-only segment interface |
-| `Runtime/AbilityBackend.cs` | Complete-stack ownership, VFX adapters, secondary streams, activation and statistics |
-| `Runtime/CoreBackend.cs` | LineRenderer, combined mesh and procedural core adapters and preparation jobs |
+| `Runtime/AbilityBackend.cs` | Public presentation API, technique selection, shared resources and root ownership |
+| `Runtime/Techniques/AbilityTechnique.cs` | Common renderer contract, context and recipe-view construction |
+| `Runtime/Techniques/VfxBufferTechnique.cs` | Shared graph setup, buffer upload, presentation and census |
+| `Runtime/Techniques/VfxPerLineTechnique.cs` | Unbatched per-ability graph setup, activation, input submission and census |
+| `Runtime/Techniques/VfxPerLineBatchedTechnique.cs` | Auto-batched per-ability graph setup, activation, input submission and census |
+| `Runtime/Techniques/LineRendererTechnique.cs` | Ribbon preparation job, pooled LineRenderer submissions and procedural secondaries |
+| `Runtime/Techniques/BurstMeshTechnique.cs` | Vertex layout/job, combined mesh uploads and procedural secondaries |
+| `Runtime/Techniques/ProceduralTechnique.cs` | Core/secondary buffers and procedural draws |
+| `Runtime/Techniques/ParticleBillboardSharedTechnique.cs` | Shared billboard/ground-mesh streams, preparation job and copied submissions |
+| `Runtime/Techniques/ParticleBillboardPerLineTechnique.cs` | Per-ability streams, activation, preparation job and copied submissions |
+| `Runtime/Techniques/ParticleMeshSharedTechnique.cs` | Shared mesh streams, preparation job and copied submissions |
+| `Runtime/Techniques/ParticleMeshInstancedTechnique.cs` | GPU-instanced mesh streams, preparation job and copied submissions |
+| `Runtime/Techniques/RecipeParticleBridge.cs` | Complete direct-job technique, seed/update jobs and Unity callback timer; preserves MonoBehaviour name/GUID |
 | `Runtime/EffectRenderResources.cs` | Shared GPU table copies, atlas bindings and generated material instances |
 | `Runtime/EffectPropertyIds.cs` | Cached Unity property IDs outside per-ability loops |
-| `Runtime/SurfaceParticles.cs` | Shared card evaluation, copied-particle builders and direct particle-array jobs |
-| `Runtime/ParticleSurfacePool.cs` | Shuriken system/material/custom-stream setup, copied submissions and ownership |
-| `Runtime/RecipeParticleBridge.cs` | Unity callback boundary and direct-job callback timer |
+| `Runtime/SurfaceParticles.cs` | Shared recipe/card view used by CPU renderers; particle jobs live with each technique |
 | `Runtime/ProductionController.cs` | Showcase controls, library selection, preview lifecycle, scheduling and benchmark/capture entry points |
 | `Runtime/ProductionBenchmark.cs` | Suite specification, raw capture, content/suite manifests, census and summaries |
 | `Runtime/ProductionArt.cs` | Original environment, props and placeholder unit construction |
@@ -135,6 +144,7 @@ All complete-effect entries below are under `Assets/LineLab/Production/`.
 | `Editor/EffectPreviewCompiler.cs` | Editor-only callback compiles newly requested preview capacity; players never author graphs |
 | `Editor/ProductionAssets.cs` | Compile libraries, create a new scene explicitly, build AuthoredLab and write build manifests |
 | `Editor/ProductionValidation.cs` | Native lifecycle, authored data and geometry validation |
+| `Editor/TechniqueValidation.cs` | All-technique topology, upload, pooling, zero-card and disposal regression checks |
 | `Editor/AuthoringAcceptance.cs` | AssetDatabase-based authoring proof, reusable sample variants, graph GUID/source preservation and acceptance log |
 
 ### Shaders and generated content

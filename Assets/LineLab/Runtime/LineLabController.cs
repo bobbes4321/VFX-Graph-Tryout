@@ -22,17 +22,62 @@ namespace LineLab
         public int LineCount = 8;
         public int Segments = 32;
         public Workload Workload = Workload.Moving;
-        public LineWorld World { get; private set; }
-        public LineBackend Backend { get; private set; }
-        public double CommandMs { get; private set; }
-        public double PresentMs { get; private set; }
-        public double SetupMs { get; private set; }
-        public double TeardownMs { get; private set; }
-        public bool Benchmarking { get; set; }
+
+        public LineWorld World
+        {
+            get;
+            private set;
+        }
+
+        public LineBackend Backend
+        {
+            get;
+            private set;
+        }
+
+        public double CommandMs
+        {
+            get;
+            private set;
+        }
+
+        public double PresentMs
+        {
+            get;
+            private set;
+        }
+
+        public double SetupMs
+        {
+            get;
+            private set;
+        }
+
+        public double TeardownMs
+        {
+            get;
+            private set;
+        }
+
+        public bool Benchmarking
+        {
+            get;
+            set;
+        }
 
         public string Status = "Live / unmanaged commands → presentation bridge";
-        public float SimulationClock { get; private set; }
-        public int SimulationFrame { get; private set; }
+
+        public float SimulationClock
+        {
+            get;
+            private set;
+        }
+
+        public int SimulationFrame
+        {
+            get;
+            private set;
+        }
 
         bool first;
         Transform[] actors;

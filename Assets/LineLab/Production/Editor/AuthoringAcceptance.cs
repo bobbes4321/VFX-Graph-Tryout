@@ -564,7 +564,7 @@ namespace LineLab.Production.Editor
                 library.Effects = new List<EffectDefinition> { effect };
                 EffectGraphCompiler.CompileLibrary(library, false, 3, true);
                 using (var catalog = new NativeEffectCatalog(library))
-                using (var resources = new EffectRenderResources(catalog))
+                using (var world = new AbilityWorld(3, catalog))
                 {
                     Check(
                         catalog.LayerCapacities.Length == 1 && catalog.LayerCapacities[0] == 0,
@@ -572,27 +572,31 @@ namespace LineLab.Production.Editor
                         checks
                     );
                     var camera = root.AddComponent<Camera>();
-                    foreach (bool perAbility in new[] { false, true })
+                    world.PreparePresentation(default, 1).Complete();
+                    foreach (
+                        var technique in new[]
+                        {
+                            Technique.ParticleBillboardShared,
+                            Technique.ParticleBillboardPerLine,
+                        }
+                    )
                     {
                         using (
-                            var pool = new ParticleSurfacePool(
-                                root.transform,
-                                "Empty stream",
+                            var backend = new AbilityBackend(
+                                technique,
                                 3,
-                                0,
-                                perAbility,
+                                camera,
                                 true,
-                                false,
-                                false,
-                                resources,
+                                catalog,
                                 new Bounds(Vector3.zero, Vector3.one)
                             )
                         )
                         {
-                            pool.Present(default, camera, true);
+                            SceneManager.MoveGameObjectToScene(backend.Root, preview);
+                            backend.Present(world, 1, true);
                             Check(
-                                pool.LiveParticles == 0 && pool.UploadBytes == 0,
-                                "Zero-card native pool is safe; per ability=" + perAbility,
+                                backend.StreamParticleCounts()[1] == 0,
+                                "Zero-card native stream is safe; technique=" + technique,
                                 checks
                             );
                         }

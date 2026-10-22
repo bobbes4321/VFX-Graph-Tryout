@@ -8,6 +8,7 @@ Start with:
 
 - [Artist Workflow](Documentation/ArtistWorkflow.md): add a new line or reusable mote without C#.
 - [Code Overview](Documentation/CodeOverview.md): complete current source map and content-to-pixels architecture.
+- [Technique code comparison](Assets/LineLab/Production/Runtime/Techniques/README.md): one runtime C# implementation file per rendering technique.
 - [Integration](Documentation/Integration.md): actual Burst healer job, EffectId lookup and ownership contract.
 - [Production Guide](Documentation/Production.md): rendering stacks, build, suites and timing interpretation.
 - [Adversarial Review](Documentation/AdversarialReview.md): original findings and acceptance requirements.
